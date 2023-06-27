@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/27 15:58:21 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:41:57 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void	SERVER::TestServer::_handler(void)
 			std::cout << "\nNo multipart/form-data\n";
 		}
 	}
-	// if (_requestInfo.at("METHOD") == "DELETE")
-	// {
-	// 	std::cout << "Delete\n";
-	// }
+	if (_requestInfo.at("METHOD") == "DELETE")
+	{
+		std::cout << "Delete\n";
+	}
 	return ;
 }
 
