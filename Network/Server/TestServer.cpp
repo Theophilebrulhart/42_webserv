@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 14:48:41 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:49:03 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,14 @@ void	SERVER::TestServer::_handler(void)
 			std::cout << "\nNo multipart/form-data\n";
 		}
 	}
+	if (_requestInfo.at("METHOD") == "GET")
+		openFile(_requestInfo, _responsContent);
 	return ;
 }
 
 void	SERVER::TestServer::_responder(void)
 {
-	RESPONS::ResponsInfo	createRespons(_requestInfo);
+	RESPONS::CreateRespons	createRespons(_requestInfo);
 	std::string respons = createRespons.getRespons();
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
 	send(_newSocket, respons.c_str(), respons.size(), 0);

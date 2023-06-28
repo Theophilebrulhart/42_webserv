@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HeadersNetwork.hpp                                 :+:      :+:    :+:   */
+/*   HeadersGet.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 13:02:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:58:21 by tbrulhar         ###   ########.fr       */
+/*   Created: 2023/03/07 20:24:03 by tbrulhar          #+#    #+#             */
+/*   Updated: 2023/06/28 17:33:45 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADERSNETWORK_HPP
-#define HEADERSNETWORK_HPP
+#ifndef GET_HPP
+# define GET_HPP
 
-# include "Socket/HeadersSocket.hpp"
-# include "Server/HeadersServer.hpp"
-# include "Parsing/HeadersParsing.hpp"
-# include "Method/HeadersMethod.hpp"
-# include "Respons/HeaderRespons.hpp"
+# include <map>
+# include <iostream>
+# include <unistd.h>
+# include <fstream>
+# define MAP_STRING std::map<std::string, std::string> 
+
+//********OpenFile*******//
+
+void    openFile(MAP_STRING info, MAP_STRING responsContent);
 
 #endif

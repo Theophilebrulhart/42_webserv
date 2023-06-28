@@ -6,14 +6,13 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:05:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/10 14:51:04 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:00:33 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GETSTATUS_HPP
 # define GETSTATUS_HPP
 
-# include "../ResponsInfo.hpp"
 # include <map>
 # include <iostream>
 # define MAP_STRING std::map<std::string, std::string>

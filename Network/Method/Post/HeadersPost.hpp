@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utils.hpp                                          :+:      :+:    :+:   */
+/*   HeadersPost.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/07 20:19:26 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:49:03 by tbrulhar         ###   ########.fr       */
+/*   Created: 2023/03/07 20:24:03 by tbrulhar          #+#    #+#             */
+/*   Updated: 2023/06/28 15:18:27 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CreateResponsUTILS_HPP
-# define CreateResponsUTILS_HPP
+#ifndef POST_HPP
+# define POST_HPP
 
+# include <map>
 # include <iostream>
+# include <unistd.h>
+# include <vector>
+# include <sys/socket.h>
+# include <fstream>
+# define MAP_STRING std::map<std::string, std::string> 
 
-std::string	ft_itoa(int n);
-static void	swap(std::string &str);
-static void	conversion(int n, std::string &str);
+//********GetFormValue*******//
+
+void    getFormValue(std::string const &content, MAP_STRING &info);
+
+//********FormParsing*******//
+
+void    formParsing(std::string &buffer, MAP_STRING &info, int socket);
 
 #endif

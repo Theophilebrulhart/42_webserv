@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ResponsInfo.hpp                                    :+:      :+:    :+:   */
+/*   CreateRespons.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:32:57 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/10 13:42:51 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:48:15 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RESPONSINFO_HPP
-# define RESPONSINFO_HPP
-# include "HeadersResponsInfo.hpp"
+#ifndef CreateRespons_HPP
+# define CreateRespons_HPP
+# define MAP_STRING std::map<std::string, std::string>
+# include "iostream"
 
 
 class TestServer;
 
 namespace RESPONS
 {
-	class ResponsInfo
+	class CreateRespons
 	{
 		public:
-			ResponsInfo(MAP_STRING &info);
-			virtual ~ResponsInfo(void);
+			CreateRespons(MAP_STRING &info);
+			virtual ~CreateRespons(void);
 		
 			
 			std::string	getRespons(void) const;
@@ -46,5 +47,4 @@ namespace RESPONS
 	};
 }
 
-# include "../../Server/HeadersServer.hpp"
 #endif

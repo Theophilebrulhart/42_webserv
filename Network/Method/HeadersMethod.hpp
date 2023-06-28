@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HeadersNetwork.hpp                                 :+:      :+:    :+:   */
+/*   HeadersMethod.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 13:02:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:58:21 by tbrulhar         ###   ########.fr       */
+/*   Created: 2023/03/06 13:05:05 by tbrulhar          #+#    #+#             */
+/*   Updated: 2023/06/28 15:46:26 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADERSNETWORK_HPP
-#define HEADERSNETWORK_HPP
+#ifndef HEADERSMETHOD_HPP
+# define HEADERSMETHOD_HPP
 
-# include "Socket/HeadersSocket.hpp"
-# include "Server/HeadersServer.hpp"
-# include "Parsing/HeadersParsing.hpp"
-# include "Method/HeadersMethod.hpp"
-# include "Respons/HeaderRespons.hpp"
-
+# include "Delete/HeadersDelete.hpp"
+# include "Post/HeadersPost.hpp"
+# include "Get/HeadersGet.hpp"
 #endif

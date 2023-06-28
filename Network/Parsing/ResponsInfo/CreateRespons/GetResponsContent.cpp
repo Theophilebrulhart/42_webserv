@@ -20,7 +20,6 @@ RESPONS::GetResponsContent::GetResponsContent(MAP_STRING &info, std::string cons
 		_contentType = "Content-Type not supported\r\n";
 		return ;
 	}
-	//std::cout << "content type : " << _contentType << "\n";
 	_content = loadContentFile(file, info);
 	std::string size = ft_itoa(_content.size());
 	_contentLength = "Content-Length : " + size + "\r\n";
@@ -32,25 +31,8 @@ RESPONS::GetResponsContent::~GetResponsContent(void)
     return ;
 }
 
-// void	getUserValue(std::string &tmp, MAP_STRING const &info)
-// {
-// 	std::string imagePath = "Image/" + info.at("SPORT") + ".svg";
-// 	//std::cout << "\nReplace Username Image path : " << imagePath << "\n\n";
-// 	try	{
-// 		tmp.replace(tmp.find("UserName"), 8, info.at("FIRSTNAME"));
-// 		tmp.replace(tmp.find("UserSport"), 9, imagePath);
-// 		tmp.replace(tmp.find("ProfilPic"), 9, info.at("PROFILPIC"));
-// 	}
-// 	catch (const std::out_of_range& oor) 
-// 	{
-		
-//   	}
-// 	return ;
-// }
-
 std::string	RESPONS::GetResponsContent::loadContentFile(std::string contentFile, MAP_STRING const &info)
 {	
-	//std::cout << "\nhtml file : " << contentFile << "\n\n";
 	std::string file = "Network/HtmlFiles" + contentFile;
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);

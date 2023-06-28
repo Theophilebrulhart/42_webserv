@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:53:21 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 14:26:23 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:58:02 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ void    formParsing(std::string &buffer, MAP_STRING &info, int socket);
 void	getInfo(std::string &buffer, MAP_STRING &info);
 void    getMethod(std::string &buffer, MAP_STRING &info);
 void	getSection(std::string &buffer, MAP_STRING &info, std::string toFind, std::string name);
-
-//********GetFormValue*******//
-
-void    getFormValue(std::string const &content, MAP_STRING &info);
 
 //********DeleteFile*******//
 

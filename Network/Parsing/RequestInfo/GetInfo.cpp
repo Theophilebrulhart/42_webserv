@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/15 17:50:13 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:18:24 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,38 +142,6 @@ void	getSection(std::string &buffer, MAP_STRING &info, std::string toFind, std::
 	}
 	
 }
-
-// void	insertValue(int i, int j, std::string &buffer, MAP_STRING &info, std::string key)
-// {
-// 	std::string	tmp;
-
-
-// 	while (buffer[i] != '=')
-// 		i++;
-// 	i++;
-// 	for (int t = 0; i != j && buffer[i]; i++)
-// 	{
-// 		//std::cout << "s\n";
-// 		tmp += buffer[i];
-// 	}
-// 	//std::cout << "tmp to insert : " << tmp << "\n";
-// 	try 
-// 	{
-//     	info.at(key) = tmp;
-//   	}
-//   	catch (const std::out_of_range& oor) 
-// 	{
-// 		info.insert(std::pair<std::string, std::string>(key, tmp));
-//   	}
-// }
-
-// void	getFormValue(std::string &buffer, MAP_STRING &info)
-// {
-// 	insertValue(buffer.find("firstname="), buffer.find("sport=") - 1, buffer, info, "FIRSTNAME");
-// 	insertValue(buffer.find("&sport="), buffer.find("myfile=") - 1, buffer, info, "SPORT");
-// 	insertValue(buffer.find("&myfile="), -1, buffer, info, "IMG");
-// 	return ;
-// }
 
 void	getInfo(std::string &buffer, MAP_STRING &info)
 {

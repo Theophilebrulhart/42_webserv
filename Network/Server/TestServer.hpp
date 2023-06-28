@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 14:54:03 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:59:12 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <vector>
 # include "../Parsing/HeadersParsing.hpp"
+# include "../Method/HeadersMethod.hpp"
+# include "../Respons/HeadersRespons.hpp"
 
 namespace   SERVER
 {

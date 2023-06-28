@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ResponsInfo.cpp                                    :+:      :+:    :+:   */
+/*   CreateRespons.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:37:34 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/15 16:04:34 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:44:03 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ResponsInfo.hpp"
+#include "CreateRespons.hpp"
 
-RESPONS::ResponsInfo::ResponsInfo(MAP_STRING &info) : _info(info)
+RESPONS::CreateRespons::CreateRespons(MAP_STRING &info) : _info(info)
 {
 	if (_info.at("TYPE").find("text") != std::string::npos || _info.at("TYPE").find("image") != std::string::npos)
 	{
 		GetResponsContentFile(_info.at("PATH"));
 		setRespons(_status);
 		setRespons(_contentType);
-		// std::cout << "contentLength : " << _contentLength << "\n";
 		//setRespons(_contentLength);
 		setRespons("\r\n");
 	}
-	//std::cout << "Respons : " << _respons;
 	setRespons(_contentFile);
     return ;
 }
 
-RESPONS::ResponsInfo::~ResponsInfo(void)
+RESPONS::CreateRespons::~CreateRespons(void)
 {
     return ;
 }
 
-void	RESPONS::ResponsInfo::setRespons(std::string const value)
+void	RESPONS::CreateRespons::setRespons(std::string const value)
 {
 	if (_respons.empty())
 		_respons = value;
@@ -42,14 +40,13 @@ void	RESPONS::ResponsInfo::setRespons(std::string const value)
 	return ;
 }
 
-std::string RESPONS::ResponsInfo::getRespons(void) const
+std::string RESPONS::CreateRespons::getRespons(void) const
 {
 	return (_respons);
 }
 
-void		RESPONS::ResponsInfo::GetResponsContentFile(std::string const &file)
+void		RESPONS::CreateRespons::GetResponsContentFile(std::string const &file)
 {
-	//std::cout << "\nGetResponsContent from responsinfo\n";
 	RESPONS::GetResponsContent htmlFile(_info, file);
 	RESPONS::GetStatus	status(_info, htmlFile.getContent());
 	setStatus(status.getStatus());
@@ -59,25 +56,25 @@ void		RESPONS::ResponsInfo::GetResponsContentFile(std::string const &file)
 	return ;
 }
 
-void	RESPONS::ResponsInfo::setHtmlFile(std::string const &htmlFile)
+void	RESPONS::CreateRespons::setHtmlFile(std::string const &htmlFile)
 {
 	_contentFile = htmlFile;
 	return ;
 }
 
-void	RESPONS::ResponsInfo::setStatus(std::string const &status)
+void	RESPONS::CreateRespons::setStatus(std::string const &status)
 {
 	_status = status;
 	return ;
 }
 
-void	RESPONS::ResponsInfo::setContentType(std::string const &contentType)
+void	RESPONS::CreateRespons::setContentType(std::string const &contentType)
 {
 	_contentType = contentType;
 	return ;
 }
 
-void	RESPONS::ResponsInfo::setContentLength(std::string const &contentLength)
+void	RESPONS::CreateRespons::setContentLength(std::string const &contentLength)
 {
 	_contentLength = contentLength;
 	return ;

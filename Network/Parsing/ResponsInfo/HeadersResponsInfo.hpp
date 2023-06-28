@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HeadersResponsInfo.hpp                             :+:      :+:    :+:   */
+/*   HeadersCreateRespons.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADERSRESPONSINFO_HPP
-# define HEADERSRESPONSINFO_HPP
+#ifndef HEADERSCreateRespons_HPP
+# define HEADERSCreateRespons_HPP
 
 # include "CreateRespons/HeadersCreateRespons.hpp"
 # include <map>
