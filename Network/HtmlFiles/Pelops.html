@@ -73,6 +73,29 @@
             object-fit: contain;
             margin-top: 20px;
         }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .image-container img {
+            width: 80%;
+            max-height: 100px;
+            object-fit: cover;
+        }
+
+        .image-container button {
+            margin-left: 10px;
+            padding: 6px 12px;
+            background-color: #ac3722;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -111,10 +134,15 @@
         // Fonction pour supprimer une image
         function deleteImage(imageName) {
             var xhr = new XMLHttpRequest();
-            xhr.open('DELETE', 'http://127.0.0.1/test.html?image=' + imageName, true);
+            xhr.open('DELETE', 'http://127.0.0.1/' + imageName, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert('L\'image a été supprimée avec succès.');
+                    // Supprimer l'élément de conteneur de l'image de la liste des images affichées
+                    var imageContainer = document.querySelector('.image-container');
+                    if (imageContainer) {
+                        imageContainer.parentNode.removeChild(imageContainer);
+                    }
                     // Mettre à jour la liste des images après la suppression
                     var index = imageList.indexOf(imageName);
                     if (index > -1) {
@@ -177,22 +205,16 @@
             event.preventDefault();
             var formData = new FormData(this);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://127.0.0.1/test.html', true);
+            xhr.open('POST', 'http://127.0.0.1/upload', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert('L\'image a été téléchargée avec succès.');
-                    // Réinitialiser la liste des images après le téléchargement
-                    imageList = [];
-                    displayImages();
                 } else if (xhr.readyState === 4 && xhr.status !== 200) {
                     alert('Une erreur s\'est produite lors du téléchargement de l\'image.');
                 }
             };
             xhr.send(formData);
         });
-
-        // Fonction pour afficher les images initiales
-        displayImages();
     </script>
 </body>
 </html>

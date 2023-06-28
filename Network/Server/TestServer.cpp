@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/27 16:41:57 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:48:41 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void    SERVER::TestServer::_accepter(void)
 		std::cerr << "Failed to accept socket\n";
 		exit (EXIT_FAILURE);
 	}
-		bzero(buf.data(), buf.size());
-    	if (recv(_newSocket, buf.data(), buf.size(), 0) < 0)
-		{
-			std::cerr << "Failed recv\n";
-			exit (EXIT_FAILURE);
-		}
+	bzero(buf.data(), buf.size());
+	if (recv(_newSocket, buf.data(), buf.size(), 0) < 0)
+	{
+		std::cerr << "Failed recv\n";
+		exit (EXIT_FAILURE);
+	}
 	std::string str(buf.begin(), buf.end());
 	_buffer = str;
 	//std::cout << _buffer << std::endl;
@@ -68,7 +68,15 @@ void	SERVER::TestServer::_handler(void)
 	}
 	if (_requestInfo.at("METHOD") == "DELETE")
 	{
-		std::cout << "Delete\n";
+		try
+		{
+			_requestInfo.at("CONTENT-TYPE");
+			deleteFile(_requestInfo, _newSocket);
+		}
+		catch(const std::out_of_range& oor)
+		{
+			std::cout << "\nNo multipart/form-data\n";
+		}
 	}
 	return ;
 }

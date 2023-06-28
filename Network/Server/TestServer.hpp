@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/15 16:17:11 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:54:03 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ namespace   SERVER
             void  			_handler(void);
             void    		_responder(void);
 			MAP_STRING		_requestInfo;
+            MAP_STRING      _responsContent;
     };
 }
 #endif
