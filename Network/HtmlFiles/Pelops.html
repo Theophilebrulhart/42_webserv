@@ -109,10 +109,10 @@
     <h2>Choisissez une image</h2>
     <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
         <input type="file" id="image-input" name="image" accept="image/*" multiple required>
-        <button type="submit">Télécharger</button>
+        <button type="submit">Telecharger</button>
     </form>
     
-    <h2>Liste des images téléchargées</h2>
+    <h2>Liste des images telechargees</h2>
     <ul class="image-list" id="image-list"></ul>
     
     <script>
@@ -136,8 +136,8 @@
             var xhr = new XMLHttpRequest();
             xhr.open('DELETE', 'http://127.0.0.1/' + imageName, true);
             xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert('L\'image a été supprimée avec succès.');
+                if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 204 )) {
+                    alert('L\'image a ete supprimee avec succes.');
                     // Supprimer l'élément de conteneur de l'image de la liste des images affichées
                     var imageContainer = document.querySelector('.image-container');
                     if (imageContainer) {
@@ -149,7 +149,7 @@
                         imageList.splice(index, 1);
                         displayImages();
                     }
-                } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
                     alert('Une erreur s\'est produite lors de la suppression de l\'image.');
                 }
             };
@@ -207,10 +207,10 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://127.0.0.1/upload', true);
             xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert('L\'image a été téléchargée avec succès.');
-                } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                    alert('Une erreur s\'est produite lors du téléchargement de l\'image.');
+                if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
+                    alert('L\'image a ete telechargee avec succes.');
+                } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
+                    alert('Une erreur s\'est produite lors du telechargement de l\'image.');
                 }
             };
             xhr.send(formData);
