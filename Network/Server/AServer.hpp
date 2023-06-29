@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:41:59 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/07 15:42:03 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 21:02:35 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ namespace   SERVER
 
             SOCKET::ListenSocket    *_serverSocket;
             virtual void    _accepter(void) = 0;
-            virtual void    _handler(void) = 0;
-            virtual void    _responder(void) = 0;
+            virtual void    _handler(int clientSocket) = 0;
+            virtual void    _responder(int clientSocket) = 0;
     };
 }
 
