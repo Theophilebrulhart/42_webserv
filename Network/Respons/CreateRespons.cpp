@@ -12,17 +12,9 @@
 
 #include "CreateRespons.hpp"
 
-RESPONS::CreateRespons::CreateRespons(MAP_STRING &info) : _info(info)
+RESPONS::CreateRespons::CreateRespons(MAP_STRING &responsContent) : _responsContent(responsContent)
 {
-	if (_info.at("TYPE").find("text") != std::string::npos || _info.at("TYPE").find("image") != std::string::npos)
-	{
-		GetResponsContentFile(_info.at("PATH"));
-		setRespons(_status);
-		setRespons(_contentType);
-		//setRespons(_contentLength);
-		setRespons("\r\n");
-	}
-	setRespons(_contentFile);
+	parseResponsContent();
     return ;
 }
 
@@ -45,37 +37,58 @@ std::string RESPONS::CreateRespons::getRespons(void) const
 	return (_respons);
 }
 
-void		RESPONS::CreateRespons::GetResponsContentFile(std::string const &file)
+void RESPONS::CreateRespons::parseResponsContent(void)
 {
-	RESPONS::GetResponsContent htmlFile(_info, file);
-	RESPONS::GetStatus	status(_info, htmlFile.getContent());
-	setStatus(status.getStatus());
-	setContentType(htmlFile.getContentType());
-	setHtmlFile(htmlFile.getContent());
-	setContentLength(htmlFile.getContentLength());
-	return ;
+    std::map<std::string, std::string>::const_iterator it;
+    for (it = _responsContent.begin(); it != _responsContent.end(); ++it) {
+        const std::string& key = it->first;
+        const std::string& value = it->second;
+		std::cout << "key " << key << "\n";
+        
+        if (key == "Aprotocol") {
+            setRespons(value + " ");
+        }
+        else if (key == "Ebody") {
+            setRespons("\r\n" + value);
+        }
+        else {
+            setRespons(value + "\r\n");
+        }
+    }
 }
 
-void	RESPONS::CreateRespons::setHtmlFile(std::string const &htmlFile)
-{
-	_contentFile = htmlFile;
-	return ;
-}
 
-void	RESPONS::CreateRespons::setStatus(std::string const &status)
-{
-	_status = status;
-	return ;
-}
+// void		RESPONS::CreateRespons::GetResponsContentFile(std::string const &file)
+// {
+// 	RESPONS::GetResponsContent htmlFile(_info, file);
+// 	RESPONS::GetStatus	status(_info, htmlFile.getContent());
+// 	setStatus(status.getStatus());
+// 	setContentType(htmlFile.getContentType());
+// 	setHtmlFile(htmlFile.getContent());
+// 	setContentLength(htmlFile.getContentLength());
+// 	return ;
+// }
 
-void	RESPONS::CreateRespons::setContentType(std::string const &contentType)
-{
-	_contentType = contentType;
-	return ;
-}
+// void	RESPONS::CreateRespons::setHtmlFile(std::string const &htmlFile)
+// {
+// 	_contentFile = htmlFile;
+// 	return ;
+// }
 
-void	RESPONS::CreateRespons::setContentLength(std::string const &contentLength)
-{
-	_contentLength = contentLength;
-	return ;
-}
+// void	RESPONS::CreateRespons::setStatus(std::string const &status)
+// {
+// 	_status = status;
+// 	return ;
+// }
+
+// void	RESPONS::CreateRespons::setContentType(std::string const &contentType)
+// {
+// 	_contentType = contentType;
+// 	return ;
+// }
+
+// void	RESPONS::CreateRespons::setContentLength(std::string const &contentLength)
+// {
+// 	_contentLength = contentLength;
+// 	return ;
+// }

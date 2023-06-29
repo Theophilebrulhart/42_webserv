@@ -21,8 +21,6 @@ RESPONS::GetResponsContent::GetResponsContent(MAP_STRING &info, std::string cons
 		return ;
 	}
 	_content = loadContentFile(file, info);
-	std::string size = ft_itoa(_content.size());
-	_contentLength = "Content-Length : " + size + "\r\n";
     return ;
 }
 

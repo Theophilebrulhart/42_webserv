@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:02:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:58:21 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 10:55:32 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # include "Server/HeadersServer.hpp"
 # include "Parsing/HeadersParsing.hpp"
 # include "Method/HeadersMethod.hpp"
-# include "Respons/HeaderRespons.hpp"
+# include "Respons/HeadersRespons.hpp"
 
 #endif

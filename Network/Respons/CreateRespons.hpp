@@ -12,8 +12,9 @@
 
 #ifndef CreateRespons_HPP
 # define CreateRespons_HPP
+# include <map>
+# include <iostream>
 # define MAP_STRING std::map<std::string, std::string>
-# include "iostream"
 
 
 class TestServer;
@@ -31,6 +32,8 @@ namespace RESPONS
 			void		GetResponsContentFile(std::string const &file);
 			
 			void		setRespons(std::string const value);
+			void		parseResponsContent(void);
+
 			void		setHtmlFile(std::string const &htmlFile);
 			void		setStatus(std::string const &status);
 			void		setContentType(std::string const &contentType);
@@ -43,7 +46,7 @@ namespace RESPONS
 			std::string	_status;
 			std::string	_contentType;
 			std::string	_contentLength;
-			MAP_STRING	_info;
+			MAP_STRING	_responsContent;
 	};
 }
 

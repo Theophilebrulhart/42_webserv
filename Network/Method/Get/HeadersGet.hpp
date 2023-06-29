@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:24:03 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:33:45 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:38:12 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 
 //********OpenFile*******//
 
-void    openFile(MAP_STRING info, MAP_STRING responsContent);
+void    openFile(MAP_STRING info, MAP_STRING &responsContent);
+
+//********Utils.cpp*******//
+
+std::string	ft_itoa(int n);
 
 #endif

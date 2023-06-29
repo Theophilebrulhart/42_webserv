@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:49:03 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:41:12 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	SERVER::TestServer::_handler(void)
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
-			formParsing (_buffer, _requestInfo, _newSocket);
+			formParsing (_buffer, _requestInfo, _newSocket, _responsContent);
 		}
 		catch(const std::out_of_range& oor)
 		{
@@ -85,12 +85,18 @@ void	SERVER::TestServer::_handler(void)
 
 void	SERVER::TestServer::_responder(void)
 {
-	RESPONS::CreateRespons	createRespons(_requestInfo);
+	RESPONS::CreateRespons	createRespons(_responsContent);
 	std::string respons = createRespons.getRespons();
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
 	send(_newSocket, respons.c_str(), respons.size(), 0);
 	//std::cout << "send done\n";
 	close(_newSocket);
+
+	std::map<std::string, std::string>::const_iterator it;
+    for (it = _responsContent.begin(); it != _responsContent.end(); )
+	{
+		_responsContent.erase(it++);
+	}
 	return ;
 }
 

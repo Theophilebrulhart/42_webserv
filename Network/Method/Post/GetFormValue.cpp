@@ -6,13 +6,14 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 22:11:39 by theophilebr       #+#    #+#             */
-/*   Updated: 2023/06/28 15:19:55 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 14:05:47 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersPost.hpp"
+#include "../Utils.hpp"
 
-void	createImgFile(std::string const &imgBody, std::string const &imgName, std::string const &extension)
+void	createImgFile(std::string const &imgBody, std::string const &imgName, std::string const &extension, MAP_STRING &responsContent)
 {
 	std::string file = "Network/HtmlFiles/Image/" + imgName;
 	std::ofstream ofs (file, std::ios_base::out | std::ios_base::binary);
@@ -26,7 +27,7 @@ void	createImgFile(std::string const &imgBody, std::string const &imgName, std::
 	return ;
 }
 
-void	getImgBody(std::string const &buffer, std::string const &imgName, std::string const &extension)
+void	getImgBody(std::string const &buffer, std::string const &imgName, std::string const &extension, MAP_STRING &responsContent)
 {
 	std::string imgBody;
 	std::string delimiter;
@@ -45,11 +46,11 @@ void	getImgBody(std::string const &buffer, std::string const &imgName, std::stri
 		imgBody += buffer[j];
 		j++;
 	}
-	createImgFile(imgBody, imgName, extension);
+	createImgFile(imgBody, imgName, extension, responsContent);
 
 }
 
-void	getImg(std::string const &buffer, MAP_STRING &info, std::string toFind, std::string name)
+void	getImg(std::string const &buffer, MAP_STRING &info, std::string toFind, std::string name, MAP_STRING &responsContent)
 {
 	std::string	path;
 	std::string imgName;
@@ -65,10 +66,10 @@ void	getImg(std::string const &buffer, MAP_STRING &info, std::string toFind, std
 	for (int i = imgName.find("."); imgName[i] && imgName[i] != '\r'; i++)
 		extension += imgName[i];
 	std::cout << "\n EXTENSIOn : " << extension << "\n\n";
-	getImgBody(buffer, imgName, extension);
+	getImgBody(buffer, imgName, extension, responsContent);
 }
 
-void    getFormValue(std::string const &content, MAP_STRING &info)
+void    getFormValue(std::string const &content, MAP_STRING &info, MAP_STRING &responsContent)
 {
-	getImg(content, info, "filename=", "PROFILPIC");
+	getImg(content, info, "filename=", "PROFILPIC", responsContent);
 }

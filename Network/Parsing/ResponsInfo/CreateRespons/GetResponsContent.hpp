@@ -16,7 +16,6 @@
 # include "GetStatus.hpp"
 # include <map>
 # include <iostream>
-# include "Utils.hpp"
 # define MAP_STRING std::map<std::string, std::string>
 
 namespace RESPONS

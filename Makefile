@@ -6,7 +6,7 @@
 #    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/06/28 17:55:47 by tbrulhar         ###   ########.fr        #
+#    Updated: 2023/06/29 14:02:24 by tbrulhar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ SRC +=	${addprefix Network/Socket/, ASocket.cpp BindSocket.cpp ConnectSocket.cpp
 ListenSocket.cpp}
 SRC +=	${addprefix Network/Server/, AServer.cpp TestServer.cpp}
 SRC +=	${addprefix Network/Parsing/RequestInfo/, RequestParsing.cpp GetInfo.cpp}
-SRC +=	${addprefix Network/Parsing/ResponsInfo/CreateRespons/, GetResponsContent.cpp GetStatus.cpp Utils.cpp}
+SRC +=	${addprefix Network/Parsing/ResponsInfo/CreateRespons/, GetResponsContent.cpp GetStatus.cpp }
+SRC +=	${addprefix Network/Method/, Utils.cpp}
 SRC +=	${addprefix Network/Method/Delete/, DeleteFile.cpp}
 SRC +=	${addprefix Network/Method/Post/, FormParsing.cpp GetFormValue.cpp}
 SRC +=	${addprefix Network/Method/Get/, OpenFile.cpp}
