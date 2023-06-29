@@ -6,28 +6,41 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 22:11:39 by theophilebr       #+#    #+#             */
-/*   Updated: 2023/06/29 14:05:47 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:30:27 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersPost.hpp"
 #include "../Utils.hpp"
 
-void	createImgFile(std::string const &imgBody, std::string const &imgName, std::string const &extension, MAP_STRING &responsContent)
+void	createImgFile(std::string const &imgBody, std::string const &imgName, std::string const &extension,
+						 MAP_STRING &responsContent, MAP_STRING &info)
 {
+	std::string body;
 	std::string file = "Network/HtmlFiles/Image/" + imgName;
+	std::string contentType = contentExtension(extension);
 	std::ofstream ofs (file, std::ios_base::out | std::ios_base::binary);
+	if (contentType == "Not supported")
+    {
+        std::string internalError = loadContentFile("/500InternalError.html");
+        std::perror(("Server doesn't handle the extension of the file " + file).c_str());
+        setResponsContent(responsContent, info.at("PROTOCOL"), "500 Internal Server Error", contentType, internalError);
+		return ;
+    }
 	if (ofs.fail())
 	{
-		std::cout << "Sorry, we can't build your file\n";
+		std::perror(("Failed to upload the file located at " + file).c_str());
+        setResponsContent(responsContent, info.at("PROTOCOL"), "400 Bad Request", contentType, body);
 		return ;
 	}
 	ofs << imgBody;
 	ofs.close();
+	setResponsContent(responsContent, info.at("PROTOCOL"), "204 No Content", contentType, body);
 	return ;
 }
 
-void	getImgBody(std::string const &buffer, std::string const &imgName, std::string const &extension, MAP_STRING &responsContent)
+void	getImgBody(std::string const &buffer, std::string const &imgName, std::string const &extension,
+					 MAP_STRING &responsContent, MAP_STRING &info)
 {
 	std::string imgBody;
 	std::string delimiter;
@@ -46,7 +59,7 @@ void	getImgBody(std::string const &buffer, std::string const &imgName, std::stri
 		imgBody += buffer[j];
 		j++;
 	}
-	createImgFile(imgBody, imgName, extension, responsContent);
+	createImgFile(imgBody, imgName, extension, responsContent, info);
 
 }
 
@@ -66,7 +79,7 @@ void	getImg(std::string const &buffer, MAP_STRING &info, std::string toFind, std
 	for (int i = imgName.find("."); imgName[i] && imgName[i] != '\r'; i++)
 		extension += imgName[i];
 	std::cout << "\n EXTENSIOn : " << extension << "\n\n";
-	getImgBody(buffer, imgName, extension, responsContent);
+	getImgBody(buffer, imgName, extension, responsContent, info);
 }
 
 void    getFormValue(std::string const &content, MAP_STRING &info, MAP_STRING &responsContent)

@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 14:01:47 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:21:39 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,26 @@ void setResponsContent(MAP_STRING& responsContent, std::string protocol, std::st
         responsContent.insert(std::make_pair("DcontentLength", std::string("Content-Length: ") + ft_itoa(body.size())));
         responsContent.insert(std::make_pair("Ebody", body));
     }
+    return ;
+}
+
+std::string loadContentFile(std::string contentFile)
+{	
+	std::string file = "Network/HtmlFiles" + contentFile;
+	std::string	tmp;
+	std::ifstream ifs (file.c_str(), std::ifstream::in);
+	if(ifs.fail())
+	{
+		std::perror(("Failed to open the file located at " + contentFile).c_str());
+		return (tmp);
+	}
+	char	c = ifs.get();
+	while (ifs.good())
+	{
+		tmp += c;
+		c = ifs.get(); 
+	}
+	ifs.close();
+
+	return (tmp);
 }

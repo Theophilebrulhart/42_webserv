@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 13:41:12 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:14:14 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	SERVER::TestServer::_handler(void)
 {
 	//std::cout << "\ntests\n";
 	requestParsing(_buffer, _requestInfo);
+	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
 		try
@@ -71,7 +72,7 @@ void	SERVER::TestServer::_handler(void)
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
-			deleteFile(_requestInfo, _newSocket);
+			deleteFile(_requestInfo, _responsContent);
 		}
 		catch(const std::out_of_range& oor)
 		{
