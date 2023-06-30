@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 21:02:43 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:02:21 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # include <sys/select.h>
 # include <sys/time.h>
 # include <cstdlib>
+# include <cstring>
+# include <sys/socket.h>
+# include <netinet/in.h>
+#  include <poll.h>
 
 # include "../Parsing/HeadersParsing.hpp"
 # include "../Method/HeadersMethod.hpp"
