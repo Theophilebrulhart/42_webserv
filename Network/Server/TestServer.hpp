@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:59:12 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:42:18 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ namespace   SERVER
             ~TestServer(void);
             
             void    launch(void);
+
+            MAP_STRING  &getMapInfo(void);
+            MAP_STRING	&getMapContent(void) {
             
 
         private:
@@ -41,5 +44,6 @@ namespace   SERVER
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
     };
+}
 }
 #endif

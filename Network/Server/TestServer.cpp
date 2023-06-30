@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 15:14:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:40:55 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,3 +115,13 @@ void	SERVER::TestServer::launch(void)
 	}
 	return ;
 }
+
+MAP_STRING	&SERVER::TestServer::getMapInfo(void) {
+	return this->_requestInfo;
+}
+
+
+MAP_STRING	&SERVER::TestServer::getMapContent(void) {
+	return this->_requestContent;
+}
+
