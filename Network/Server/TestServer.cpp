@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/30 17:17:02 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:18:40 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,6 @@ INADDR_ANY, 35)
 SERVER::TestServer::~TestServer(void)
 {
     return ;
-}
-
-void    SERVER::TestServer::_accepter(void)
-{
-    struct  sockaddr_in address = getServerSocket()->getAddress();
-    int     addrlen = sizeof(address);
-	std::vector<char>	buf(1000);
-
-    _newSocket = accept(getServerSocket()->getSocketFd(), (struct sockaddr *)&address,
-                        (socklen_t *)&addrlen);
-	if (_newSocket < 0)
-	{
-		std::cerr << "Failed to accept socket\n";
-		exit (EXIT_FAILURE);
-	}
-	bzero(buf.data(), buf.size());
-	if (recv(_newSocket, buf.data(), buf.size(), 0) < 0)
-	{
-		std::cerr << "Failed recv\n";
-		exit (EXIT_FAILURE);
-	}
-	std::string str(buf.begin(), buf.end());
-	_buffer = str;
-	//std::cout << _buffer << std::endl;
-	std::cout << "\naccepter end\n\n";
-	return ;
 }
 
 void	SERVER::TestServer::_handler(int clientSocket)
