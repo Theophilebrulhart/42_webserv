@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/30 17:18:40 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/03 15:49:48 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ SERVER::TestServer::~TestServer(void)
     return ;
 }
 
-void	SERVER::TestServer::_handler(int clientSocket)
+int	SERVER::TestServer::_handler(int clientSocket)
 {
 	//std::cout << "\ntests\n";
-	requestParsing(_buffer, _requestInfo);
+	if (requestParsing(_buffer, _requestInfo) < 0)
+        return (-1);
 	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
@@ -41,25 +42,35 @@ void	SERVER::TestServer::_handler(int clientSocket)
 			std::cout << "\nNo multipart/form-data\n";
 		}
 	}
-	if (_requestInfo.at("METHOD") == "DELETE")
+	else if (_requestInfo.at("METHOD") == "DELETE")
 		deleteFile(_requestInfo, _responsContent);
-	if (_requestInfo.at("METHOD") == "GET")
+	else
 		openFile(_requestInfo, _responsContent);
-	return ;
+    // else {
+    //     std::string internalError = loadContentFile("/500InternalError.html");
+    //     std::perror(("Server doesn't handle the METHOD : " + _requestInfo.at("METHOD")).c_str());
+    //     setResponsContent(_responsContent, _requestInfo.at("PROTOCOL"), "500 Internal Server Error", contentType, internalError);
+    // }
+	return (1);
 }
 
-void	SERVER::TestServer::_responder(int clientSocket)
+int	SERVER::TestServer::_responder(int clientSocket)
 {
 	RESPONS::CreateRespons	createRespons(_responsContent);
 	std::string respons = createRespons.getRespons();
     //std::cout << "CLientOcket : "<< clientSocket << "\n\n";
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
-	send(clientSocket, respons.c_str(), respons.size(), 0);
+	if (send(clientSocket, respons.c_str(), respons.size(), 0) < 0)
+    {
+        _responsContent.clear();
+        _requestInfo.clear();
+        return (-1);
+    }
 	//std::cout << "send done\n";
 
 	_responsContent.clear();
     _requestInfo.clear();
-	return ;
+    return (0);
 }
 
 void SERVER::TestServer::launch()
@@ -129,12 +140,22 @@ void SERVER::TestServer::launch()
                     --i;
                 } else {
                     // Traiter les données reçues du client
-                    std::cout << "Données reçues : " << buffer << std::endl;
+                    //std::cout << "Données reçues : " << buffer << std::endl;
                     _buffer = buffer;
 
                     // Envoyer une réponse au client
-                    _handler(clientSockets[i].fd);
-                    _responder(clientSockets[i].fd);
+                    if (_handler(clientSockets[i].fd) < 0)
+                    {
+                        close(clientSockets[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i);
+                        --i;
+                    }
+                    if (_responder(clientSockets[i].fd) < 0)
+                    {
+                        close(clientSockets[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i);
+                        --i;
+                    }
                 }
                 break;
             }

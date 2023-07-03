@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 15:21:39 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/03 14:33:50 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,3 +82,46 @@ std::string loadContentFile(std::string contentFile)
 
 	return (tmp);
 }
+
+int isValidMethod(const MAP_STRING& info)
+{
+	std::cout << "VALID METHOD\n\n";
+    MAP_STRING validMethods;
+
+    validMethods.insert(std::make_pair("getMethod", "GET"));
+    validMethods.insert(std::make_pair("postMethod", "POST"));
+    validMethods.insert(std::make_pair("deleteMethod", "DELETE"));
+
+    MAP_STRING::const_iterator it = validMethods.begin();
+    for (; it != validMethods.end(); ++it)
+    {
+        if (info.find("METHOD") != info.end() && info.at("METHOD") == it->second)
+            return (1);
+    }
+    return (-1);
+}
+
+void setInternalError(std::string handle, std::string problem, MAP_STRING &responsContent, std::string protocol,
+						std::string contentType)
+{
+	 std::string internalError = loadContentFile("/500InternalError.html");
+	std::perror(("Server doesn't handle the " + handle + problem).c_str());
+	setResponsContent(responsContent, protocol, "500 Internal Server Error", contentType, internalError);
+	return ;
+}
+
+int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string contentType)
+{
+	if (isValidMethod(info) < 0)
+    {
+    	setInternalError("METHOD :", info.at("METHOD"), responsContent, info.at("PROTOCOL"), contentType);
+		return (-1);
+    }
+	if (contentType == "Not supported")
+    {
+        setInternalError("extension of the file :", info.at("PATH"), responsContent, info.at("PROTOCOL"), contentType);
+	    return (-1);
+    }
+	return (1);
+}
+

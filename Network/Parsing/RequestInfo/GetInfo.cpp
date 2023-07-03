@@ -6,48 +6,27 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 15:18:24 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:50:53 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersRequestInfo.hpp"
 
-void    getMethod(std::string &buffer, MAP_STRING &info)
+void getMethod(std::string& buffer, std::map<std::string, std::string>& info)
 {
-    if ((buffer.find("GET", 0, 3)) != std::string::npos)
-	{
-		try 
-		{
-			info.at("METHOD") = "GET";
-		}
-		catch (const std::out_of_range& oor) 
-		{
-			info.insert(std::pair<std::string, std::string>("METHOD", "GET"));
-		}
-	}
-    else if (buffer.find("POST", 0, 4) != std::string::npos)
+   std::string method;
+    size_t methodEndPos = buffer.find(' ');
+
+    if (methodEndPos != std::string::npos)
     {
-		try 
-		{
-			info.at("METHOD") = "POST";
-		}
-		catch (const std::out_of_range& oor) 
-		{
-			info.insert(std::pair<std::string, std::string>("METHOD", "POST"));
-		}
-	}
-    else if (buffer.find("DELETE", 0, 6) != std::string::npos)
-    {
-		try 
-		{
-			info.at("METHOD") = "DELETE";
-		}
-		catch (const std::out_of_range& oor) 
-		{
-			info.insert(std::pair<std::string, std::string>("METHOD", "DELETE"));
-		}
-	}
-    return ;
+        method = buffer.substr(0, methodEndPos);
+        // Convertir la méthode en lettres majuscules
+        for (size_t i = 0; i < method.length(); ++i)
+        {
+            method[i] = std::toupper(method[i]);
+        }
+    }
+	info["METHOD"] = method;
 }
 
 void	getPath(std::string &buffer, MAP_STRING &info, std::string toFind, std::string name)
