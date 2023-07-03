@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/30 14:40:55 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:18:25 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	SERVER::TestServer::_handler(void)
 		}
 	}
 	if (_requestInfo.at("METHOD") == "GET")
+	{
 		openFile(_requestInfo, _responsContent);
+		CGI(_requestInfo, _responsContent);
+	}
 	return ;
 }
 
@@ -116,12 +119,12 @@ void	SERVER::TestServer::launch(void)
 	return ;
 }
 
-MAP_STRING	&SERVER::TestServer::getMapInfo(void) {
-	return this->_requestInfo;
-}
+// MAP_STRING	&SERVER::TestServer::getMapInfo(void) {
+// 	return this->_requestInfo;
+// }
 
 
-MAP_STRING	&SERVER::TestServer::getMapContent(void) {
-	return this->_requestContent;
-}
+// MAP_STRING	&SERVER::TestServer::getMapContent(void) {
+// 	return this->_requestContent;
+// }
 

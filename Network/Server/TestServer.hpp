@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/30 14:42:18 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:05:33 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../Parsing/HeadersParsing.hpp"
 # include "../Method/HeadersMethod.hpp"
 # include "../Respons/HeadersRespons.hpp"
+# include "../CGI/CGI.hpp"
 
 namespace   SERVER
 {
@@ -29,9 +30,6 @@ namespace   SERVER
             ~TestServer(void);
             
             void    launch(void);
-
-            MAP_STRING  &getMapInfo(void);
-            MAP_STRING	&getMapContent(void) {
             
 
         private:
@@ -44,6 +42,5 @@ namespace   SERVER
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
     };
-}
 }
 #endif
