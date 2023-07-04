@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 11:27:04 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/03 16:01:06 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ namespace   SERVER
             ~TestServer(void);
             
             void    launch(void);
+            void    loop_prep(void);
+            void	accept_new_conn(void);
             
 
         private:

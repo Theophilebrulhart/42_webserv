@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 15:49:48 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:24:59 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ int	SERVER::TestServer::_handler(int clientSocket)
 		deleteFile(_requestInfo, _responsContent);
 	else
 		openFile(_requestInfo, _responsContent);
-    // else {
-    //     std::string internalError = loadContentFile("/500InternalError.html");
-    //     std::perror(("Server doesn't handle the METHOD : " + _requestInfo.at("METHOD")).c_str());
-    //     setResponsContent(_responsContent, _requestInfo.at("PROTOCOL"), "500 Internal Server Error", contentType, internalError);
-    // }
 	return (1);
 }
 
@@ -95,6 +90,7 @@ void SERVER::TestServer::launch()
         }
 
         if (clientSockets[0].revents & POLLIN) {
+            std::cout << "nouvelle connection\n\n";
             // Nouvelle connexion entrante
             sockaddr_in clientAddress;
             memset(&clientAddress, 0, sizeof(clientAddress));
@@ -123,8 +119,15 @@ void SERVER::TestServer::launch()
 
         // Parcourir tous les clients existants
         for (size_t i = 1; i < clientSockets.size(); ++i) {
+            std::cout << "parcourir tous les clients existant : " << clientSockets[i].revents << "\n\n";
+            if (clientSockets[i].revents & 5) {
+                if (clientSockets[i].revents & POLLERR) {
+                    std::perror("POLLER");
+                }
+}
             if (clientSockets[i].revents & POLLIN) {
                 // Données reçues d'un client existant
+                std::cout << "\n\nPOLLIN\n\n";
                 char buffer[4096];
                 memset(buffer, 0, sizeof(buffer));
                 int bytesRead = recv(clientSockets[i].fd, buffer, sizeof(buffer), 0);
@@ -139,11 +142,10 @@ void SERVER::TestServer::launch()
                     clientSockets.erase(clientSockets.begin() + i);
                     --i;
                 } else {
+                    std::cout << "traiter les donnees recus du client\n\n";
                     // Traiter les données reçues du client
                     //std::cout << "Données reçues : " << buffer << std::endl;
                     _buffer = buffer;
-
-                    // Envoyer une réponse au client
                     if (_handler(clientSockets[i].fd) < 0)
                     {
                         close(clientSockets[i].fd);
@@ -158,6 +160,20 @@ void SERVER::TestServer::launch()
                     }
                 }
                 break;
+            }
+            if (clientSockets[i].revents & POLLOUT)
+            {
+                std::cout << "\n\nPOULLOUt\n\n";
+                // Envoyer une réponse au client
+                if (_responder(clientSockets[i].fd) < 0)
+                    {
+                        close(clientSockets[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i);
+                        --i;
+                    }
+                close(clientSockets[i].fd);
+                clientSockets.erase(clientSockets.begin() + i);
+                --i;
             }
         }
          std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
