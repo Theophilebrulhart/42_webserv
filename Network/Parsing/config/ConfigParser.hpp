@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:35:48 by mravera           #+#    #+#             */
-/*   Updated: 2023/06/30 17:21:08 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/04 12:10:40 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,14 @@
 # include <vector>
 # include <list>
 # include <fstream>
-
-class ServerInfo {
-
-public:
-
-	ServerInfo(void);
-
-	int									port;
-	std::string 						host;
-	std::map<std::string, std::string>	routes;
-
-};
+# include <sstream>
 
 class ConfigParser {
 
 public:
 
 	int	ConfigBuilder(char *filename);
+	int	dispConfig(void);
 
 	ConfigParser(void);
 	ConfigParser(ConfigParser const & src);
@@ -45,10 +35,10 @@ public:
 
 private:
 
-	int							BuildDefault(void);
-	int							videur(std::string buff);
+	std::map<std::string, std::map<std::string, std::string> >	myServers;
 
-	std::vector<ServerInfo>		myServers;
+	int	BuildDefault(void);
+	int	videur(std::string buff);
 
 };
 
