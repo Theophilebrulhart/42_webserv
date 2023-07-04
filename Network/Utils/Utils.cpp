@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:58:28 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/03 14:17:40 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/03 16:29:53 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ void	PrintMap(std::map<std::string, std::string> mapo)
 		std::cout << "first : " << it->first << " second : " << it->second << std::endl;		
 }
 
-std::string	findSecond(std::string str)
-{
-	int	i = 1;
-	for (;i != str.length() || i != '/'; i++)
-		
-	return (str.substr(0, i + 1));	
+void printStringArray(char** strings) {
+    if (strings == NULL) {
+        printf("NULL\n");
+        return;
+    }
+
+    for (int i = 0; strings[i] != NULL; i++) {
+        printf("%s\n", strings[i]);
+    }
 }
