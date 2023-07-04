@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/03 17:30:19 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/04 21:26:53 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 # include <string> 
 # include <sstream>
 # include <istream>
+# include <unistd.h>
 # include "../Server/TestServer.hpp"
 # include "../Utils/Utils.hpp"
 
 # define CGI_BUFSIZE 65536
-# define CGI_FILEPATH "../Network/CGI/"
-
+# define CGI_FILEPATH "./Network/CGIFiles/"
+# define CGI_PHP "./Network/CGIFiles/php-cgi" 
 # define MAP_STRING std::map<std::string, std::string> 
 
 class	CGI {
@@ -36,7 +37,7 @@ class	CGI {
 		std::string	extractScriptName(const std::string &url);
 		std::string	extractPathInfo(const std::string &url);
 		char**		getEnvAsCstrArray(void) const;
-		std::string	Exec();
+		int			Exec();
 		
 	private:
 		
