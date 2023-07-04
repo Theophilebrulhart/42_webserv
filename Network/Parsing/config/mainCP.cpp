@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 12:17:47 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/04 16:09:03 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/04 16:54:02 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 int	main(int argc, char **argv) {
 
-	ConfigParser a;
-	ConfigParser b(argv[1]);
-
+	try {
+		ConfigParser a(argv[1]);
+		a.dispConfig();
+	}
+	catch(const char* exc) {
+		std::cout << "Caught exception while parsing congiguration file :  " << exc << std::endl;
+	}
+	catch(const int exc) {
+		std::cout << "Caught exception : Wrong format in configuration file at line [" << exc << "]" << std::endl;
+	}
 	return 0;
 }

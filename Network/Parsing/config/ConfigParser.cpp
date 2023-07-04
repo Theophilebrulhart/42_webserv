@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/04 16:07:51 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/04 17:04:46 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,26 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	if (filename == NULL) {
 		std::cout << "No configuration file provided : loading default settings..." << std::endl;
 		BuildDefault();
-		this->dispConfig();
 		return 0;
 	}
 	std::cout << "Opening file   [" << filename << "]" << std::endl;
 	myfile.open(filename, std::ios::in);
 	if (!myfile.is_open()) {
 		std::cerr << "Error in function ConfigBuilder : " << strerror(errno) << std::endl;
+		throw("Could not open requested file.");
 		return 1;
 	}
 	std::cout << "Parsing        [" << filename << "] as configuration file" << std::endl;
 	std::getline(myfile, buff);
 	if (buff != "Bonjour!") {
-		std::cout << "Configuration file must say 'Bonjour!' to preserve it's mother integrity." << std::endl;
+		throw("Configuration file must say 'Bonjour!' to preserve it's mother integrity.");
 		return(1);
 	}
 	while (std::getline(myfile, buff)) {
-		try {
-			videur(buff);
-			i++;
-		}
-		catch (const char* exc) {
-			std::cout << "[" << i << "] Caught exception during parsing : " << std::endl << "--> \"" << exc << "\"" << std::endl;
-			return 1;
-		}
+		if(videur(buff))
+			throw(i);
+		i++;
 	}
-	this->dispConfig();
 	return 0;
 }
 
@@ -75,7 +69,7 @@ int	ConfigParser::videur(std::string str) {
 	if(ss >> buf && ss >> buff && ss >> bufff)
 		this->myServers[buf] [buff] = (bufff);
 	else
-		throw("Error, wrong format in configuration file.");
+		return 1;
 	return 0;
 }
 
