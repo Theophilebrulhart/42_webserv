@@ -1,15 +1,3 @@
 Bonjour!
 
-configServer:4242 server_name configServer
-
-configServer:4242 port 4242
-
-
-configServer2:2424 server_name configServer2
-
-configServer2:2424 port 2424
-proutouinon server_name oui
-proutouinon server_name popo
-proutouinon port
-
-
+bonjour ba oui
