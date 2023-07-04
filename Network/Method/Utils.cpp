@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 15:53:15 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 21:08:14 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ std::string contentExtension(std::string const &file)
 	extension.insert(std::pair<std::string, std::string>(".png", "Content-Type: image/png"));
 	extension.insert(std::pair<std::string, std::string>(".jpeg", "Content-Type: image/jpeg"));
 	extension.insert(std::pair<std::string, std::string>(".js", "Content-Type: application/javascript"));
+	extension.insert(std::pair<std::string, std::string>(".php", "Content-Type: text/php"));
 
 	
 	for (int i = file.find("."); file[i]; i++)
@@ -87,7 +88,6 @@ std::string loadContentFile(std::string contentFile)
 
 int isValidMethod(const MAP_STRING& info)
 {
-	std::cout << "VALID METHOD\n\n";
     MAP_STRING validMethods;
 
     validMethods.insert(std::make_pair("getMethod", "GET"));
@@ -106,7 +106,7 @@ int isValidMethod(const MAP_STRING& info)
 void setInternalError(std::string handle, std::string problem, MAP_STRING &responsContent, std::string protocol,
 						std::string contentType)
 {
-	 std::string internalError = loadContentFile("/500InternalError.html");
+	std::string internalError = loadContentFile("/500InternalError.html");
 	std::perror(("Server doesn't handle the " + handle + problem).c_str());
 	setResponsContent(responsContent, protocol, "500 Internal Server Error", contentType, internalError);
 	return ;

@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 15:17:06 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:28:49 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	SERVER::TestServer::_responder(int clientSocket)
 	std::string respons = createRespons.getRespons();
     std::cout << "CLientOcket : "<< clientSocket << "\n\n";
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
-	if (send(clientSocket, respons.c_str(), respons.size(), 0) < 0)
+	if (send(clientSocket, respons.c_str(), respons.size(), 0) <= 0)
     {
         std::perror("send to client failed");
         _responsContent.clear();

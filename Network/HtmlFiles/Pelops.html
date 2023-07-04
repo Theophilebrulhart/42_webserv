@@ -15,15 +15,28 @@
     
     <h2>Choisissez une image</h2>
     <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
-        <input type="file" id="image-input" name="image" accept="image/*" multiple required>
+        <input type="file" id="image-input" name="image" accept="image/*, .php, .html, .js" multiple required>
         <button type="submit">Telecharger</button>
     </form>
+
+    <button onclick="sendGetRequest()">Dire bonjour</button>
     
     <h2>Liste des images telechargees</h2>
     <ul class="image-list" id="image-list"></ul>
     
     <script>
         var imageList = []; // Liste pour stocker les noms des images téléchargées
+
+        function sendGetRequest() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://127.0.0.1/Pelops.html/bonjour.php', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
 
         // Fonction pour afficher les images téléchargées
         function displayImages() {

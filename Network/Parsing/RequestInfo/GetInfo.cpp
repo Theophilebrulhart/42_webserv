@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 11:50:53 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:36:14 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	getPath(std::string &buffer, MAP_STRING &info, std::string toFind, std::str
 	}
 	else
 		tmpPath = path;
-	if (name == "PATH" && path.find(".") != std::string::npos)
+	if (name == "PATH" && path.rfind(".") != std::string::npos)
 	{
-		for (int i = path.find("."); path[i]; i++)
+		for (int i = path.rfind("."); path[i]; i++)
 			extension += path[i];
 	try 
 	{
@@ -126,7 +126,7 @@ void	getInfo(std::string &buffer, MAP_STRING &info)
 {
 	getMethod(buffer, info);
     getPath(buffer, info, "/", "PATH");
-    getPath(buffer, info, "HTTP/", "PROTOCOL");
+    info.insert(std::pair<std::string, std::string>("PROTOCOL", "HTTP/1.1"));
 	getSection(buffer, info, "Host:", "HOST");
 	getSection(buffer, info, "Connection:", "CONNECTION");
 	getSection(buffer, info, "Accept", "TYPE");
