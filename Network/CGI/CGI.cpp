@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/04 13:42:30 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:11:52 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 	_env["REQUEST_URI"] = _requestInfo.at("PATH");
 	//CGIFiles/hw.php/cactus -> cactus
 	_env["PATH_INFO"] = extractPathInfo(_requestInfo.at("PATH")); 
-	_env["PATH_TRANSLATED"] = CGI_FILEPATH + _env["SCRIPT_NAME"];
+	if (_env["PATH_INFO"] != "")
+		_env["PATH_TRANSLATED"] = CGI_FILEPATH + _env["SCRIPT_NAME"];
+	else
+		_env["PATH_TRANSLATED"] = "";
 	}
 	catch (const std::exception& ex) {
         std::cerr << "Exception caught owow: " << ex.what() << std::endl;
@@ -176,21 +179,28 @@ std::string	CGI::extractScriptName(const std::string &url)
 
 std::string	CGI::extractPathInfo(const std::string &url)
 {
-	std::size_t	start = url.find(".php");
-	if (start + 5 == std::string::npos)
+	std::size_t	start = url.find(".php");	
+	//case the url end with the .php
+	if (start + 4 == (url.size()))
 		return ("");
 	std::size_t end = url.find("?");
+	// case: there is no ? but there is a pathinfo
 	if (end == std::string::npos)
 	{
 		end = url.size();
-		std::string str = url.substr(start + 5, end - 1);
-	}
-	if (start + 5 != end)
-	{
-		std::string str = url.substr(start + 5, end - 1);
+		std::string str = url.substr(start + 5, end);
 		return (str);
 	}
-	return ("");		
+	// case: there is a ? but no path_info
+	if (end == start + 5) 
+		return ("");
+	// case: there is a ? and there is a path info
+	if (start + 5 != end)
+	{
+		std::string str = url.substr(start + 5, end);
+		return (str);
+	}
+	return ("");	
 
 }
 
