@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 12:17:47 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/04 15:06:38 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/04 16:09:03 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,7 @@
 int	main(int argc, char **argv) {
 
 	ConfigParser a;
+	ConfigParser b(argv[1]);
 
-	if(argc > 2) {
-		std::cout << "1 argument max" << std::endl;
-		return 0;
-	}
-	if(argc == 1)
-		a.ConfigBuilder(NULL);
-	else
-		a.ConfigBuilder(argv[1]);
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/04 15:31:21 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/04 16:07:51 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ int ConfigParser::dispConfig(void) {
 }
 
 ConfigParser::ConfigParser(void) {
+
+	this->ConfigBuilder(NULL);
+	return ;
+}
+
+ConfigParser::ConfigParser(char *filename) {
+
+	this->ConfigBuilder(filename);
 	return ;
 }
 
