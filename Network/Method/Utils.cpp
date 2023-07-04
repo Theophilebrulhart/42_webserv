@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 14:33:50 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:53:15 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ std::string contentExtension(std::string const &file)
 	extension.insert(std::pair<std::string, std::string>(".svg", "Content-Type: image/svg+xml"));
 	extension.insert(std::pair<std::string, std::string>(".png", "Content-Type: image/png"));
 	extension.insert(std::pair<std::string, std::string>(".jpeg", "Content-Type: image/jpeg"));
+	extension.insert(std::pair<std::string, std::string>(".js", "Content-Type: application/javascript"));
+
 	
 	for (int i = file.find("."); file[i]; i++)
 		tmp += file[i];

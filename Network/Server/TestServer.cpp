@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 15:49:48 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:17:06 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,20 @@ int	SERVER::TestServer::_responder(int clientSocket)
 {
 	RESPONS::CreateRespons	createRespons(_responsContent);
 	std::string respons = createRespons.getRespons();
-    //std::cout << "CLientOcket : "<< clientSocket << "\n\n";
+    std::cout << "CLientOcket : "<< clientSocket << "\n\n";
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
 	if (send(clientSocket, respons.c_str(), respons.size(), 0) < 0)
     {
+        std::perror("send to client failed");
         _responsContent.clear();
         _requestInfo.clear();
         return (-1);
     }
-	//std::cout << "send done\n";
+	std::cout << "send done\n";
 
 	_responsContent.clear();
     _requestInfo.clear();
+   // close(clientSocket);
     return (0);
 }
 
@@ -156,8 +158,25 @@ void SERVER::TestServer::launch()
                         clientSockets.erase(clientSockets.begin() + i);
                         --i;
                     }
+                    close(clientSockets[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i);
+                        --i;
                 }
                 break;
+            }
+            if (clientSockets[i].revents & POLLOUT)
+            {
+                std::cout << "\n\nPOULLOUt\n\n";
+                // Envoyer une réponse au client
+                if (_responder(clientSockets[i].fd) < 0)
+                    {
+                        close(clientSockets[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i);
+                        --i;
+                    }
+                close(clientSockets[i].fd);
+                clientSockets.erase(clientSockets.begin() + i);
+                --i;
             }
         }
          std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
