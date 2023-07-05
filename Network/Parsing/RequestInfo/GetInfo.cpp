@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/05 14:25:45 by pyammoun         ###   ########.fr       */
-=======
-/*   Updated: 2023/07/05 15:10:39 by tbrulhar         ###   ########.fr       */
->>>>>>> server_correction
+/*   Updated: 2023/07/05 16:44:10 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
