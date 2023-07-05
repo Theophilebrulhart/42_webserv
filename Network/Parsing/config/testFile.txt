@@ -1,3 +1,43 @@
+//the scheme of a valid line is as follow :
+//[server unique ID/name] [token] [route] [element]
+//
+//->[server unique ID/name] can be whatever you want.
+//	It just need to be unique for each server you set up.
+//
+//->[token] is a set of two letters. The first one is used to
+//	identify the element of the server you want to set up :
+//	a -> std::vector<std::string> to store all server_names
+//	b -> std::string for the port
+//	c -> std::map<std::string, t_route> to store all the routes and their options
+//
+//	Choosing 'c' will make the second letter an identifier to the route
+//	element you want to setup :
+//	ca -> std::string for the route itself
+//	cb -> std::vector<std::string> for the different methods allowed for this route
+//	cc -> std::string for a redirection route
+//	cd -> std::string for a root route
+//	ce -> bool to allow (or not) the directory listing
+//	cf -> std::string for a default file
+//This configuration file must always begin with "Bonjour!"
+
 Bonjour!
 
-bonjour ba oui
+bonjour ab oui toto jojo
+bonjour ba 80.80 42.42
+//paolo le pas beau
+bonjour ca paolo/le/beau paolo/le/beau
+bonjour	cb paolo/le/beau GET POST DEL
+
+
+bonjour cc paolo/le/beau /papa/olo
+bonjour cc paolo/le/beau /papa/olo
+bonjour cd paolo/le/beau /suuuu/si/cristiano
+bonjour ce paolo/le/beau 1
+bonjour cf paolo/le/beau /def/file
+//tsaisfintu
+bonjour cd roooot/
+bonjour ce 0
+bonjour cf default/folder/
+
+unautre aa SUUUUU
+

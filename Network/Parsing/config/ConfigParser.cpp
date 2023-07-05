@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/04 22:12:17 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/05 18:57:59 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 		return(1);
 	}
 	while (std::getline(myfile, buff)) {
-		if(videur2(buff))
+		if(videur(buff))
 			throw(i);
 		i++;
 	}
@@ -59,79 +59,27 @@ int	ConfigParser::BuildDefault(void) {
 
 int	ConfigParser::videur(std::string str) {
 	
-	std::string			buf;
-	std::string			buff;
-	std::string			bufff;
-	std::istringstream	ss(str);
-
-	if(str.empty())
-		return 0;
-	if(ss >> buf && ss >> buff && ss >> bufff) {
-		this->myServers[buf][buff].push_back(bufff);
-		while(ss >> bufff)
-			this->myServers[buf][buff].push_back(bufff);
-	}
-	else
-		return 1;
-	return 0;
-}
-
-int	ConfigParser::videur2(std::string str) {
-	
-	std::string			buf;
-	std::string			buff;
+	std::string			serv_n;
+	std::string			token;
+	std::string			elem;
 	std::string			serv_token = "abc";
 	std::string			route_token = "abcdef";
 	std::istringstream	ss(str);
 
-	if(str.empty())
+	if(str.empty() || (str[0] == '/' && str[1] == '/'))
 		return 0;
-	if(ss >> buf && !(buf[0] == '/' && buf[1] == '/')) {
-		if(this->servec.find(buf) == this->servec.end())
-			this->addServ(buf);
+	if(ss >> serv_n) {
+		if(this->servec.find(serv_n) == this->servec.end())
+			this->addServ(serv_n);
 	}
-	if(ss >> buff) {
-		if( (buff.size() != 2) || (serv_token.find(buff[0]) == std::string::npos) || (serv_token.find(buff[1]) == std::string::npos) )
+	if(ss >> token) {
+		if( (token.size() != 2) || (serv_token.find(token[0]) == std::string::npos) || (route_token.find(token[1]) == std::string::npos) )
 			throw("Error : wrong token in configuration file");
-		else if(ss >> buff)
-			this->addtruc(buf, buff);
+		else
+			this->addTruc(serv_n, token, ss);
 	}
 	else
-		throw("Error : too fiew element in configuration file.");
-	return 0;
-}
-
-int ConfigParser::dispConfig(void) {
-
-	std::cout << "Current config file contains : " << std::endl;
-	for(std::map<std::string, std::map<std::string, std::vector<std::string> > >::iterator it = this->myServers.begin(); it != this->myServers.end(); it++) {
-	 	for(std::map<std::string, std::vector<std::string> >::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
-			for(std::vector<std::string>::iterator ittt = itt->second.begin(); ittt != itt->second.end(); ittt++)
-				std::cout << "[" <<it->first << "] -> " << itt->first << " : " << *ittt << std::endl;
-		std::cout << std::endl;
-	}
-	return 0;
-}
-
-int ConfigParser::dispConfig2(void) {
-
-	std::cout << "Current config file contains : " << std::endl << std::endl;
-	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
-		std::cout << "[" << it->first << "]" << std::endl;
-		std::cout << "server_names : ";
-		for(std::vector<std::string>::iterator itsn = it->second.a_server_names.begin(); itsn != it->second.a_server_names.end(); ++itsn) {
-			std::cout << *itsn << " ";
-			std::cout << it->first << std::endl;
-			std::cout << itsn->front() << std::endl;
-		}
-		std::cout << std::endl;
-		std::cout << "port : " << it->second.b_port << std::endl;
-		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
-			std::cout << "route : " << itr->first << std::endl << "methods = " << itr->second.b_methods[0] << std::endl;
-			std::cout << "redirec : " << itr->second.c_redirec << std::endl << "root = " << itr->second.d_root << std::endl;
-			std::cout << "replist = " << itr->second.e_rep_listing << std::endl << "defrep = " << itr->second.f_def_rep << std::endl;
-		}
-	}
+		throw("Error : too fiew elements in configuration file.");
 	return 0;
 }
 
@@ -139,22 +87,85 @@ int	ConfigParser::addServ(std::string name) {
 
 	t_serv	a;
 
-	std::cout << "adding " << name << " to servec." << std::endl;
 	if(this->servec.find(name) == this->servec.end()) {
+		a.b_port = "";
 		this->servec[name] = a;
-		this->servec[name].b_port = "";
+		std::cout << "added " << name << " to servec." << std::endl;
 	}
 	return 0;
 }
 
-int	ConfigParser::addtruc(std::string servname, std::string buff) {
+int	ConfigParser::addRoute(std::string servname, std::string route) {
 
-	std::cout << "servname = " << servname << std::endl;
-	std::cout << "buff     = " << buff << std::endl;
-	if(buff[0] == 'a')
-		this->servec[servname].a_server_names.push_back(buff);
-	if(buff[0] == 'b')
-		this->servec[servname].b_port = buff;
+	t_route	a;
+	
+	if(this->servec[servname].c_routes.find(route) == this->servec[servname].c_routes.end()) {
+		a.a_route = route;
+		a.c_redirec = "";
+		a.d_root = "";
+		a.e_rep_listing = 0;
+		a.f_def_rep = "";
+		this->servec[servname].c_routes[route] = a;
+		std::cout << "added " << route << " to " << servname << " routes" << std::endl;
+	}
+	return 0;
+}
+
+int	ConfigParser::addTruc(std::string servname, std::string token, std::istringstream& ss) {
+
+	std::string	buf;
+	bool		boolbuf;
+	std::string route;
+
+	if(token[0] == 'a') {
+		while(ss >> buf)
+			this->servec[servname].a_server_names.push_back(buf);
+	}
+	else if(token[0] == 'b' && ss >> buf)
+		this->servec[servname].b_port = buf;
+	else if(token[0] == 'c' && ss >> route) {
+		this->addRoute(servname, route);
+		if(token[1] == 'a' && ss >> buf)
+			this->servec[servname].c_routes[route].a_route = route;
+		else if(token[1] == 'b')
+			while(ss >> buf)
+				this->servec[servname].c_routes[route].b_methods.push_back(buf);
+		else if(token[1] == 'c' && ss >> buf)
+			this->servec[servname].c_routes[route].c_redirec = buf;
+		else if(token[1] == 'd' && ss >> buf)
+			this->servec[servname].c_routes[route].d_root = buf;
+		else if(token[1] == 'e' && ss >> boolbuf)
+			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
+		else if(token[1] == 'f' && ss >> buf)
+			this->servec[servname].c_routes[route].f_def_rep = buf;
+		else
+			return 1;
+	}
+	return 0;
+}
+
+int ConfigParser::dispConfig(void) {
+
+	std::cout << "-----" << std::endl << "Current config file contains : " << std::endl;
+	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
+		std::cout << "[" << it->first << "]" << std::endl;
+		std::cout << "| server_names : ";
+		for(std::vector<std::string>::iterator itsn = it->second.a_server_names.begin(); itsn != it->second.a_server_names.end(); ++itsn)
+			std::cout << "'" << *itsn << "' ";
+		std::cout << std::endl;
+		if(!it->second.b_port.empty())
+			std::cout << "| port : " << it->second.b_port << std::endl;
+		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
+			std::cout << "| route [" << itr->first << "]" << std::endl;
+			std::cout << "|   methods = ";
+			for(std::vector<std::string>::iterator itmet = itr->second.b_methods.begin(); itmet != itr->second.b_methods.end(); itmet++)
+				std::cout << "'" << *itmet << "' ";
+			std::cout << std::endl;
+			std::cout << "|   redirec = " << itr->second.c_redirec << std::endl << "|   root = " << itr->second.d_root << std::endl;
+			std::cout << "|   replist = " << itr->second.e_rep_listing << std::endl << "|   defrep = " << itr->second.f_def_rep << std::endl;
+			std::cout << "_" << std::endl << std::endl;
+		}
+	}
 	return 0;
 }
 
@@ -185,4 +196,36 @@ ConfigParser & ConfigParser::operator=(ConfigParser const & rhs) {
 ConfigParser::~ConfigParser(void) {
 
 	return ;
+}
+
+//old
+int	ConfigParser::videur_old(std::string str) {
+	
+	std::string			buf;
+	std::string			buff;
+	std::string			bufff;
+	std::istringstream	ss(str);
+
+	if(str.empty())
+		return 0;
+	if(ss >> buf && ss >> buff && ss >> bufff) {
+		this->myServers[buf][buff].push_back(bufff);
+		while(ss >> bufff)
+			this->myServers[buf][buff].push_back(bufff);
+	}
+	else
+		return 1;
+	return 0;
+}
+
+int ConfigParser::dispConfig_old(void) {
+
+	std::cout << "Current config file contains : " << std::endl;
+	for(std::map<std::string, std::map<std::string, std::vector<std::string> > >::iterator it = this->myServers.begin(); it != this->myServers.end(); it++) {
+	 	for(std::map<std::string, std::vector<std::string> >::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
+			for(std::vector<std::string>::iterator ittt = itt->second.begin(); ittt != itt->second.end(); ittt++)
+				std::cout << "[" <<it->first << "] -> " << itt->first << " : " << *ittt << std::endl;
+		std::cout << std::endl;
+	}
+	return 0;
 }
