@@ -6,11 +6,12 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:02:35 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 15:21:22 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:37:16 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HeadersRequestInfo.hpp"
+# include "HeadersRequestInfo.hpp"
+# include "../../Method/Utils.hpp"
 
 void    printInfo(MAP_STRING &info)
 {
@@ -26,9 +27,58 @@ void    printInfo(MAP_STRING &info)
     std::cout << "*****\e[0;35mREQUEST INFO PRINT END\e[0m******\n";
 }
 
-void    requestParsing(std::string buffer, MAP_STRING &info)
+int tryValue(MAP_STRING info, std::string key)
+{
+    try
+    {
+        info.at(key);
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cout << "failed with : " << key << "\n\n";
+        return (-1);
+    }
+    return (1);
+}
+
+int infoCheck(MAP_STRING info)
+{
+    if (tryValue(info, "PATH") < 0)
+        return (-1);
+    if (tryValue(info, "METHOD") < 0)
+        return (-1);
+    if (tryValue(info, "PROTOCOL") < 0)
+        return (-1);
+    if (info.at("METHOD") == "GET")
+    {
+        if (tryValue(info, "EXTENSION") < 0)
+            return (-2);
+        if (info.at("PATH").find(".") == std::string::npos)
+        {
+            std::cout << "pas de . \n\n";
+            return (-2);
+        }
+    }
+        
+    return (1);
+}
+
+int    requestParsing(std::string buffer, MAP_STRING &info)
 {
     std::cout << "\n\n*****\e[0;35mMAINPARSING BUFFER\e[0m****\n" << buffer << "\n";
-    getInfo(buffer, info);
-    printInfo(info);
+    if (!buffer.empty())
+    {
+        getInfo(buffer, info);
+        int checkRes = infoCheck(info);
+        printInfo(info);
+        if ( checkRes < 0)
+            return (checkRes);
+    }
+    else
+    {
+        std::cout << "empty request\n";
+        return (0);
+    }
+    return (1);
+        
 }

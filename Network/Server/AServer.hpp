@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:41:59 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/07 15:42:03 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:56:14 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,13 @@ namespace   SERVER
                     u_long interface, int backlog);
             ~AServer(void);
 
-            virtual void    		launch(void) = 0;
             SOCKET::ListenSocket    *getServerSocket(void) const;
+            virtual int    _handler(int clientSocket) = 0;
+            virtual int    _responder(int clientSocket) = 0;
 			
         private:
 
             SOCKET::ListenSocket    *_serverSocket;
-            virtual void    _accepter(void) = 0;
-            virtual void    _handler(void) = 0;
-            virtual void    _responder(void) = 0;
     };
 }
 

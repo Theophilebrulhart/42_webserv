@@ -14,7 +14,8 @@
 
 RESPONS::CreateRespons::CreateRespons(MAP_STRING &responsContent) : _responsContent(responsContent)
 {
-	parseResponsContent();
+  
+    parseResponsContent(); 
     return ;
 }
 
@@ -42,9 +43,7 @@ void RESPONS::CreateRespons::parseResponsContent(void)
     std::map<std::string, std::string>::const_iterator it;
     for (it = _responsContent.begin(); it != _responsContent.end(); ++it) {
         const std::string& key = it->first;
-        const std::string& value = it->second;
-		std::cout << "key " << key << "\n";
-        
+        const std::string& value = it->second;        
         if (key == "Aprotocol") {
             setRespons(value + " ");
         }
@@ -56,39 +55,3 @@ void RESPONS::CreateRespons::parseResponsContent(void)
         }
     }
 }
-
-
-// void		RESPONS::CreateRespons::GetResponsContentFile(std::string const &file)
-// {
-// 	RESPONS::GetResponsContent htmlFile(_info, file);
-// 	RESPONS::GetStatus	status(_info, htmlFile.getContent());
-// 	setStatus(status.getStatus());
-// 	setContentType(htmlFile.getContentType());
-// 	setHtmlFile(htmlFile.getContent());
-// 	setContentLength(htmlFile.getContentLength());
-// 	return ;
-// }
-
-// void	RESPONS::CreateRespons::setHtmlFile(std::string const &htmlFile)
-// {
-// 	_contentFile = htmlFile;
-// 	return ;
-// }
-
-// void	RESPONS::CreateRespons::setStatus(std::string const &status)
-// {
-// 	_status = status;
-// 	return ;
-// }
-
-// void	RESPONS::CreateRespons::setContentType(std::string const &contentType)
-// {
-// 	_contentType = contentType;
-// 	return ;
-// }
-
-// void	RESPONS::CreateRespons::setContentLength(std::string const &contentLength)
-// {
-// 	_contentLength = contentLength;
-// 	return ;
-// }

@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:59:12 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:56:12 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,41 @@
 # include "AServer.hpp"
 # include <unistd.h>
 # include <vector>
+# include <sys/types.h>
+# include <sys/select.h>
+# include <sys/time.h>
+# include <cstdlib>
+# include <cstring>
+# include <sys/socket.h>
+# include <netinet/in.h>
+#  include <poll.h>
+
 # include "../Parsing/HeadersParsing.hpp"
 # include "../Method/HeadersMethod.hpp"
 # include "../Respons/HeadersRespons.hpp"
+# include "../CGI/CGI.hpp"
 
 namespace   SERVER
 {
     class TestServer : public AServer
     {
         public:
-            TestServer();
+            TestServer(int protocol, int port, int backlog);
             ~TestServer(void);
             
-            void    launch(void);
+            int  			_handler(int clientSocket);
+            int     		_responder(int clientSocket);
+            std::string		_buffer;
             
 
         private:
+            TestServer();
 
-            std::string			_buffer;
             int				_newSocket;
-            void			_accepter(void);
-            void  			_handler(void);
-            void    		_responder(void);
+            
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
+            std::vector<int> _clientSockets;
     };
 }
 #endif

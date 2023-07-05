@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:07:17 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 15:07:49 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/06/29 15:14:00 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@
 
 //********DeleteFile*******//
 
-void deleteFile(MAP_STRING &info, int socket);
+void deleteFile(MAP_STRING &info, MAP_STRING &responsContent);
 
 #endif

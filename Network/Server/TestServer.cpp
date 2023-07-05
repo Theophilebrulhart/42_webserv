@@ -6,16 +6,16 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 13:41:12 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:56:58 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "TestServer.hpp"
+#include "../Method/Utils.hpp"
 
-SERVER::TestServer::TestServer() : AServer(AF_INET, SOCK_STREAM, 0, 80,
-INADDR_ANY, 35)
+SERVER::TestServer::TestServer(int protocol, int port, int backlog) : AServer(AF_INET, SOCK_STREAM, protocol, port,
+INADDR_ANY, backlog)
 {
-	launch();
     return ;
 }
 
@@ -24,93 +24,75 @@ SERVER::TestServer::~TestServer(void)
     return ;
 }
 
-void    SERVER::TestServer::_accepter(void)
+int	SERVER::TestServer::_handler(int clientSocket)
 {
-    struct  sockaddr_in address = getServerSocket()->getAddress();
-    int     addrlen = sizeof(address);
-	std::vector<char>	buf(1000);
-
-    _newSocket = accept(getServerSocket()->getSocketFd(), (struct sockaddr *)&address,
-                        (socklen_t *)&addrlen);
-	if (_newSocket < 0)
-	{
-		std::cerr << "Failed to accept socket\n";
-		exit (EXIT_FAILURE);
-	}
-	bzero(buf.data(), buf.size());
-	if (recv(_newSocket, buf.data(), buf.size(), 0) < 0)
-	{
-		std::cerr << "Failed recv\n";
-		exit (EXIT_FAILURE);
-	}
-	std::string str(buf.begin(), buf.end());
-	_buffer = str;
-	//std::cout << _buffer << std::endl;
-	std::cout << "\naccepter end\n\n";
-	return ;
-}
-
-void	SERVER::TestServer::_handler(void)
-{
-	//std::cout << "\ntests\n";
-	requestParsing(_buffer, _requestInfo);
+    int parsingRes = requestParsing(_buffer, _requestInfo);
+	if ( parsingRes <= 0)
+    {
+        std::cout << "resquestParsing failed\n\n";
+        if (parsingRes == 0)
+            return (0);
+        if (parsingRes == -1)
+        {
+            std::cout << "404 notfound\n\n";
+            notFound(_requestInfo, _responsContent);
+        }
+        if (parsingRes == -2)
+        {
+            std::cout << "403 forbidden\n\n";
+            forbidden(_requestInfo, _responsContent);
+        }
+        return (-1);
+    }
+	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
-			formParsing (_buffer, _requestInfo, _newSocket, _responsContent);
+			formParsing (_buffer, _requestInfo, clientSocket, _responsContent);
 		}
 		catch(const std::out_of_range& oor)
 		{
 			std::cout << "\nNo multipart/form-data\n";
 		}
 	}
-	if (_requestInfo.at("METHOD") == "DELETE")
-	{
-		try
-		{
-			_requestInfo.at("CONTENT-TYPE");
-			deleteFile(_requestInfo, _newSocket);
-		}
-		catch(const std::out_of_range& oor)
-		{
-			std::cout << "\nNo multipart/form-data\n";
-		}
-	}
-	if (_requestInfo.at("METHOD") == "GET")
-		openFile(_requestInfo, _responsContent);
-	return ;
+	else if (_requestInfo.at("METHOD") == "DELETE")
+		deleteFile(_requestInfo, _responsContent);
+	else
+    {
+        if (_requestInfo.at("METHOD") == "GET" && _requestInfo.at("EXTENSION") == ".php")
+        {
+            std::cout << "pas" << std::endl;
+            CGI(_requestInfo, _responsContent);
+        }
+        else
+    		openFile(_requestInfo, _responsContent);
+        
+    }
+	return (1);
 }
 
-void	SERVER::TestServer::_responder(void)
+int	SERVER::TestServer::_responder(int clientSocket)
 {
 	RESPONS::CreateRespons	createRespons(_responsContent);
 	std::string respons = createRespons.getRespons();
+    std::cout << "CLientOcket : "<< clientSocket << "\n\n";
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
-	send(_newSocket, respons.c_str(), respons.size(), 0);
-	//std::cout << "send done\n";
-	close(_newSocket);
+    int sendRes = send(clientSocket, respons.c_str(), respons.size(), 0);
+	if (sendRes <= 0)
+    {
+        if (sendRes == 0)
+            std::cerr << "empty respons\n\n";
+        else
+            std::cerr << "send to client failed";
+        _responsContent.clear();
+        _requestInfo.clear();
+        return (-1);
+    }
+	std::cout << "send done\n";
 
-	std::map<std::string, std::string>::const_iterator it;
-    for (it = _responsContent.begin(); it != _responsContent.end(); )
-	{
-		_responsContent.erase(it++);
-	}
-	return ;
-}
-
-void	SERVER::TestServer::launch(void)
-{
-	std::cout << "\e[0;31m****STARTING*****\e[0m\n";
-	while (1)
-	{
-		std::cout << "\n\e[0;32m===== WAITING =====\e[0m\n";
-		_accepter();
-		std::cout << "\ntests1\n";
-		_handler();
-		_responder();
-		std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
-	}
-	return ;
+	_responsContent.clear();
+    _requestInfo.clear();
+    return (0);
 }
