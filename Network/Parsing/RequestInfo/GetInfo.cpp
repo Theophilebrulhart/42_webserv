@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 20:36:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:25:45 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	getPath(std::string &buffer, MAP_STRING &info, std::string toFind, std::str
 		tmpPath = path;
 	if (name == "PATH" && path.rfind(".") != std::string::npos)
 	{
-		for (int i = path.rfind("."); path[i]; i++)
+		for (int i = path.rfind("."); path[i] && path[i] != '?' && path[i] != '/'; i++)
 			extension += path[i];
 	try 
 	{

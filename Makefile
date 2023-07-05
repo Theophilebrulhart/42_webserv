@@ -3,12 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
+#    By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/06/29 16:12:44 by tbrulhar         ###   ########.fr        #
+#    Updated: 2023/06/30 15:53:08 by pyammoun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 SRC =	Source/main.cpp
 SRC +=	${addprefix Network/Socket/, ASocket.cpp BindSocket.cpp ConnectSocket.cpp \
@@ -20,6 +21,8 @@ SRC +=	${addprefix Network/Method/Delete/, DeleteFile.cpp}
 SRC +=	${addprefix Network/Method/Post/, FormParsing.cpp GetFormValue.cpp}
 SRC +=	${addprefix Network/Method/Get/, OpenFile.cpp}
 SRC +=	${addprefix Network/Respons/, CreateRespons.cpp}
+SRC +=	${addprefix Network/CGI/, CGI.cpp}
+SRC +=	${addprefix Network/Utils/, Utils.cpp}
 
 OBJ = $(SRC:.cpp=.o) 
 GPP = c++

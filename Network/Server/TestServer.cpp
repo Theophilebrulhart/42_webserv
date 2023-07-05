@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 20:28:49 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:32:46 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,17 @@ int	SERVER::TestServer::_handler(int clientSocket)
 	else if (_requestInfo.at("METHOD") == "DELETE")
 		deleteFile(_requestInfo, _responsContent);
 	else
-		openFile(_requestInfo, _responsContent);
-    // else {
-    //     std::string internalError = loadContentFile("/500InternalError.html");
-    //     std::perror(("Server doesn't handle the METHOD : " + _requestInfo.at("METHOD")).c_str());
-    //     setResponsContent(_responsContent, _requestInfo.at("PROTOCOL"), "500 Internal Server Error", contentType, internalError);
-    // }
+    {
+        if (_requestInfo.at("METHOD") == "GET" && _requestInfo.at("EXTENSION") == ".php")
+        {
+            std::cout << "pas" << std::endl;
+            CGI(_requestInfo, _responsContent);
+        }
+        else
+    		openFile(_requestInfo, _responsContent);
+        
+    }
+
 	return (1);
 }
 
@@ -186,3 +191,13 @@ void SERVER::TestServer::launch()
     }
     close(initialSocket);
 }
+
+// MAP_STRING	&SERVER::TestServer::getMapInfo(void) {
+// 	return this->_requestInfo;
+// }
+
+
+// MAP_STRING	&SERVER::TestServer::getMapContent(void) {
+// 	return this->_requestContent;
+// }
+

@@ -14,7 +14,8 @@
 
 RESPONS::CreateRespons::CreateRespons(MAP_STRING &responsContent) : _responsContent(responsContent)
 {
-	parseResponsContent();
+  
+    parseResponsContent(); 
     return ;
 }
 

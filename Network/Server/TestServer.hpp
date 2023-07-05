@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/03 11:27:04 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:26:59 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include "../Parsing/HeadersParsing.hpp"
 # include "../Method/HeadersMethod.hpp"
 # include "../Respons/HeadersRespons.hpp"
+# include "../CGI/CGI.hpp"
 
 namespace   SERVER
 {
