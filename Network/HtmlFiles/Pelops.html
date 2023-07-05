@@ -1,102 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="Pelops.css">
+    <!-- <script src="Pelops.js"></script> -->
     <title>Pelops</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            flex: 1;
-            background-color: #2B2B2B;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        h1 {
-            text-align: center;
-            width: 100%;
-            color: #f1f1f1;
-        }
-        
-        h2 {
-            color: #f1f1f1;
-        }
-        
-        form {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        input[type="file"] {
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        button {
-            padding: 10px 20px;
-            background-color: #ac3722;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        
-        .image-wrapper {
-            display: flex;
-            justify-content: space-between;
-            max-width: 400px;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        
-        .image-wrapper img {
-            width: 48%;
-            max-height: 150px;
-            object-fit: cover;
-        }
-        
-        .side-image {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            margin: 10px;
-            filter: grayscale(100%);
-        }
-        
-        .uploaded-image {
-            width: 100%;
-            max-height: 400px;
-            object-fit: contain;
-            margin-top: 20px;
-        }
-
-        .image-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .image-container img {
-            width: 80%;
-            max-height: 100px;
-            object-fit: cover;
-        }
-
-        .image-container button {
-            margin-left: 10px;
-            padding: 6px 12px;
-            background-color: #ac3722;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
     <h1>PELOPS</h1>
@@ -106,17 +13,30 @@
         <img class="side-image" src="https://images.unsplash.com/photo-1590227632180-80a3bf110871?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2553&q=80" alt="Basketball" title="Basketball">
     </div>
     
-    <h2>Choisissez une image</h2>
+    <h2>Choisissez un file</h2>
     <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
-        <input type="file" id="image-input" name="image" accept="image/*" multiple required>
+        <input type="file" id="image-input" name="image" accept="image/*, .php, .html, .js" multiple required>
         <button type="submit">Telecharger</button>
     </form>
+
+    <button onclick="sendGetRequest()">Dire bonjour</button>
     
-    <h2>Liste des images telechargees</h2>
+    <h2>Liste des files telechargees</h2>
     <ul class="image-list" id="image-list"></ul>
     
     <script>
         var imageList = []; // Liste pour stocker les noms des images téléchargées
+
+        function sendGetRequest() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://127.0.0.1/Pelops.html/bonjour.php', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
 
         // Fonction pour afficher les images téléchargées
         function displayImages() {
@@ -150,7 +70,7 @@
                         displayImages();
                     }
                 } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
-                    alert('Une erreur s\'est produite lors de la suppression de l\'image.');
+                    alert('Une erreur s\'est produite lors de la suppression de du file.');
                 }
             };
             xhr.send();
@@ -210,7 +130,7 @@
                 if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
                     alert('L\'image a ete telechargee avec succes.');
                 } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
-                    alert('Une erreur s\'est produite lors du telechargement de l\'image.');
+                    alert('Une erreur s\'est produite lors du telechargement du file.');
                 }
             };
             xhr.send(formData);

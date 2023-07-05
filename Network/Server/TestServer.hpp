@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/30 15:05:33 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:26:59 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 # include "AServer.hpp"
 # include <unistd.h>
 # include <vector>
+# include <sys/types.h>
+# include <sys/select.h>
+# include <sys/time.h>
+# include <cstdlib>
+# include <cstring>
+# include <sys/socket.h>
+# include <netinet/in.h>
+#  include <poll.h>
+
 # include "../Parsing/HeadersParsing.hpp"
 # include "../Method/HeadersMethod.hpp"
 # include "../Respons/HeadersRespons.hpp"
@@ -34,13 +43,13 @@ namespace   SERVER
 
         private:
 
-            std::string			_buffer;
+            std::string		_buffer;
             int				_newSocket;
-            void			_accepter(void);
-            void  			_handler(void);
-            void    		_responder(void);
+            int  			_handler(int clientSocket);
+            int     		_responder(int clientSocket);
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
+            std::vector<int> _clientSockets;
     };
 }
 #endif

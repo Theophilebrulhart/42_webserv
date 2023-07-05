@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:19:26 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 15:29:55 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/03 14:27:40 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,6 @@ void setResponsContent(MAP_STRING &responsContent, std::string protocol, std::st
 						 std::string contentType, std::string body);
 std::string ft_itoa(int n);
 std::string loadContentFile(std::string contentFile);
+int isValidMethod(const MAP_STRING& info);
+int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string contentType);
 #endif

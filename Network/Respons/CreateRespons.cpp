@@ -42,9 +42,7 @@ void RESPONS::CreateRespons::parseResponsContent(void)
     std::map<std::string, std::string>::const_iterator it;
     for (it = _responsContent.begin(); it != _responsContent.end(); ++it) {
         const std::string& key = it->first;
-        const std::string& value = it->second;
-		std::cout << "key " << key << "\n";
-        
+        const std::string& value = it->second;        
         if (key == "Aprotocol") {
             setRespons(value + " ");
         }
