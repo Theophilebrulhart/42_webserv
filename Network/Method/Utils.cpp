@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 21:08:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:18:45 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,19 @@ int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string c
 	    return (-1);
     }
 	return (1);
+}
+
+void notFound(MAP_STRING &info, MAP_STRING &responsContent)
+{
+	std::string notFound = loadContentFile("/404NotFound.html");
+	setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);
+	return ;
+}
+
+void forbidden(MAP_STRING &info, MAP_STRING &responsContent)
+{
+	std::string forbidden = loadContentFile("/403Forbidden.html");
+	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
+	return ;
 }
 

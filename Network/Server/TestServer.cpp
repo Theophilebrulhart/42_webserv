@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 13:32:46 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:42:21 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "TestServer.hpp"
+#include "../Method/Utils.hpp"
 
 SERVER::TestServer::TestServer() : AServer(AF_INET, SOCK_STREAM, 0, 80,
 INADDR_ANY, 35)
@@ -27,8 +28,24 @@ SERVER::TestServer::~TestServer(void)
 int	SERVER::TestServer::_handler(int clientSocket)
 {
 	//std::cout << "\ntests\n";
-	if (requestParsing(_buffer, _requestInfo) < 0)
+    int parsingRes = requestParsing(_buffer, _requestInfo);
+	if ( parsingRes <= 0)
+    {
+        std::cout << "resquestParsing failed\n\n";
+        if (parsingRes == 0)
+            return (0);
+        if (parsingRes == -1)
+        {
+            std::cout << "404 notfound\n\n";
+            notFound(_requestInfo, _responsContent);
+        }
+        if (parsingRes == -2)
+        {
+            std::cout << "403 forbidden\n\n";
+            forbidden(_requestInfo, _responsContent);
+        }
         return (-1);
+    }
 	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
@@ -55,7 +72,6 @@ int	SERVER::TestServer::_handler(int clientSocket)
     		openFile(_requestInfo, _responsContent);
         
     }
-
 	return (1);
 }
 
@@ -65,9 +81,13 @@ int	SERVER::TestServer::_responder(int clientSocket)
 	std::string respons = createRespons.getRespons();
     std::cout << "CLientOcket : "<< clientSocket << "\n\n";
 	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
-	if (send(clientSocket, respons.c_str(), respons.size(), 0) <= 0)
+    int sendRes = send(clientSocket, respons.c_str(), respons.size(), 0);
+	if (sendRes <= 0)
     {
-        std::perror("send to client failed");
+        if (sendRes == 0)
+            std::cerr << "empty respons\n\n";
+        else
+            std::cerr << "send to client failed";
         _responsContent.clear();
         _requestInfo.clear();
         return (-1);
@@ -151,17 +171,18 @@ void SERVER::TestServer::launch()
                     _buffer = buffer;
 
                     // Envoyer une réponse au client
-                    if (_handler(clientSockets[i].fd) < 0)
+                    if (_handler(clientSockets[i].fd) == 0)
                     {
-                        close(clientSockets[i].fd);
-                        clientSockets.erase(clientSockets.begin() + i);
-                        --i;
+                        // std::cout << "handler == 0\n\n";
+                        // close(clientSockets[i].fd);
+                        // clientSockets.erase(clientSockets.begin() + i);
+                        // --i;
                     }
                     if (_responder(clientSockets[i].fd) < 0)
                     {
-                        close(clientSockets[i].fd);
-                        clientSockets.erase(clientSockets.begin() + i);
-                        --i;
+                        // close(clientSockets[i].fd);
+                        // clientSockets.erase(clientSockets.begin() + i);
+                        // --i;
                     }
                     close(clientSockets[i].fd);
                         clientSockets.erase(clientSockets.begin() + i);
@@ -172,13 +193,6 @@ void SERVER::TestServer::launch()
             if (clientSockets[i].revents & POLLOUT)
             {
                 std::cout << "\n\nPOULLOUt\n\n";
-                // Envoyer une réponse au client
-                if (_responder(clientSockets[i].fd) < 0)
-                    {
-                        close(clientSockets[i].fd);
-                        clientSockets.erase(clientSockets.begin() + i);
-                        --i;
-                    }
                 close(clientSockets[i].fd);
                 clientSockets.erase(clientSockets.begin() + i);
                 --i;
