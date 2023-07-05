@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+         #
+#    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/06/30 15:53:08 by pyammoun         ###   ########.fr        #
+#    Updated: 2023/07/05 19:21:50 by tbrulhar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 SRC =	Source/main.cpp
+SRC +=	${addprefix Source/, launch.cpp}
 SRC +=	${addprefix Network/Socket/, ASocket.cpp BindSocket.cpp ConnectSocket.cpp \
 ListenSocket.cpp}
 SRC +=	${addprefix Network/Server/, AServer.cpp TestServer.cpp}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 13:26:59 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 20:56:12 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,19 @@ namespace   SERVER
     class TestServer : public AServer
     {
         public:
-            TestServer();
+            TestServer(int protocol, int port, int backlog);
             ~TestServer(void);
             
-            void    launch(void);
+            int  			_handler(int clientSocket);
+            int     		_responder(int clientSocket);
+            std::string		_buffer;
             
 
         private:
+            TestServer();
 
-            std::string		_buffer;
             int				_newSocket;
-            int  			_handler(int clientSocket);
-            int     		_responder(int clientSocket);
+            
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
             std::vector<int> _clientSockets;
