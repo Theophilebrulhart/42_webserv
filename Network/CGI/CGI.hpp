@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/05 14:05:39 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 21:50:50 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <sstream>
 # include <istream>
 # include <unistd.h>
+# include <thread>
+# include <signal.h>
 # include "../Server/TestServer.hpp"
 # include "../Utils/Utils.hpp"
 # include "../Method/Utils.hpp"
@@ -31,7 +33,7 @@
 class	CGI {
 	public :
 		
-		CGI(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
+		CGI(MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
 		~CGI(void);	
 
 		std::string	extractQueryString(const std::string &url);
@@ -45,8 +47,9 @@ class	CGI {
 		
 		MAP_STRING		_env;
 		std::string		_body;
+        int				_ewor;
 		CGI();	
-		void	setUpEnv(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
+		void	setUpEnv(MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
 	
 	
 };
