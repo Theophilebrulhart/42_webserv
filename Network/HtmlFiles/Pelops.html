@@ -13,7 +13,7 @@
         <img class="side-image" src="https://images.unsplash.com/photo-1590227632180-80a3bf110871?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2553&q=80" alt="Basketball" title="Basketball">
     </div>
     
-    <h2>Choisissez une image</h2>
+    <h2>Choisissez un file</h2>
     <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
         <input type="file" id="image-input" name="image" accept="image/*, .php, .html, .js" multiple required>
         <button type="submit">Telecharger</button>
@@ -21,7 +21,7 @@
 
     <button onclick="sendGetRequest()">Dire bonjour</button>
     
-    <h2>Liste des images telechargees</h2>
+    <h2>Liste des files telechargees</h2>
     <ul class="image-list" id="image-list"></ul>
     
     <script>
@@ -70,7 +70,7 @@
                         displayImages();
                     }
                 } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
-                    alert('Une erreur s\'est produite lors de la suppression de l\'image.');
+                    alert('Une erreur s\'est produite lors de la suppression de du file.');
                 }
             };
             xhr.send();
@@ -130,7 +130,7 @@
                 if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
                     alert('L\'image a ete telechargee avec succes.');
                 } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
-                    alert('Une erreur s\'est produite lors du telechargement de l\'image.');
+                    alert('Une erreur s\'est produite lors du telechargement du file.');
                 }
             };
             xhr.send(formData);
