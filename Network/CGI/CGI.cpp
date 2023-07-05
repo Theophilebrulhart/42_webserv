@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/04 21:27:13 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:24:07 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,14 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 	std::map<std::string, std::string>::iterator	it;
 
 	// try {
-	// _env["REDIRECT_STATUT"] = "200";
-	// _env["GATEWAY_INTERFARCE"] = "CGI/1.1";
-	// _env["REQUEST_METHOD"] = _requestInfo.at("METHOD");
-	// _env["AUTH_TYPE"] = "";
+	
+	_env["REQUEST_METHOD"] = _requestInfo.at("METHOD");
+	_env["AUTH_TYPE"] = "";
+	if (_env["REQUEST_METHOD"] == "GET")
+	{
+		_env["CONTENT_TYPE"] = ""; 
+		_env["CONTENT_LENGTH"] = "";
+	}
 	// _env["CONTENT_TYPE"] = _requestInfo.at("TYPE");
 	// std::string	len =  _responsContent.at("DcontentLength"); 
 	// _env["CONTENT_LENGTH"] = len.erase(0, 16);
@@ -54,13 +58,10 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 	// catch (const std::exception& ex) {
     //    	_env["QUERY_STRING"] = ""; 
     // }
+	// error at compilation
 	// _env["REQUEST_URI"] = _requestInfo.at("PATH");
 	// //CGIFiles/hw.php/cactus -> cactus
-	// _env["PATH_INFO"] = extractPathInfo(_requestInfo.at("PATH")); 
-	// if (_env["PATH_INFO"] != "")
-	// 	_env["PATH_TRANSLATED"] = CGI_FILEPATH + _env["SCRIPT_NAME"] + '/' + _env["PATH_INFO"];
-	// else
-	// 	_env["PATH_TRANSLATED"] = ""; 
+
 	// }
 	// catch (const std::exception& ex) {
     //      std::cerr << "Exception caught owow: " << ex.what() << std::endl;
@@ -68,11 +69,16 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 	// PrintMap(_env);	
 	_env["GATEWAY_INTERFACE"]="CGI/1.1";
 	_env["SERVER_PROTOCOL"]="HTTP/1.1";
-	
+	//name of the script being executed	
 	_env["SCRIPT_NAME"]= extractScriptName(_requestInfo.at("PATH"));
+	//The real path of the script being executed.
 	_env["SCRIPT_FILENAME"]= CGI_FILEPATH + _env["SCRIPT_NAME"];
-	_env["REDIRECT_STATUS"]="200";
-	std::cout << Exec() << std::endl;
+	_env["REDIRECT_STATUS"]="200";	
+	_env["PATH_INFO"] = extractPathInfo(_requestInfo.at("PATH")); 
+	if (_env["PATH_INFO"] != "")
+		_env["PATH_TRANSLATED"] = CGI_FILEPATH + _env["SCRIPT_NAME"] + '/' + _env["PATH_INFO"];
+	else
+		_env["PATH_TRANSLATED"] = ""; 
 }
 
 
