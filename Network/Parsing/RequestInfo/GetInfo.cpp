@@ -6,11 +6,11 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 20:36:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:10:39 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HeadersRequestInfo.hpp"
+# include "HeadersRequestInfo.hpp"
 
 void getMethod(std::string& buffer, std::map<std::string, std::string>& info)
 {
@@ -20,7 +20,6 @@ void getMethod(std::string& buffer, std::map<std::string, std::string>& info)
     if (methodEndPos != std::string::npos)
     {
         method = buffer.substr(0, methodEndPos);
-        // Convertir la méthode en lettres majuscules
         for (size_t i = 0; i < method.length(); ++i)
         {
             method[i] = std::toupper(method[i]);
@@ -66,14 +65,14 @@ void	getPath(std::string &buffer, MAP_STRING &info, std::string toFind, std::str
 	{
 		for (int i = path.rfind("."); path[i]; i++)
 			extension += path[i];
-	try 
-	{
-    	info.at("EXTENSION") = extension;
-  	}
-  	catch (const std::out_of_range& oor) 
-	{
-		info.insert(std::pair<std::string, std::string>("EXTENSION", extension));
-  	}
+		try 
+		{
+			info.at("EXTENSION") = extension;
+		}
+		catch (const std::out_of_range& oor) 
+		{
+			info.insert(std::pair<std::string, std::string>("EXTENSION", extension));
+		}
 	}
 	try 
 	{
