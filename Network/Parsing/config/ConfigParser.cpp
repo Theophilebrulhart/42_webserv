@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 18:57:59 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/05 21:10:32 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ConfigParser::videur(std::string str) {
 	std::string			serv_n;
 	std::string			token;
 	std::string			elem;
-	std::string			serv_token = "abc";
+	std::string			serv_token = "abcde";
 	std::string			route_token = "abcdef";
 	std::istringstream	ss(str);
 
@@ -89,8 +89,8 @@ int	ConfigParser::addServ(std::string name) {
 
 	if(this->servec.find(name) == this->servec.end()) {
 		a.b_port = "";
+		a.d_max_body_size = "";
 		this->servec[name] = a;
-		std::cout << "added " << name << " to servec." << std::endl;
 	}
 	return 0;
 }
@@ -106,7 +106,6 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 		a.e_rep_listing = 0;
 		a.f_def_rep = "";
 		this->servec[servname].c_routes[route] = a;
-		std::cout << "added " << route << " to " << servname << " routes" << std::endl;
 	}
 	return 0;
 }
@@ -123,6 +122,10 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 	}
 	else if(token[0] == 'b' && ss >> buf)
 		this->servec[servname].b_port = buf;
+	else if(token[0] == 'd' && ss >> buf)
+		this->servec[servname].d_max_body_size = buf;
+	else if(token[0] == 'e' && ss >> buf && ss >> route)
+		this->e_error_names[buf] = route;
 	else if(token[0] == 'c' && ss >> route) {
 		this->addRoute(servname, route);
 		if(token[1] == 'a' && ss >> buf)
@@ -155,6 +158,8 @@ int ConfigParser::dispConfig(void) {
 		std::cout << std::endl;
 		if(!it->second.b_port.empty())
 			std::cout << "| port : " << it->second.b_port << std::endl;
+		if(!it->second.d_max_body_size.empty())
+			std::cout << "| maxbdysize : " << it->second.d_max_body_size << std::endl;
 		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
 			std::cout << "| route [" << itr->first << "]" << std::endl;
 			std::cout << "|   methods = ";
@@ -166,6 +171,14 @@ int ConfigParser::dispConfig(void) {
 			std::cout << "_" << std::endl << std::endl;
 		}
 	}
+	return 0;
+}
+
+int	ConfigParser::dispErrorNames(void) {
+	
+	std::cout << "---list of all error names in memory : ---" << std::endl;
+	for(std::map<std::string, std::string>::iterator it = this->e_error_names.begin(); it != this->e_error_names.end(); it++)
+		std::cout << it->first << "=" << it->second << std::endl;
 	return 0;
 }
 

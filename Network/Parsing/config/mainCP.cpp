@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 12:17:47 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 14:02:37 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/05 21:09:42 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int argc, char **argv) {
 	try {
 		ConfigParser a(argv[1]);
 		a.dispConfig();
+		a.dispErrorNames();
 	}
 	catch(const char* exc) {
 		std::cout << "Caught exception while parsing congiguration file :  "<< std::endl << exc << std::endl;

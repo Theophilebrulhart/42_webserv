@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:35:48 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 17:34:54 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/05 21:06:48 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ public:
 
 	int	ConfigBuilder(char *filename);
 	int	dispConfig(void);
+	int	dispErrorNames(void);
 	int	dispConfig_old(void);
 
 	ConfigParser(void);
@@ -53,6 +54,7 @@ private:
 		std::vector<std::string>			a_server_names;
 		std::string							b_port;
 		std::map<std::string, t_route>		c_routes;
+		std::string							d_max_body_size;
 
 	} t_serv;
 
@@ -60,13 +62,15 @@ private:
 	int	addRoute(std::string servname, std::string route);
 	int	addTruc(std::string servname, std::string token, std::istringstream& ss);
 
-	std::map<std::string, t_serv>												servec;
-	std::map<std::string, std::map<std::string, std::vector<std::string> > >	myServers;
+	std::map<std::string, t_serv>		servec;
+	std::map<std::string, std::string>	e_error_names;
 
 	int	BuildDefault(void);
 	int	videur(std::string buff);
 	int	videur_old(std::string buff);
 
+//old
+	std::map<std::string, std::map<std::string, std::vector<std::string> > >	myServers;
 };
 
 #endif
