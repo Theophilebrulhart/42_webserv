@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/04 21:26:53 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:05:39 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include "../Server/TestServer.hpp"
 # include "../Utils/Utils.hpp"
+# include "../Method/Utils.hpp"
 
 # define CGI_BUFSIZE 65536
 # define CGI_FILEPATH "./Network/CGIFiles/"
@@ -30,21 +31,22 @@
 class	CGI {
 	public :
 		
-		CGI(const MAP_STRING &_requestInfo, const MAP_STRING &_responsContent);
+		CGI(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
 		~CGI(void);	
 
 		std::string	extractQueryString(const std::string &url);
 		std::string	extractScriptName(const std::string &url);
 		std::string	extractPathInfo(const std::string &url);
 		char**		getEnvAsCstrArray(void) const;
-		int			Exec();
+		int			Exec(MAP_STRING &_responsContent);
+		int			SetResponseContent(MAP_STRING &_responsContent, std::string output);
 		
 	private:
 		
 		MAP_STRING		_env;
 		std::string		_body;
 		CGI();	
-		void	setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsContent);
+		void	setUpEnv(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent);
 	
 	
 };

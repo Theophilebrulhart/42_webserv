@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/05 13:24:07 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:28:21 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ CGI::CGI() {
 
 }
 
-CGI::CGI(const MAP_STRING &_requestInfo, const MAP_STRING &_responsContent) {
+CGI::CGI(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent) {
 	setUpEnv(_requestInfo, _responsContent);
 }
 
@@ -25,7 +25,7 @@ CGI::~CGI(void) {
 
 }
 
-void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsContent)
+void	CGI::setUpEnv(const MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 {
 	std::map<std::string, std::string>::iterator	it;
 
@@ -52,12 +52,7 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 	// //  CGI_FILEPATH + _env["SCRIPT_NAME"];
 	//  _env["DOCUMENT_ROOT"] = "";
 	// //value after the ?
-	// try {
-	// _env["QUERY_STRING"] = _requestInfo.at("RAWCONTENT"); 
-	// }
-	// catch (const std::exception& ex) {
-    //    	_env["QUERY_STRING"] = ""; 
-    // }
+	
 	// error at compilation
 	// _env["REQUEST_URI"] = _requestInfo.at("PATH");
 	// //CGIFiles/hw.php/cactus -> cactus
@@ -79,10 +74,29 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, const MAP_STRING &_responsCon
 		_env["PATH_TRANSLATED"] = CGI_FILEPATH + _env["SCRIPT_NAME"] + '/' + _env["PATH_INFO"];
 	else
 		_env["PATH_TRANSLATED"] = ""; 
+	try {
+	_env["QUERY_STRING"] = _requestInfo.at("RAWCONTENT"); 
+	}
+	catch (const std::exception& ex) {
+       	_env["QUERY_STRING"] = ""; 
+    }
+	Exec(_responsContent);
+}
+
+int		CGI::SetResponseContent(MAP_STRING &_responsContent, std::string output)
+{
+	size_t	f = output.find("\n");
+	std::string	rep = output.substr(f + 1, output.size());
+	f = rep.find("\n");
+	output = rep.substr(f + 1, output.size());
+	f = output.find("\n");
+	rep = output.substr(f + 1, output.size());
+	setResponsContent(_responsContent, "HTTP/1.1", "200 OK", "text/html", rep);
+	return (1);	
 }
 
 
-int			CGI::Exec(void) {	
+int			CGI::Exec(MAP_STRING &_responsContent) {	
 	char		**env;
 	std::string	output;
 
@@ -145,12 +159,14 @@ int			CGI::Exec(void) {
             std::cout << output << std::endl;
         } else {
             std::cerr << "PHP script execution failed" << std::endl;
+			//notfound
         }
     } else {
         // Fork failed
         std::cerr << "Error forking process" << std::endl;
         return 1;
     }
+	SetResponseContent(_responsContent, output);
 	return (0);
 
 }
