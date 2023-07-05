@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:10:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 19:21:33 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 22:16:24 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,26 @@ void mystring::_fill_string(std::string const & to_append)
     _asdf += to_append; std::cout << _asdf << '\n';
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
     // mystring asdf;
     // asdf._fill_string("Jean");
     // asdf._fill_string("12345\r");
 
     // return 0;
-    launch();
+    if(argc == 2) {
+        try {
+            ConfigParser a(argv[1]);
+            a.dispConfig();
+            //a.dispErrorNames();
+            launch(a);
+        }
+        catch(const char* exc) {
+            std::cout << "Caught exception while parsing congiguration file :  "<< std::endl << exc << std::endl;
+        }
+        catch(const int exc) {
+            std::cout << "Caught exception : Wrong format in configuration file at line [" << exc << "]" << std::endl;
+        }
+    }
     return (0);
 }

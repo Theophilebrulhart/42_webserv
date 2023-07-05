@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 21:10:32 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/05 22:15:26 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 
 	std::fstream	myfile;
 	std::string		buff;
+	std::string		newFilename = filename;
 	int				i = 1;
 
 	if (filename == NULL) {
@@ -26,8 +27,10 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 		BuildDefault();
 		return 0;
 	}
-	std::cout << "Opening file   [" << filename << "]" << std::endl;
-	myfile.open(filename, std::ios::in);
+	newFilename = "Source/ConfigFiles/" + newFilename;
+	
+	std::cout << "Opening file   [" << newFilename << "]" << std::endl;
+	myfile.open(newFilename, std::ios::in);
 	if (!myfile.is_open()) {
 		std::cerr << "Error in function ConfigBuilder : " << strerror(errno) << std::endl;
 		throw("Could not open requested file.");

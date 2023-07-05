@@ -12,6 +12,7 @@ Bonjour!
 //	b -> std::string for the port
 //	c -> std::map<std::string, t_route> to store all the routes and their options
 //	d -> std::string for the max size of the body
+//	e -> std::map<std::string, std::string> to store all error names
 //
 //	Choosing 'c' will make the second letter an identifier to the route
 //	element you want to setup :
@@ -23,26 +24,16 @@ Bonjour!
 //	cf -> std::string for a default file
 //This configuration file must always begin with "Bonjour!"
 
-bonjour ab oui toto jojo
-bonjour ba 80.80 42.42
-//paolo le pas beau
-bonjour ca paolo/le/beau paolo/le/beau
-bonjour	cb paolo/le/beau GET POST DEL
-bonjour da 4096
+myserver aa myserver myserver.com
+myserver ba 8080
+myserver da 4096
+myserver ca / /
+myserver cb / GET
+myserver cd / /Network/HtmlFiles/
+myserver ce / 0
+myserver cf / Pelops/
 
-
-bonjour cc paolo/le/beau /papa/olo
-bonjour cc paolo/le/beau /papa/olo
-bonjour cd paolo/le/beau /suuuu/si/cristiano
-bonjour ce paolo/le/beau 1
-bonjour cf paolo/le/beau /def/file
-//tsaisfintu
-bonjour cd roooot/
-bonjour ce 0
-bonjour cf default/folder/
-
-unautre aa SUUUUU
-
+//------error_names
 bonjour ea	100 Continue
 bonjour ea	101 Switching Protocols
 bonjour ea	102 Processing

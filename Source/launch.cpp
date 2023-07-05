@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   launch.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 20:46:42 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 22:31:14 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AllHeaders.hpp"
 
-void launch()
+void launch(ConfigParser &configInfo)
 {
     std::cout << "\e[0;31m****STARTING*****\e[0m\n";
     std::vector<int> serverSockets; // Liste des sockets serveur
@@ -20,6 +20,13 @@ void launch()
     std::vector<SERVER::TestServer> servers;
 
     //creer les serveurs et ajouter leur socket a la liste
+
+    for (size_t i = 0; i < configInfo.servec.size(); i++)
+    {
+        std::string name = configInfo.servec[i]
+        SERVER::TestServer 
+    }
+
     SERVER::TestServer t(0, 80, 40);
     serverSockets.push_back(t.getServerSocket()->getSocketFd());
     servers.push_back(t);
