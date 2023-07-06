@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:09:55 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 19:11:54 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 22:48:33 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ public:
 
 	} t_serv;
 
+	std::string							default_server;
 	std::map<std::string, t_serv>		servec;
 	std::map<std::string, std::string>	x_error_names;
 
@@ -63,6 +64,7 @@ public:
 
 private:
 
+	int	isToken(std::string);
 	int	BuildDefault(void);
 	int	videur(std::string buff);
 

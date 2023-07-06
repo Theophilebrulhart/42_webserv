@@ -8,20 +8,23 @@ Bonjour!
 //
 //->[token] is a set of two letters. The first one is used to
 //	identify the element of the server you want to set up :
-//	a -> std::vector<std::string> to store all server_names
-//	b -> std::string for the port
-//	c -> std::map<std::string, t_route> to store all the routes and their options
-//	d -> std::string for the max size of the body
-//	e -> std::map<std::string, std::string> to store all error names
+//	a -> server_names  -> std::vector<std::string>
+//	b -> ports         -> std::vector<std::string>
+//	c -> routes        -> std::map<std::string, t_route>
+//	d -> max_body_size -> std::string
+//	e -> backlog       -> std::string
+//	x -> error_names   -> std::map<std::string, std::string> -> [error number] xx [error name]
 //
 //	Choosing 'c' will make the second letter an identifier to the route
 //	element you want to setup :
-//	ca -> std::string for the route itself
-//	cb -> std::vector<std::string> for the different methods allowed for this route
-//	cc -> std::string for a redirection route
-//	cd -> std::string for a root route
-//	ce -> bool to allow (or not) the directory listing
-//	cf -> std::string for a default file
+//	ca -> route       -> std::string
+//	cb -> methods     -> std::vector<std::string>
+//	cc -> redirec     -> std::string
+//	cd -> root        -> std::string
+//	ce -> rep_listing -> bool
+//	cf -> def_rep     -> std::string
+//	cg -> cgi_script  -> std::string
+//	ch -> cgi_addr    -> std::string
 //This configuration file must always begin with "Bonjour!"
 
 myserver aa myserver myserver.com
@@ -36,4 +39,8 @@ myserver cf / Pelops/
 myserver cg / Pelops/besoin/dun/cgi/stp
 myserver ch / Pelops/ceci/est/un/cgi/askip
 
+aaaaaaaa aa aaaaaaaaa
+
+ouinon   xa oui
+nonnon	 xb non
 //------error_names

@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 19:27:26 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 23:02:50 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	std::string		newFilename = filename;
 	int				i = 1;
 
+	this->default_server = "";
 	if (filename == NULL) {
 		std::cout << "No configuration file provided : loading default settings..." << std::endl;
 		BuildDefault();
@@ -57,25 +58,34 @@ int	ConfigParser::videur(std::string str) {
 	std::string			serv_n;
 	std::string			token;
 	std::string			elem;
-	std::string			serv_token = "abcdex";
-	std::string			route_token = "abcdefgh";
 	std::istringstream	ss(str);
 
 	if(str.empty() || (str[0] == '/' && str[1] == '/'))
 		return 0;
-	if(ss >> serv_n) {
-		if(this->servec.find(serv_n) == this->servec.end())
-			this->addServ(serv_n);
-	}
-	if(ss >> token) {
-		if( (token.size() != 2) || (serv_token.find(token[0]) == std::string::npos) || (route_token.find(token[1]) == std::string::npos) )
+	if(ss >> serv_n && ss >> token) {
+		if(!this->isToken(token))
 			throw("Error : wrong token in configuration file");
+		else if(token[0] != 'x') {
+			if(this->servec.find(serv_n) == this->servec.end())
+				this->addServ(serv_n);
+			this->addTruc(serv_n, token, ss);
+		}
 		else
 			this->addTruc(serv_n, token, ss);
 	}
 	else
 		throw("Error : too fiew elements in configuration file.");
 	return 0;
+}
+
+int	ConfigParser::isToken(std::string token) {
+
+	std::string			serv_token = "abcdex";
+	std::string			route_token = "abcdefgh";
+
+	if((token.size() != 2) || (serv_token.find(token[0]) == std::string::npos) || (route_token.find(token[1]) == std::string::npos))
+		return 0;
+	return 1;
 }
 
 int	ConfigParser::addTruc(std::string servname, std::string token, std::istringstream& ss) {
@@ -120,6 +130,8 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 		else
 			return 1;
 	}
+	else if(token[0] == 'x' && ss >> buf)
+		this->x_error_names[servname] = buf;
 	return 0;
 }
 
@@ -131,7 +143,10 @@ int	ConfigParser::addServ(std::string name) {
 		a.b_port = "8080";
 		a.d_max_body_size = "";
 		a.e_back_log = "40";
+		if(this->default_server.empty())
+			this->default_server = name;
 		this->servec[name] = a;
+		std::cout << "SUUUUUU" << std::endl;
 	}
 	return 0;
 }
@@ -177,6 +192,7 @@ int	ConfigParser::check_back_log(std::string servname, std::string str) {
 int ConfigParser::dispConfig(void) {
 
 	std::cout << "-----" << std::endl << "Current config file contains : " << std::endl;
+	std::cout << "default server = " << this->default_server << std::endl;
 	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
 		std::cout << "[" << it->first << "]" << std::endl;
 		std::cout << "| server_names : ";
@@ -241,6 +257,7 @@ ConfigParser & ConfigParser::operator=(ConfigParser const & rhs) {
 
 	this->servec = rhs.servec;
 	this->x_error_names = rhs.x_error_names;
+	this->default_server = rhs.default_server;
 	return (*this);
 }
 
