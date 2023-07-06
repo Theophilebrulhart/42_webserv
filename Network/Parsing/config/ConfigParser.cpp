@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 22:15:26 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 11:46:08 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ConfigParser::videur(std::string str) {
 	std::string			token;
 	std::string			elem;
 	std::string			serv_token = "abcde";
-	std::string			route_token = "abcdef";
+	std::string			route_token = "abcdefgh";
 	std::istringstream	ss(str);
 
 	if(str.empty() || (str[0] == '/' && str[1] == '/'))
@@ -91,7 +91,7 @@ int	ConfigParser::addServ(std::string name) {
 	t_serv	a;
 
 	if(this->servec.find(name) == this->servec.end()) {
-		a.b_port = "";
+		a.b_port = "8080";
 		a.d_max_body_size = "";
 		this->servec[name] = a;
 	}
@@ -144,6 +144,10 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
 		else if(token[1] == 'f' && ss >> buf)
 			this->servec[servname].c_routes[route].f_def_rep = buf;
+		else if(token[1] == 'g' && ss >> buf)
+			this->servec[servname].c_routes[route].g_cgi_script = buf;
+		else if(token[1] == 'h' && ss >> buf)
+			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		else
 			return 1;
 	}
@@ -171,6 +175,7 @@ int ConfigParser::dispConfig(void) {
 			std::cout << std::endl;
 			std::cout << "|   redirec = " << itr->second.c_redirec << std::endl << "|   root = " << itr->second.d_root << std::endl;
 			std::cout << "|   replist = " << itr->second.e_rep_listing << std::endl << "|   defrep = " << itr->second.f_def_rep << std::endl;
+			std::cout << "|   cgi_script = " << itr->second.g_cgi_script << std::endl << "|   cgi_addr = " << itr->second.h_cgi_addr << std::endl;
 			std::cout << "_" << std::endl << std::endl;
 		}
 	}

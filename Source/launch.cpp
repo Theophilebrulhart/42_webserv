@@ -6,11 +6,18 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 22:31:14 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 11:31:19 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AllHeaders.hpp"
+
+SERVER::TestServer  init_server(ConfigParser::t_serv servInfo,  std::vector<int>& serverSockets) {
+
+    SERVER::TestServer serv(0, atoi(servInfo.b_port.c_str()), 40, servInfo);
+    serverSockets.push_back(serv.getServerSocket()->getSocketFd());
+    return serv;
+}
 
 void launch(ConfigParser &configInfo)
 {
@@ -21,29 +28,10 @@ void launch(ConfigParser &configInfo)
 
     //creer les serveurs et ajouter leur socket a la liste
 
-    for (size_t i = 0; i < configInfo.servec.size(); i++)
-    {
-        std::string name = configInfo.servec[i]
-        SERVER::TestServer 
+    for(std::map<std::string, ConfigParser::t_serv>::iterator it = configInfo.servec.begin(); it != configInfo.servec.end(); it++) {        
+        servers.push_back(init_server(it->second, serverSockets));
     }
 
-    SERVER::TestServer t(0, 80, 40);
-    serverSockets.push_back(t.getServerSocket()->getSocketFd());
-    servers.push_back(t);
-    SERVER::TestServer a(0, 400, 40);
-    serverSockets.push_back(a.getServerSocket()->getSocketFd());
-    servers.push_back(a);
-    SERVER::TestServer b(0, 401, 40);
-    serverSockets.push_back(b.getServerSocket()->getSocketFd());
-    servers.push_back(b);
-    SERVER::TestServer c(0, 402, 40);
-    serverSockets.push_back(c.getServerSocket()->getSocketFd());
-    servers.push_back(c);
-    SERVER::TestServer d(0, 403, 40);
-    serverSockets.push_back(d.getServerSocket()->getSocketFd());
-    servers.push_back(d);
-    
-    
     //creation de la structure pollFds pour chaque server
     std::vector<struct pollfd> pollFds;
     for (int i = 0; i < serverSockets.size(); ++i)

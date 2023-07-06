@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AllHeaders.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 11:17:41 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 19:22:49 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:36:02 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@
 #include <unistd.h>
 #include <poll.h>
 
-void launch();
+void launch(ConfigParser &a);
 
 #endif

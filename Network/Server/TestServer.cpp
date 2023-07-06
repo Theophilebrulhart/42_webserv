@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 20:56:58 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:33:34 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "TestServer.hpp"
 #include "../Method/Utils.hpp"
 
-SERVER::TestServer::TestServer(int protocol, int port, int backlog) : AServer(AF_INET, SOCK_STREAM, protocol, port,
+SERVER::TestServer::TestServer(int protocol, int port, int backlog, ConfigParser::t_serv servInfo) : AServer(AF_INET, SOCK_STREAM, protocol, port,
 INADDR_ANY, backlog)
 {
+    _servInfo = servInfo;
     return ;
 }
 

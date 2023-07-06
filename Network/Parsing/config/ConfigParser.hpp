@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 16:35:48 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/05 22:23:12 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 11:42:20 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ public:
 	int	dispErrorNames(void);
 	int	dispConfig_old(void);
 
-	ConfigParser(void);
-	ConfigParser(char *filename);
-	ConfigParser(ConfigParser const & src);
-	ConfigParser & operator=(ConfigParser const & rhs);
-	~ConfigParser(void);
 	typedef struct s_route {
 
 		std::string					a_route;
@@ -43,8 +38,11 @@ public:
 		std::string					d_root;
 		bool						e_rep_listing;
 		std::string					f_def_rep;
+		std::string					g_cgi_script;
+		std::string					h_cgi_addr;
 
 	} t_route;
+
 	typedef struct s_serv {
 
 		std::vector<std::string>			a_server_names;
@@ -53,8 +51,14 @@ public:
 		std::string							d_max_body_size;
 
 	} t_serv;
+
 	std::map<std::string, t_serv>		servec;
 
+	ConfigParser(void);
+	ConfigParser(char *filename);
+	ConfigParser(ConfigParser const & src);
+	ConfigParser & operator=(ConfigParser const & rhs);
+	~ConfigParser(void);
 
 private:
 
