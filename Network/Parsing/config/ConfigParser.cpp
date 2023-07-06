@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 17:49:12 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 19:27:26 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ConfigParser::videur(std::string str) {
 	std::string			serv_n;
 	std::string			token;
 	std::string			elem;
-	std::string			serv_token = "abcde";
+	std::string			serv_token = "abcdex";
 	std::string			route_token = "abcdefgh";
 	std::istringstream	ss(str);
 
@@ -89,13 +89,15 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].a_server_names.push_back(buf);
 	}
 	else if(token[0] == 'b' && ss >> buf) {
-		if(check_port(buf))
+		if(this->check_port(buf))
 			this->servec[servname].b_port = buf;
 	}
 	else if(token[0] == 'd' && ss >> buf)
 		this->servec[servname].d_max_body_size = buf;
-	else if(token[0] == 'e' && ss >> buf && ss >> route)
-		this->e_error_names[buf] = route;
+	else if(token[0] == 'e' && ss >> buf) {
+		if(this->check_back_log(servname, buf))
+			this->servec[servname].e_back_log = buf;
+	}
 	else if(token[0] == 'c' && ss >> route) {
 		this->addRoute(servname, route);
 		if(token[1] == 'a' && ss >> buf)
@@ -128,6 +130,7 @@ int	ConfigParser::addServ(std::string name) {
 	if(this->servec.find(name) == this->servec.end()) {
 		a.b_port = "8080";
 		a.d_max_body_size = "";
+		a.e_back_log = "40";
 		this->servec[name] = a;
 	}
 	return 0;
@@ -150,7 +153,24 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 
 int	ConfigParser::check_port(std::string str) {
 
+	if ((str.size() > 5) || (atoi(str.c_str()) <= 1) || (atoi(str.c_str()) >= 49151) || (str.find_first_not_of("0123456789") != std::string::npos)) {
+		std::cout << "Invalid port in configuration file. Using default 8080." << std::endl;
+		return 0;
+	}
+	return 1;
+}
 
+int	ConfigParser::check_back_log(std::string servname, std::string str) {
+
+	if (str.find_first_not_of("0123456789") != std::string::npos) {
+		std::cout << "Cannot read backlog value, value set to default one (40)." << std::endl;
+		return 0;
+	}
+	if (str.size() > 5 || (atoi(str.c_str()) > 32767)) {
+		std::cout << "Backlog higher than 32767, value set to 32767." << std::endl;
+		this->servec[servname].e_back_log = "32767";
+		return 0;
+	}
 	return 1;
 }
 
@@ -167,6 +187,8 @@ int ConfigParser::dispConfig(void) {
 			std::cout << "| port : " << it->second.b_port << std::endl;
 		if(!it->second.d_max_body_size.empty())
 			std::cout << "| maxbdysize : " << it->second.d_max_body_size << std::endl;
+		if(!it->second.e_back_log.empty())
+			std::cout << "| back_log : " << it->second.e_back_log << std::endl;
 		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
 			std::cout << "| route [" << itr->first << "]" << std::endl;
 			std::cout << "|   methods = ";
@@ -192,7 +214,7 @@ int	ConfigParser::BuildDefault(void) {
 int	ConfigParser::dispErrorNames(void) {
 	
 	std::cout << "---list of all error names in memory : ---" << std::endl;
-	for(std::map<std::string, std::string>::iterator it = this->e_error_names.begin(); it != this->e_error_names.end(); it++)
+	for(std::map<std::string, std::string>::iterator it = this->x_error_names.begin(); it != this->x_error_names.end(); it++)
 		std::cout << it->first << "=" << it->second << std::endl;
 	return 0;
 }
@@ -218,7 +240,7 @@ ConfigParser::ConfigParser(ConfigParser const & src) {
 ConfigParser & ConfigParser::operator=(ConfigParser const & rhs) {
 
 	this->servec = rhs.servec;
-	this->e_error_names = rhs.e_error_names;
+	this->x_error_names = rhs.x_error_names;
 	return (*this);
 }
 
