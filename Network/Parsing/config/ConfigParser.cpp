@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 11:46:08 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 17:49:12 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	return 0;
 }
 
-int	ConfigParser::BuildDefault(void) {
-
-	std::cout << "Building Default congiguration..." << std::endl;
-	this->myServers["myserver:8080"]["port"].push_back("8080");
-	this->myServers["myserver:8080"]["server_name"].push_back("myserver");
-	return 0;
-}
-
 int	ConfigParser::videur(std::string str) {
 	
 	std::string			serv_n;
@@ -83,6 +75,49 @@ int	ConfigParser::videur(std::string str) {
 	}
 	else
 		throw("Error : too fiew elements in configuration file.");
+	return 0;
+}
+
+int	ConfigParser::addTruc(std::string servname, std::string token, std::istringstream& ss) {
+
+	std::string	buf;
+	bool		boolbuf;
+	std::string route;
+
+	if(token[0] == 'a') {
+		while(ss >> buf)
+			this->servec[servname].a_server_names.push_back(buf);
+	}
+	else if(token[0] == 'b' && ss >> buf) {
+		if(check_port(buf))
+			this->servec[servname].b_port = buf;
+	}
+	else if(token[0] == 'd' && ss >> buf)
+		this->servec[servname].d_max_body_size = buf;
+	else if(token[0] == 'e' && ss >> buf && ss >> route)
+		this->e_error_names[buf] = route;
+	else if(token[0] == 'c' && ss >> route) {
+		this->addRoute(servname, route);
+		if(token[1] == 'a' && ss >> buf)
+			this->servec[servname].c_routes[route].a_route = route;
+		else if(token[1] == 'b')
+			while(ss >> buf)
+				this->servec[servname].c_routes[route].b_methods.push_back(buf);
+		else if(token[1] == 'c' && ss >> buf)
+			this->servec[servname].c_routes[route].c_redirec = buf;
+		else if(token[1] == 'd' && ss >> buf)
+			this->servec[servname].c_routes[route].d_root = buf;
+		else if(token[1] == 'e' && ss >> boolbuf)
+			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
+		else if(token[1] == 'f' && ss >> buf)
+			this->servec[servname].c_routes[route].f_def_rep = buf;
+		else if(token[1] == 'g' && ss >> buf)
+			this->servec[servname].c_routes[route].g_cgi_script = buf;
+		else if(token[1] == 'h' && ss >> buf)
+			this->servec[servname].c_routes[route].h_cgi_addr = buf;
+		else
+			return 1;
+	}
 	return 0;
 }
 
@@ -113,45 +148,10 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 	return 0;
 }
 
-int	ConfigParser::addTruc(std::string servname, std::string token, std::istringstream& ss) {
+int	ConfigParser::check_port(std::string str) {
 
-	std::string	buf;
-	bool		boolbuf;
-	std::string route;
 
-	if(token[0] == 'a') {
-		while(ss >> buf)
-			this->servec[servname].a_server_names.push_back(buf);
-	}
-	else if(token[0] == 'b' && ss >> buf)
-		this->servec[servname].b_port = buf;
-	else if(token[0] == 'd' && ss >> buf)
-		this->servec[servname].d_max_body_size = buf;
-	else if(token[0] == 'e' && ss >> buf && ss >> route)
-		this->e_error_names[buf] = route;
-	else if(token[0] == 'c' && ss >> route) {
-		this->addRoute(servname, route);
-		if(token[1] == 'a' && ss >> buf)
-			this->servec[servname].c_routes[route].a_route = route;
-		else if(token[1] == 'b')
-			while(ss >> buf)
-				this->servec[servname].c_routes[route].b_methods.push_back(buf);
-		else if(token[1] == 'c' && ss >> buf)
-			this->servec[servname].c_routes[route].c_redirec = buf;
-		else if(token[1] == 'd' && ss >> buf)
-			this->servec[servname].c_routes[route].d_root = buf;
-		else if(token[1] == 'e' && ss >> boolbuf)
-			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
-		else if(token[1] == 'f' && ss >> buf)
-			this->servec[servname].c_routes[route].f_def_rep = buf;
-		else if(token[1] == 'g' && ss >> buf)
-			this->servec[servname].c_routes[route].g_cgi_script = buf;
-		else if(token[1] == 'h' && ss >> buf)
-			this->servec[servname].c_routes[route].h_cgi_addr = buf;
-		else
-			return 1;
-	}
-	return 0;
+	return 1;
 }
 
 int ConfigParser::dispConfig(void) {
@@ -179,6 +179,13 @@ int ConfigParser::dispConfig(void) {
 			std::cout << "_" << std::endl << std::endl;
 		}
 	}
+	return 0;
+}
+
+int	ConfigParser::BuildDefault(void) {
+
+	std::cout << "Building Default congiguration..." << std::endl;
+	this->addServ("defaultServer");
 	return 0;
 }
 
@@ -210,43 +217,12 @@ ConfigParser::ConfigParser(ConfigParser const & src) {
 
 ConfigParser & ConfigParser::operator=(ConfigParser const & rhs) {
 
-	this->myServers = rhs.myServers;
+	this->servec = rhs.servec;
+	this->e_error_names = rhs.e_error_names;
 	return (*this);
 }
 
 ConfigParser::~ConfigParser(void) {
 
 	return ;
-}
-
-//old
-int	ConfigParser::videur_old(std::string str) {
-	
-	std::string			buf;
-	std::string			buff;
-	std::string			bufff;
-	std::istringstream	ss(str);
-
-	if(str.empty())
-		return 0;
-	if(ss >> buf && ss >> buff && ss >> bufff) {
-		this->myServers[buf][buff].push_back(bufff);
-		while(ss >> bufff)
-			this->myServers[buf][buff].push_back(bufff);
-	}
-	else
-		return 1;
-	return 0;
-}
-
-int ConfigParser::dispConfig_old(void) {
-
-	std::cout << "Current config file contains : " << std::endl;
-	for(std::map<std::string, std::map<std::string, std::vector<std::string> > >::iterator it = this->myServers.begin(); it != this->myServers.end(); it++) {
-	 	for(std::map<std::string, std::vector<std::string> >::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
-			for(std::vector<std::string>::iterator ittt = itt->second.begin(); ittt != itt->second.end(); ittt++)
-				std::cout << "[" <<it->first << "] -> " << itt->first << " : " << *ittt << std::endl;
-		std::cout << std::endl;
-	}
-	return 0;
 }

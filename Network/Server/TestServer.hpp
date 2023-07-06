@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 11:32:48 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 16:52:36 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include "../Method/HeadersMethod.hpp"
 # include "../Respons/HeadersRespons.hpp"
 # include "../CGI/CGI.hpp"
+
+
 
 namespace   SERVER
 {
