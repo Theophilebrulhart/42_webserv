@@ -25,14 +25,33 @@ Bonjour!
 //This configuration file must always begin with "Bonjour!"
 
 myserver aa myserver myserver.com
-myserver ba 8080
+myserver ba 8080 8282 8383 8484 8585 8686 8787 8888
 myserver da 4096
 myserver ca / /
-myserver cb / GET
+myserver cb / GET POST
 myserver cd / /Network/HtmlFiles/
 myserver ce / 0
-myserver cf / Pelops/
-myserver cg / Pelops/besoin/dun/cgi/stp
-myserver ch / Pelops/ceci/est/un/cgi/askip
+myserver cf / Pelops.html
+
+myserver ca /upload /upload
+myserver cb /upload POST
+myserver cd /upload /Network/HtmlFiles/Upload
+myserver ce /upload 0
+myserver cf /upload Pelops.html
+
+test aa test test.com
+test ba 10 90
+test da 4096
+test ca / /
+test cb / GET POST
+test cd / /Network/HtmlFiles/
+test ce / 0
+test cf / Pelops.html
+
+test ca /upload /upload
+test cb /upload POST
+test cd /upload /Network/HtmlFiles/Upload
+test ce /upload 0
+test cf /upload Pelops.html
 
 //------error_names

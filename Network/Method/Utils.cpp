@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 16:18:45 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 21:43:13 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int isValidMethod(const MAP_STRING& info)
 void setInternalError(std::string handle, std::string problem, MAP_STRING &responsContent, std::string protocol,
 						std::string contentType)
 {
-	std::string internalError = loadContentFile("/500InternalError.html");
+	std::string internalError = loadContentFile("/ErrorFiles/500InternalError.html");
 	std::perror(("Server doesn't handle the " + handle + problem).c_str());
 	setResponsContent(responsContent, protocol, "500 Internal Server Error", contentType, internalError);
 	return ;
@@ -129,15 +129,61 @@ int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string c
 
 void notFound(MAP_STRING &info, MAP_STRING &responsContent)
 {
-	std::string notFound = loadContentFile("/404NotFound.html");
+	std::string notFound = loadContentFile("/ErrorFiles/404NotFound.html");
 	setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);
+	return ;
+}
+
+void forbiddenMethod(MAP_STRING &responsContent)
+{
+	std::string forbidden = loadContentFile("/ErrorFiles/405Forbidden.html");
+	setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
 	return ;
 }
 
 void forbidden(MAP_STRING &info, MAP_STRING &responsContent)
 {
-	std::string forbidden = loadContentFile("/403Forbidden.html");
+	std::string forbidden = loadContentFile("/ErrorFiles/403Forbidden.html");
 	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
 	return ;
+}
+
+int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route)
+{
+	 std::vector<std::string>::iterator it = std::find(route.b_methods.begin(), route.b_methods.end(), method);
+	if (it != route.b_methods.end()) {
+		return (1);
+    } else {
+		forbiddenMethod(responsContent);
+		return (0);
+    }
+}
+
+int	isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
+{
+	std::string path = info.at("PATH");
+	if (path.size() == 1)
+	{
+		if (servInfo.c_routes.find(path) != servInfo.c_routes.end() && path != "/")
+		{
+			forbidden(info, responsContent);
+			return (-1);
+		}
+		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path]))
+			return (-1);
+		return (1);
+	}
+	std::string tmp = path.substr(1);
+	size_t f = tmp.find("/");
+	std::string route = path.substr(0, f);
+	std::cout << "route : " << route << "\n\n";
+	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
+	{
+		std::cout << "\nNO ROUTE TA MERE LA PUUUTE\n\n";
+		return (-2);
+	}
+	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route]))
+		return (-1);
+	return (0);
 }
 

@@ -3,33 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   launch.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 11:31:19 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 22:52:50 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AllHeaders.hpp"
 
-SERVER::TestServer  init_server(ConfigParser::t_serv servInfo,  std::vector<int>& serverSockets) {
+SERVER::TestServer  init_server(ConfigParser::t_serv servInfo,  std::vector<int>& serverSockets, std::string port) {
 
-    SERVER::TestServer serv(0, atoi(servInfo.b_port.c_str()), 40, servInfo);
+    SERVER::TestServer serv(0, atoi(port.c_str()), 40, servInfo);
     serverSockets.push_back(serv.getServerSocket()->getSocketFd());
     return serv;
 }
 
 void launch(ConfigParser &configInfo)
 {
-    std::cout << "\e[0;31m****STARTING*****\e[0m\n";
     std::vector<int> serverSockets; // Liste des sockets serveur
     std::vector<int> clientSockets; // Liste des sockets client
     std::vector<SERVER::TestServer> servers;
 
     //creer les serveurs et ajouter leur socket a la liste
 
-    for(std::map<std::string, ConfigParser::t_serv>::iterator it = configInfo.servec.begin(); it != configInfo.servec.end(); it++) {        
-        servers.push_back(init_server(it->second, serverSockets));
+    for(std::map<std::string, ConfigParser::t_serv>::iterator it = configInfo.servec.begin(); it != configInfo.servec.end(); it++) {
+        std::cout << "\e[0;42m\n**********" << it->first <<"**********\e[0m";
+        for(size_t i = 0; i < it->second.b_port.size(); i++)   
+            servers.push_back(init_server(it->second, serverSockets, it->second.b_port[i]));
+         std::cout << "\e[0;42m\n******************************\e[0m\n\n";
     }
 
     //creation de la structure pollFds pour chaque server
@@ -43,6 +45,7 @@ void launch(ConfigParser &configInfo)
         pollFds.push_back(pfd);
     }
 
+    std::cout << "\e[0;31m****STARTING*****\e[0m\n";
     std::cout << "Serveur en attente de connexions..." << std::endl;
 
     while (true) {

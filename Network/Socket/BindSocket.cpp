@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 12:09:37 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/03/02 17:10:02 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 22:43:11 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ SOCKET::BindSocket::BindSocket(int domaine, int service, int protocol,
 int port, u_long interface) : ASocket(domaine, service, protocol, port, interface)
 {
     setBindOrConnect(bindOrConnect(getSocketFd(), getAddress()));
-	std::cout << "BIND\n";
+	// std::cout << "BIND\n";
 	testReturn(getBindOrConnect());
     return ;
 }

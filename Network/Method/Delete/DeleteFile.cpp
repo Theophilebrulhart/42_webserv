@@ -6,14 +6,14 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:25:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/04 21:03:24 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:15:36 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "HeadersDelete.hpp"
 # include "../Utils.hpp"
 
-void deleteFile(MAP_STRING &info, MAP_STRING &responsContent)
+void deleteFile(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
 {
     std::string body;
     std::string fileToDelete;

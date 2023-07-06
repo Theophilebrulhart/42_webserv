@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 17:49:12 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/06 22:03:27 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
-	else if(token[0] == 'b' && ss >> buf) {
-		if(check_port(buf))
-			this->servec[servname].b_port = buf;
+	else if(token[0] == 'b') {
+		while(ss >> buf && check_port(buf))
+			this->servec[servname].b_port.push_back(buf);
 	}
 	else if(token[0] == 'd' && ss >> buf)
 		this->servec[servname].d_max_body_size = buf;
@@ -126,7 +126,6 @@ int	ConfigParser::addServ(std::string name) {
 	t_serv	a;
 
 	if(this->servec.find(name) == this->servec.end()) {
-		a.b_port = "8080";
 		a.d_max_body_size = "";
 		this->servec[name] = a;
 	}
@@ -163,8 +162,8 @@ int ConfigParser::dispConfig(void) {
 		for(std::vector<std::string>::iterator itsn = it->second.a_server_names.begin(); itsn != it->second.a_server_names.end(); ++itsn)
 			std::cout << "'" << *itsn << "' ";
 		std::cout << std::endl;
-		if(!it->second.b_port.empty())
-			std::cout << "| port : " << it->second.b_port << std::endl;
+		for(size_t i = 0; i < it->second.b_port.size(); i++)
+			std::cout << "| port : " << it->second.b_port[i] << std::endl;
 		if(!it->second.d_max_body_size.empty())
 			std::cout << "| maxbdysize : " << it->second.d_max_body_size << std::endl;
 		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {

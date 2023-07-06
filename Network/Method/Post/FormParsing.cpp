@@ -6,13 +6,13 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 13:42:02 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 20:16:03 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersPost.hpp"
 
-void    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING &responsContent)
+void    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
     std::string content;
     int         readTest = 1000;

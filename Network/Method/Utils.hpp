@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:19:26 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 16:18:40 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 21:11:26 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <iostream>
 # include <sstream>
 # include <fstream>
+# include <algorithm>
+# include "../Parsing/HeadersParsing.hpp"
 # define MAP_STRING std::map<std::string, std::string> 
 
 std::string 	contentExtension(std::string const &file);
@@ -27,4 +29,5 @@ int 			isValidMethod(const MAP_STRING& info);
 int 			isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string contentType);
 void 			notFound(MAP_STRING &info, MAP_STRING &responsContent);
 void			forbidden(MAP_STRING &info, MAP_STRING &responsContent);
+int				isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo);
 #endif

@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:07:17 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/29 15:14:00 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/06 20:18:05 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 # include <iostream>
 # include <unistd.h>
 # include <cstdio>
+# include "../../Parsing/HeadersParsing.hpp"
 # define MAP_STRING std::map<std::string, std::string> 
 
 //********DeleteFile*******//
 
-void deleteFile(MAP_STRING &info, MAP_STRING &responsContent);
+void deleteFile(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv servInfo);
 
 #endif

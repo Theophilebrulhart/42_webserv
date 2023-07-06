@@ -41,7 +41,7 @@ public:
 	typedef struct s_serv {
 
 		std::vector<std::string>			a_server_names;
-		std::string							b_port;
+		std::vector<std::string>			b_port;
 		std::map<std::string, t_route>		c_routes;
 		std::string							d_max_body_size;
 
