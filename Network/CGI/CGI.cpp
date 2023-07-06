@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/05 21:47:55 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:21:27 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,6 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	}
 	printStringArray(env);
 	
-
-
 	std::string s1 = CGI_PHP;
 	std::string s2 = _env["SCRIPT_FILENAME"];
 	// std::cout << "s1 : " << s1 << std::endl;
