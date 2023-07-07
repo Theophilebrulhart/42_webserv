@@ -10,34 +10,27 @@
  	   <h1>Moustache Gracias</h1>
 	</div>
     <div class="image-wrapper">
-        <img class="side-image" src="https://www.saltedinburgh.co.uk/wp-content/uploads/2013/11/Bigote2.jpg" alt="moustache1" title="moustache2">
-        <img class="side-image" src="https://www.dailylocal.com/wp-content/uploads/migration/2013/09/ada9f0263b2ce2309f3895caefc4cfe8.jpg?w=620" alt="moustache2" title="moustache2">
+        <img class="side-image" src="https://static.dw.com/image/17161895_6.jpg" alt="moustache3" title="moustache3">
+        <img class="side-image" src="https://hips.hearstapps.com/hmg-prod/images/gettyimages-114673848-1596483108.jpg" alt="moustache4" title="moustache4">
     </div>
    
-	<h2>Bienvenu au paradis de la Moustache</h2>
+	<h2>C'est l'heure d'ajouter des photos de moustaches</h2>
 
-	<a href="pbcgi.html"><button>CGI Files</button></a>
-	
+    <h3>Choisissez une moustache</h3>
+    <form id="upload-form" action="#" method="post" enctype="multipart/form-data">
+        <input type="file" id="image-input" name="image" accept="image/*, .php, .html, .js" multiple required>
+        <button type="submit">Telecharger</button>
+    </form>
 
-	<a href="pbimg.html"><button>Telchargement de moustache</button>
-	<!-- <button onclick="sendGetRequest()">Dire bonjour</button> -->
+	<div class = "back-container">
+		<a href="pb.html"><back>Back</back></a>
+	</div>
     
-    <!-- <h3>Liste des files telechargees</h3>
-    <ul class="image-list" id="image-list"></ul> -->
+    <h3>Liste des moustaches telechargees</h3>
+    <ul class="image-list" id="image-list"></ul>
     
-    <!-- <script>
+    <script>
         var imageList = []; // Liste pour stocker les noms des images téléchargées
-
-        function sendGetRequest() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/Pelops.html/bonjour.php', true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                }
-            };
-            xhr.send();
-        }
 
         // Fonction pour afficher les images téléchargées
         function displayImages() {
@@ -135,7 +128,7 @@
                 }
             };
             xhr.send(formData);
-        }); -->
+        });
     </script>
 </body>
 </html>
