@@ -47,9 +47,19 @@ test2 ca /q /q
 test2 cb /q GET
 test2 cd /q /Network/HtmlFiles/
 test2 ce /q 0
-test2 cf /q Pelops/
 test2 cg /q Pelops/besoin/dun/cgi/stp
 test2 ch /q Pelops/ceci/est/un/cgi/askip
+
+test3 aa myserver myserver.com
+test3 ba 4141
+test3 da 4096
+test3 ea 32767
+test3 ca /q /q
+test3 cb /q GET
+test3 cd /q /Network/HtmlFiles/
+test3 ce /q 1
+test3 cg /q Pelops/besoin/dun/cgi/stp
+test3 ch /q Pelops/ceci/est/un/cgi/askip
 
 aaaaaaaa aa aaaaaaaaa nnnnnnnn
 

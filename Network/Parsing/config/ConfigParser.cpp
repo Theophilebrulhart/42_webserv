@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/07 13:59:38 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:41:28 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,10 @@ int	ConfigParser::check_servers(void) {
 		if(it->second.c_routes.find("/") == it->second.c_routes.end()) {
 			it->second.c_routes["/"] = a;
 			std::cout << "default route added to " << it->first << std::endl;
+		}
+		for(std::map<std::string, t_route>::iterator itt = it->second.c_routes.begin(); itt != it->second.c_routes.end(); itt++) {
+			if((itt->second.e_rep_listing == 0) && itt->second.f_def_rep.empty())
+				itt->second.f_def_rep = "Network/HtmlFiles/Pelops.html";
 		}
 	}
 	return 1;
