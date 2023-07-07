@@ -6,16 +6,21 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 22:11:39 by theophilebr       #+#    #+#             */
-/*   Updated: 2023/07/04 21:02:11 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:30:46 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersPost.hpp"
-#include "../Utils.hpp"
 
 void	createFile(std::string const &fileBody, std::string const &fileName, std::string const &extension,
-						 MAP_STRING &responsContent, MAP_STRING &info, std::string type)
+						 MAP_STRING &responsContent, MAP_STRING &info, std::string type,  ConfigParser::t_serv &servInfo)
 {
+	ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
+    if (route.a_route.empty())
+    {
+        std::cout << "empty \n\n";
+            return ;
+    }
 	std::string contentType = contentExtension(extension);
 	if (isInternalError(info, responsContent, contentType) < 0)
         return ;
@@ -53,7 +58,7 @@ void	createFile(std::string const &fileBody, std::string const &fileName, std::s
 }
 
 void	getFileBody(std::string const &buffer, std::string const &fileName, std::string const &extension,
-					 MAP_STRING &responsContent, MAP_STRING &info)
+					 MAP_STRING &responsContent, MAP_STRING &info,  ConfigParser::t_serv &servInfo)
 {
 	std::string fileBody;
 	std::string delimiter;
@@ -80,11 +85,11 @@ void	getFileBody(std::string const &buffer, std::string const &fileName, std::st
 		fileBody += buffer[j];
 		j++;
 	}
-	createFile(fileBody, fileName, extension, responsContent, info, type);
+	createFile(fileBody, fileName, extension, responsContent, info, type, servInfo);
 
 }
 
-void	getFile(std::string const &buffer, MAP_STRING &info, std::string toFind, MAP_STRING &responsContent)
+void	getFile(std::string const &buffer, MAP_STRING &info, std::string toFind, MAP_STRING &responsContent,  ConfigParser::t_serv &servInfo)
 {
 	std::string	path;
 	std::string fileName;
@@ -100,10 +105,10 @@ void	getFile(std::string const &buffer, MAP_STRING &info, std::string toFind, MA
 	for (int i = fileName.find("."); fileName[i] && fileName[i] != '\r'; i++)
 		extension += fileName[i];
 	std::cout << "\n EXTENSIOn : " << extension << "\n\n";
-	getFileBody(buffer, fileName, extension, responsContent, info);
+	getFileBody(buffer, fileName, extension, responsContent, info, servInfo);
 }
 
-void    getFormValue(std::string const &content, MAP_STRING &info, MAP_STRING &responsContent)
+void    getFormValue(std::string const &content, MAP_STRING &info, MAP_STRING &responsContent,  ConfigParser::t_serv &servInfo)
 {
-	getFile(content, info, "filename=", responsContent);
+	getFile(content, info, "filename=", responsContent, servInfo);
 }

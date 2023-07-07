@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+         #
+#    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/07/05 21:58:45 by mravera          ###   ########.fr        #
+#    Updated: 2023/07/07 12:11:46 by tbrulhar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,10 @@ ListenSocket.cpp}
 SRC +=	${addprefix Network/Server/, AServer.cpp TestServer.cpp}
 SRC +=	${addprefix Network/Parsing/RequestInfo/, RequestParsing.cpp GetInfo.cpp}
 SRC +=	${addprefix Network/Parsing/config/, ConfigParser.cpp}
-SRC +=	${addprefix Network/Method/, Utils.cpp}
+SRC +=	${addprefix Network/Method/, Utils.cpp SetErrorFile.cpp}
 SRC +=	${addprefix Network/Method/Delete/, DeleteFile.cpp}
 SRC +=	${addprefix Network/Method/Post/, FormParsing.cpp GetFormValue.cpp}
-SRC +=	${addprefix Network/Method/Get/, OpenFile.cpp}
+SRC +=	${addprefix Network/Method/Get/, OpenFile.cpp GetFile.cpp}
 SRC +=	${addprefix Network/Respons/, CreateRespons.cpp}
 SRC +=	${addprefix Network/CGI/, CGI.cpp}
 SRC +=	${addprefix Network/Utils/, Utils.cpp}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/05 14:05:39 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:34:27 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <unistd.h>
 # include "../Server/TestServer.hpp"
 # include "../Utils/Utils.hpp"
-# include "../Method/Utils.hpp"
+# include "../Method/HeadersMethod.hpp"
 
 # define CGI_BUFSIZE 65536
 # define CGI_FILEPATH "./Network/CGIFiles/"

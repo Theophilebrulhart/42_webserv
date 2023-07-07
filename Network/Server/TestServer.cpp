@@ -6,12 +6,12 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 21:47:07 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:21:49 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "TestServer.hpp"
-#include "../Method/Utils.hpp"
+#include "../Method/HeadersMethod.hpp"
 
 SERVER::TestServer::TestServer(int protocol, int port, int backlog, ConfigParser::t_serv servInfo) : AServer(AF_INET, SOCK_STREAM, protocol, port,
 INADDR_ANY, backlog)
@@ -40,12 +40,12 @@ int	SERVER::TestServer::_handler(int clientSocket)
         if (parsingRes == -1)
         {
             std::cout << "404 notfound\n\n";
-            notFound(_requestInfo, _responsContent);
+            notFound(_responsContent);
         }
         if (parsingRes == -2)
         {
             std::cout << "403 forbidden\n\n";
-            forbidden(_requestInfo, _responsContent);
+            forbidden(_responsContent);
         }
         return (-1);
     }
@@ -65,16 +65,7 @@ int	SERVER::TestServer::_handler(int clientSocket)
 	else if (_requestInfo.at("METHOD") == "DELETE")
 		deleteFile(_requestInfo, _responsContent, _servInfo);
 	else
-    {
-        if (_requestInfo.at("METHOD") == "GET" && _requestInfo.at("EXTENSION") == ".php")
-        {
-            std::cout << "pas" << std::endl;
-            CGI(_requestInfo, _responsContent);
-        }
-        else
-    		openFile(_requestInfo, _responsContent, _servInfo);
-        
-    }
+    	openFile(_requestInfo, _responsContent, _servInfo);
 	return (1);
 }
 

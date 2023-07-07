@@ -6,12 +6,12 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:02:35 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 16:37:16 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:15:15 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "HeadersRequestInfo.hpp"
-# include "../../Method/Utils.hpp"
+# include "../../Method/HeadersMethod.hpp"
 
 void    printInfo(MAP_STRING &info)
 {
@@ -49,17 +49,6 @@ int infoCheck(MAP_STRING info)
         return (-1);
     if (tryValue(info, "PROTOCOL") < 0)
         return (-1);
-    if (info.at("METHOD") == "GET")
-    {
-        if (tryValue(info, "EXTENSION") < 0)
-            return (-2);
-        if (info.at("PATH").find(".") == std::string::npos)
-        {
-            std::cout << "pas de . \n\n";
-            return (-2);
-        }
-    }
-        
     return (1);
 }
 
@@ -69,8 +58,8 @@ int    requestParsing(std::string buffer, MAP_STRING &info)
     if (!buffer.empty())
     {
         getInfo(buffer, info);
-        int checkRes = infoCheck(info);
         printInfo(info);
+        int checkRes = infoCheck(info);
         if ( checkRes < 0)
             return (checkRes);
     }

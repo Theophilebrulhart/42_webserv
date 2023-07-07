@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/05 16:28:21 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/07 13:38:26 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	catch (std::bad_alloc &e) {
 		std::cerr << e.what() << std::endl;
 	}
-	printStringArray(env);
+	//printStringArray(env);
 	
 
 

@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 20:16:03 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 11:32:09 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRIN
     }
     std::cout << "###### content ########\n\n" << content.substr(0, 1000) << "\n";
 
-    getFormValue(content, info, responsContent);
+    getFormValue(content, info, responsContent, servInfo);
     buffer += content;
     // std::cout << "###### bffer ########\n\n" << buffer << "\n";
 }

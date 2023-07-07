@@ -25,19 +25,31 @@ Bonjour!
 //This configuration file must always begin with "Bonjour!"
 
 myserver aa myserver myserver.com
-myserver ba 8080 8282 8383 8484 8585 8686 8787 8888
+myserver ba 8181 8686 8787 8888
 myserver da 4096
 myserver ca / /
 myserver cb / GET POST
 myserver cd / /Network/HtmlFiles/
 myserver ce / 0
-myserver cf / Pelops.html
+myserver cf / /Pelops.html
 
 myserver ca /upload /upload
 myserver cb /upload POST
 myserver cd /upload /Network/HtmlFiles/Upload
 myserver ce /upload 0
-myserver cf /upload Pelops.html
+myserver cf /upload /Pelops.html
+
+myserver ca /HtmlFiles /HtmlFiles
+myserver cb /HtmlFiles POST GET
+myserver cd /HtmlFiles /Network/
+myserver ce /HtmlFiles 1
+myserver cf /HtmlFiles /Pelops.html
+
+myserver ca /CGIFiles /CGIFiles
+myserver cb /CGIFiles POST GET
+myserver cd /CGIFiles /Network/
+myserver ce /CGIFiles 1
+myserver cf /CGIFiles Pelops.html
 
 test aa test test.com
 test ba 10 90

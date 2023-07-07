@@ -6,11 +6,11 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 21:43:13 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 18:44:23 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Utils.hpp"
+#include "HeadersMethod.hpp"
 
 std::string ft_itoa(int n)
 {
@@ -65,14 +65,15 @@ void setResponsContent(MAP_STRING& responsContent, std::string protocol, std::st
     return ;
 }
 
-std::string loadContentFile(std::string contentFile)
+std::string loadContentFile(std::string contentFile, std::string root)
 {	
-	std::string file = "Network/HtmlFiles" + contentFile;
+	std::string file = root + contentFile;
+	std::cout << "\nContentFile in loadcontent: " << file << "\n\n";
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);
 	if(ifs.fail())
 	{
-		std::perror(("Failed to open the file located at " + contentFile).c_str());
+		std::perror(("Failed to open the file located at " + file).c_str());
 		return (tmp);
 	}
 	char	c = ifs.get();
@@ -103,53 +104,43 @@ int isValidMethod(const MAP_STRING& info)
     return (-1);
 }
 
-void setInternalError(std::string handle, std::string problem, MAP_STRING &responsContent, std::string protocol,
-						std::string contentType)
+bool isFile(const std::string& path)
 {
-	std::string internalError = loadContentFile("/ErrorFiles/500InternalError.html");
-	std::perror(("Server doesn't handle the " + handle + problem).c_str());
-	setResponsContent(responsContent, protocol, "500 Internal Server Error", contentType, internalError);
-	return ;
-}
-
-int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string contentType)
-{
-	if (isValidMethod(info) < 0)
+	std::cout << "isfile file :" <<  path << "\n\n";
+    struct stat fileStat;
+    if (stat(path.c_str(), &fileStat) != 0)
     {
-    	setInternalError("METHOD :", info.at("METHOD"), responsContent, info.at("PROTOCOL"), contentType);
-		return (-1);
+        // Erreur lors de la récupération des informations du fichier
+        return false;
     }
-	if (contentType == "Not supported")
+
+    return S_ISREG(fileStat.st_mode);
+}
+
+bool isDir(const std::string& path)
+{
+
+	std::cout << "isDir path :" <<  path << "\n\n";
+
+    struct stat fileStat;
+    if (stat(path.c_str(), &fileStat) != 0)
     {
-        setInternalError("extension of the file :", info.at("PATH"), responsContent, info.at("PROTOCOL"), contentType);
-	    return (-1);
+        // Erreur lors de la récupération des informations du fichier
+        return false;
     }
-	return (1);
+
+    return S_ISDIR(fileStat.st_mode);
 }
 
-void notFound(MAP_STRING &info, MAP_STRING &responsContent)
+int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info)
 {
-	std::string notFound = loadContentFile("/ErrorFiles/404NotFound.html");
-	setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);
-	return ;
-}
-
-void forbiddenMethod(MAP_STRING &responsContent)
-{
-	std::string forbidden = loadContentFile("/ErrorFiles/405Forbidden.html");
-	setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
-	return ;
-}
-
-void forbidden(MAP_STRING &info, MAP_STRING &responsContent)
-{
-	std::string forbidden = loadContentFile("/ErrorFiles/403Forbidden.html");
-	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
-	return ;
-}
-
-int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route)
-{
+	std::string file;
+	if (!isFile(route.d_root.substr(1) + info.at("PATH").substr(1)) && !isDir(route.d_root.substr(1) + info.at("PATH").substr(1)))
+	{
+		std::cout << "Not a existing file or directory \n\n";
+		notFound(responsContent);
+		return (0);
+	}
 	 std::vector<std::string>::iterator it = std::find(route.b_methods.begin(), route.b_methods.end(), method);
 	if (it != route.b_methods.end()) {
 		return (1);
@@ -159,31 +150,65 @@ int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigPar
     }
 }
 
-int	isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
+std::string    findSlash(const std::string &url)
 {
+    std::string str    = url.substr(1);
+    size_t	start = str.find_first_of('/');
+    if (start == std::string::npos)
+    {
+        std::string    r = "/" + str;
+        return r;
+    }
+    else
+    {
+        std::string r = str.substr(0, start);
+        r = '/' + r;
+        return r;
+    }
+}
+
+ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
+{
+	std::cout << "is route ?\n\n";
+	ConfigParser::t_route empty;
 	std::string path = info.at("PATH");
 	if (path.size() == 1)
 	{
+		std::cout << "route sze 1\n\n";
 		if (servInfo.c_routes.find(path) != servInfo.c_routes.end() && path != "/")
 		{
-			forbidden(info, responsContent);
-			return (-1);
+			std::cout << "route : " << info.at("PATH") << "\n\n";
+			forbidden(responsContent);
+			return (empty);
 		}
-		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path]))
-			return (-1);
-		return (1);
+		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path], info))
+			return (empty);
+		std::cout << "return size 1 route : " << servInfo.c_routes[path].a_route << "\n\n";
+		return (servInfo.c_routes[path]);
 	}
-	std::string tmp = path.substr(1);
-	size_t f = tmp.find("/");
-	std::string route = path.substr(0, f);
-	std::cout << "route : " << route << "\n\n";
+	std::string route = findSlash(path);
+	std::cout << "route eee: " << route << "\n\n";
+	// if (route.find(".php") != std::string::npos)
+	// {
+	// 	if (servInfo.c_routes.find("/CGIFiles") == servInfo.c_routes.end())
+	// 	{
+	// 		std::cerr << "Please add /CGIFiles route in configFile\n\n";
+	// 		return (empty);
+	// 	}
+	// 	std::cout << "PHP File Detected\n\n";
+	// 	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/CGIFiles"], info))
+	// 		return (empty);
+	// 	return (servInfo.c_routes["/CGIFiles"]);
+	// }
 	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
 	{
 		std::cout << "\nNO ROUTE TA MERE LA PUUUTE\n\n";
-		return (-2);
+		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info))
+			return (empty);
+		return (servInfo.c_routes["/"]);
 	}
-	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route]))
-		return (-1);
-	return (0);
+	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route], info))
+		return (empty);
+	return (servInfo.c_routes[route]);
 }
 
