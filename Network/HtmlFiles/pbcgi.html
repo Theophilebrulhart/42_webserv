@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="pbcgi.css"> 
+    <title>Moustache Gracias CGI</title>
+</head>
+<body>
+	<div class ="bande">
+ 	   <h1>Moustache Gracias</h1>
+	</div>
+
+
+
+
+	<h2>CGI Files</h2>
+  
+	<div class="button-container">
+		<button onclick="sendGetRequest('/pb.html/bonjour.php')">Dire bonjour</button>
+		<button onclick="sendGetRequest('/pb.html/hw.php')">Dire Hello World</button>
+		<button onclick="sendGetRequest('/pb.html/mm.php')">Manger</button>
+		<button onclick="sendGetRequest('/pb.html/infloop.php')">Faire une loop infinie</button>
+		<button onclick="sendGetRequestwithArg('/pb.html/upper.php?string=')">Crier fort</button>
+		<button onclick="sendGetRequestwith2Arg('/pb.html/conca.php?value1=')">Concatenate</button>
+		<button onclick="sendGetRequestwith3Arg('/pb.html/calcul.php?num1=')">Calculer</button>
+		<button onclick="openCalcul('/pb.html/bigCalcul.php')">Big Calculator</button>
+	</div>
+
+	<div class = "back-container">
+		<a href="pb.html"><back>Back</back></a>
+	</div>
+
+    <script>
+        var imageList = []; // Liste pour stocker les noms des images téléchargées
+
+        function sendGetRequest(scriptName) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', scriptName, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+
+		function sendGetRequestwithArg(scriptName) {
+			var arguments = prompt("Tu veux crier quoi: ");	
+			scriptName = scriptName + arguments;
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', scriptName, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+
+		function sendGetRequestwith2Arg(scriptName) {
+			var arguments = prompt("Premiere phrase: ");	
+			scriptName = scriptName + arguments;
+			var	value2 = "&value2=";
+			scriptName = scriptName + value2; 
+			var arguments = prompt("Deuxieme phrase: ");	
+			scriptName = scriptName + arguments;
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', scriptName, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+
+		function openCalcul() {
+			window.location.href = "bigCalcul.php";
+		}
+
+		function sendGetRequestwith3Arg(scriptName) {
+			var arguments = prompt("Premier chiffre: ");	
+			scriptName = scriptName + arguments;
+			var operator = "&operator=";
+			scriptName = scriptName + operator;
+			var arguments = prompt("Operateur: ");	
+			scriptName = scriptName + arguments;	
+			var	value2 = "&num2=";
+			scriptName = scriptName + value2; 
+			var arguments = prompt("Deuxieme chiffre: ");	
+			scriptName = scriptName + arguments;
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', scriptName, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+
+
+        // Fonction pour afficher les images téléchargées
+        function displayImages() {
+            var imageListElement = document.getElementById('image-list');
+            imageListElement.innerHTML = '';
+
+            // Parcourir la liste des images et les ajouter à la liste
+            imageList.forEach(function(imageName) {
+                var listItem = document.createElement('li');
+                listItem.innerText = imageName;
+                imageListElement.appendChild(listItem);
+            });
+        }
+
+        // Fonction pour supprimer une image
+        function deleteImage(imageName) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('DELETE', '/' + imageName, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 204 )) {
+                    alert('L\'image a ete supprimee avec succes.');
+                    // Supprimer l'élément de conteneur de l'image de la liste des images affichées
+                    var imageContainer = document.querySelector('.image-container');
+                    if (imageContainer) {
+                        imageContainer.parentNode.removeChild(imageContainer);
+                    }
+                    // Mettre à jour la liste des images après la suppression
+                    var index = imageList.indexOf(imageName);
+                    if (index > -1) {
+                        imageList.splice(index, 1);
+                        displayImages();
+                    }
+                } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
+                    alert('Une erreur s\'est produite lors de la suppression de du file.');
+                }
+            };
+            xhr.send();
+        }
+        
+        var imageInput = document.getElementById('image-input');
+
+        imageInput.addEventListener('change', function(event) {
+            var files = event.target.files;
+
+            // Parcourir les fichiers sélectionnés
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    var imageSrc = event.target.result;
+                    var imageName = file.name;
+
+                    // Ajouter le nom de l'image à la liste
+                    imageList.push(imageName);
+
+                    // Créer un élément d'image pour l'afficher
+                    var imageElement = document.createElement('img');
+                    imageElement.className = 'uploaded-image';
+                    imageElement.src = imageSrc;
+                    imageElement.alt = imageName;
+
+                    // Créer un élément de bouton pour supprimer l'image
+                    var deleteButton = document.createElement('button');
+                    deleteButton.innerText = 'Supprimer';
+                    deleteButton.addEventListener('click', function() {
+                        deleteImage(imageName);
+                    });
+
+                    // Créer un élément de conteneur pour l'image et le bouton de suppression
+                    var imageContainer = document.createElement('div');
+                    imageContainer.className = 'image-container';
+                    imageContainer.appendChild(imageElement);
+                    imageContainer.appendChild(deleteButton);
+
+                    // Ajouter le conteneur d'image à la liste des images
+                    var imageListElement = document.getElementById('image-list');
+                    imageListElement.appendChild(imageContainer);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
+                    alert('L\'image a ete telechargee avec succes.');
+                } else if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
+                    alert('Une erreur s\'est produite lors du telechargement du file.');
+                }
+            };
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>
