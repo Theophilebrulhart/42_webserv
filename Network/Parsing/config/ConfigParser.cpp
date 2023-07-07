@@ -6,13 +6,10 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 23:02:50 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/07 13:59:38 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//Very basic parser for weird configuration file
-//Each line should contain the whole "path" leading to where the information
-//will be stored.
 #include "ConfigParser.hpp"
 
 int	ConfigParser::ConfigBuilder(char *filename) {
@@ -50,6 +47,8 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	}
 	if(this->servec.empty())
 		throw("No server has been found in provided configuration file.");
+	if(!this->check_servers())
+		throw("Error in parsing : bad server");
 	return 0;
 }
 
@@ -138,6 +137,7 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 int	ConfigParser::addServ(std::string name) {
 
 	t_serv	a;
+	t_route	b;
 
 	if(this->servec.find(name) == this->servec.end()) {
 		a.b_port = "8080";
@@ -146,7 +146,6 @@ int	ConfigParser::addServ(std::string name) {
 		if(this->default_server.empty())
 			this->default_server = name;
 		this->servec[name] = a;
-		std::cout << "SUUUUUU" << std::endl;
 	}
 	return 0;
 }
@@ -178,13 +177,32 @@ int	ConfigParser::check_port(std::string str) {
 int	ConfigParser::check_back_log(std::string servname, std::string str) {
 
 	if (str.find_first_not_of("0123456789") != std::string::npos) {
-		std::cout << "Cannot read backlog value, value set to default one (40)." << std::endl;
+		std::cout << "Cannot read backlog value, value set to default (40)." << std::endl;
 		return 0;
 	}
 	if (str.size() > 5 || (atoi(str.c_str()) > 32767)) {
 		std::cout << "Backlog higher than 32767, value set to 32767." << std::endl;
 		this->servec[servname].e_back_log = "32767";
 		return 0;
+	}
+	return 1;
+}
+
+int	ConfigParser::check_servers(void) {
+	
+	t_route	a;
+
+	a.a_route = "/";
+	a.b_methods.push_back("GET");
+	a.b_methods.push_back("POST");
+	a.d_root = "Network/HtmlFiles";
+	a.f_def_rep = "Network/HtmlFiles/Pelops.html";
+	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
+		std::cout << "checking [" << it->first << "] ..." << std::endl;
+		if(it->second.c_routes.find("/") == it->second.c_routes.end()) {
+			it->second.c_routes["/"] = a;
+			std::cout << "default route added to " << it->first << std::endl;
+		}
 	}
 	return 1;
 }

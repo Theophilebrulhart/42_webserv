@@ -39,7 +39,19 @@ myserver cf / Pelops/
 myserver cg / Pelops/besoin/dun/cgi/stp
 myserver ch / Pelops/ceci/est/un/cgi/askip
 
-aaaaaaaa aa aaaaaaaaa
+test2 aa myserver myserver.com
+test2 ba 4142
+test2 da 4096
+test2 ea 32767
+test2 ca /q /q
+test2 cb /q GET
+test2 cd /q /Network/HtmlFiles/
+test2 ce /q 0
+test2 cf /q Pelops/
+test2 cg /q Pelops/besoin/dun/cgi/stp
+test2 ch /q Pelops/ceci/est/un/cgi/askip
+
+aaaaaaaa aa aaaaaaaaa nnnnnnnn
 
 ouinon   xa oui
 nonnon	 xb non

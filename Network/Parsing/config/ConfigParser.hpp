@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:09:55 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 22:48:33 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/07 11:57:41 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ private:
 
 	int	check_port(std::string str);
 	int	check_back_log(std::string servname, std::string str);
+	int	check_servers(void);
 
 };
 
