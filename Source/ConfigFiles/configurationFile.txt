@@ -8,62 +8,51 @@ Bonjour!
 //
 //->[token] is a set of two letters. The first one is used to
 //	identify the element of the server you want to set up :
-//	a -> std::vector<std::string> to store all server_names
-//	b -> std::string for the port
-//	c -> std::map<std::string, t_route> to store all the routes and their options
-//	d -> std::string for the max size of the body
-//	e -> std::map<std::string, std::string> to store all error names
+//	server_names  -> std::vector<std::string>
+//	ports         -> std::vector<std::string>
+//	routes        -> std::map<std::string, t_route>
+//	max_body_size -> std::string
+//	backlog       -> std::string
+//	error_names   -> std::map<std::string, std::string> -> [error number] xx [error name]
 //
 //	Choosing 'c' will make the second letter an identifier to the route
 //	element you want to setup :
-//	ca -> std::string for the route itself
-//	cb -> std::vector<std::string> for the different methods allowed for this route
-//	cc -> std::string for a redirection route
-//	cd -> std::string for a root route
-//	ce -> bool to allow (or not) the directory listing
-//	cf -> std::string for a default file
+//	_route       -> std::string
+//	_methods     -> std::vector<std::string>
+//	_redirec     -> std::string
+//	_root        -> std::string
+//	_rep_listing -> bool
+//	_def_rep     -> std::string
+//	_cgi_script  -> std::string
+//	_cgi_addr    -> std::string
 //This configuration file must always begin with "Bonjour!"
 
-myserver aa myserver myserver.com
-myserver ba 8181 8686 8787 8888
-myserver da 4096
-myserver ca / /
-myserver cb / GET POST
-myserver cd / /Network/HtmlFiles/
-myserver ce / 0
-myserver cf / /Pelops.html
+myserver server_names	myserver myserver.com
+myserver ports			4242
+myserver max_body_size	4096
+myserver back_log 		32767
+myserver _route			/ /
+myserver _methods		/ GET POST DELETE
+myserver _root			/ /Network/HtmlFiles/
+myserver _rep_listing	/ 0
+myserver _def_rep		/ pb.html
+myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
+myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
-myserver ca /upload /upload
-myserver cb /upload POST
-myserver cd /upload /Network/HtmlFiles/Upload
-myserver ce /upload 0
-myserver cf /upload /Pelops.html
+myserver2 server_names	myserver myserver.com
+myserver2 ports			4141
+myserver2 max_body_size	4096
+myserver2 back_log 		32767
+myserver2 _route		/ /
+myserver2 _methods		/ GET
+myserver2 _root			/ /Network/HtmlFiles/
+myserver2 _rep_listing	/ 0
+myserver2 _def_rep		/ pb.html
+myserver2 _cgi_script	/ Pelops/besoin/dun/cgi/stp
+myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
-myserver ca /HtmlFiles /HtmlFiles
-myserver cb /HtmlFiles POST GET
-myserver cd /HtmlFiles /Network/
-myserver ce /HtmlFiles 1
-myserver cf /HtmlFiles /Pelops.html
-
-myserver ca /CGIFiles /CGIFiles
-myserver cb /CGIFiles POST GET
-myserver cd /CGIFiles /Network/
-myserver ce /CGIFiles 1
-myserver cf /CGIFiles Pelops.html
-
-test aa test test.com
-test ba 10 90
-test da 4096
-test ca / /
-test cb / GET POST
-test cd / /Network/HtmlFiles/
-test ce / 0
-test cf / Pelops.html
-
-test ca /upload /upload
-test cb /upload POST
-test cd /upload /Network/HtmlFiles/Upload
-test ce /upload 0
-test cf /upload Pelops.html
 
 //------error_names
+
+404 add duku
+407	add watur

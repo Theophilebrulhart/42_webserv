@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/06 22:03:27 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:05:13 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//Very basic parser for weird configuration file
-//Each line should contain the whole "path" leading to where the information
-//will be stored.
 #include "ConfigParser.hpp"
 
 int	ConfigParser::ConfigBuilder(char *filename) {
@@ -22,6 +19,7 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	std::string		newFilename = filename;
 	int				i = 1;
 
+	this->default_server = "";
 	if (filename == NULL) {
 		std::cout << "No configuration file provided : loading default settings..." << std::endl;
 		BuildDefault();
@@ -49,6 +47,8 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	}
 	if(this->servec.empty())
 		throw("No server has been found in provided configuration file.");
+	if(!this->check_servers())
+		throw("Error in parsing : bad server");
 	return 0;
 }
 
@@ -57,19 +57,16 @@ int	ConfigParser::videur(std::string str) {
 	std::string			serv_n;
 	std::string			token;
 	std::string			elem;
-	std::string			serv_token = "abcde";
-	std::string			route_token = "abcdefgh";
 	std::istringstream	ss(str);
 
 	if(str.empty() || (str[0] == '/' && str[1] == '/'))
 		return 0;
-	if(ss >> serv_n) {
-		if(this->servec.find(serv_n) == this->servec.end())
-			this->addServ(serv_n);
-	}
-	if(ss >> token) {
-		if( (token.size() != 2) || (serv_token.find(token[0]) == std::string::npos) || (route_token.find(token[1]) == std::string::npos) )
-			throw("Error : wrong token in configuration file");
+	if(ss >> serv_n && ss >> token) {
+		if(token != "add") {
+			if(this->servec.find(serv_n) == this->servec.end())
+				this->addServ(serv_n);
+			this->addTruc(serv_n, token, ss);
+		}
 		else
 			this->addTruc(serv_n, token, ss);
 	}
@@ -78,55 +75,91 @@ int	ConfigParser::videur(std::string str) {
 	return 0;
 }
 
+int	ConfigParser::isToken(std::string token) {
+
+	std::string			serv_token = "abcdex";
+	std::string			route_token = "abcdefgh";
+
+	if((token.size() != 2) || (serv_token.find(token[0]) == std::string::npos) || (route_token.find(token[1]) == std::string::npos))
+		return 0;
+	return 1;
+}
+
 int	ConfigParser::addTruc(std::string servname, std::string token, std::istringstream& ss) {
 
 	std::string	buf;
 	bool		boolbuf;
 	std::string route;
 
-	if(token[0] == 'a') {
+	if(token == "server_names") {
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
-	else if(token[0] == 'b') {
-		while(ss >> buf && check_port(buf))
+	else if(token == "ports" && ss >> buf) {
+		if(this->check_port(buf))
 			this->servec[servname].b_port.push_back(buf);
 	}
-	else if(token[0] == 'd' && ss >> buf)
+	else if(token == "max_body_size" && ss >> buf)
 		this->servec[servname].d_max_body_size = buf;
-	else if(token[0] == 'e' && ss >> buf && ss >> route)
-		this->e_error_names[buf] = route;
-	else if(token[0] == 'c' && ss >> route) {
+	else if(token == "back_log" && ss >> buf) {
+		if(this->check_back_log(servname, buf))
+			this->servec[servname].e_back_log = buf;
+	}
+	else if(token[0] == '_' && ss >> route) {
 		this->addRoute(servname, route);
-		if(token[1] == 'a' && ss >> buf)
+		if(token == "_route" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].a_route = route;
-		else if(token[1] == 'b')
+		}
+		else if(token == "_methods")
 			while(ss >> buf)
 				this->servec[servname].c_routes[route].b_methods.push_back(buf);
-		else if(token[1] == 'c' && ss >> buf)
+		else if(token == "_redirection" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].c_redirec = buf;
-		else if(token[1] == 'd' && ss >> buf)
+		}
+		else if(token == "_root" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].d_root = buf;
-		else if(token[1] == 'e' && ss >> boolbuf)
+		}
+		else if(token == "_rep_listing" && ss >> boolbuf)
 			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
-		else if(token[1] == 'f' && ss >> buf)
+		else if(token == "_def_rep" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].f_def_rep = buf;
-		else if(token[1] == 'g' && ss >> buf)
+		}
+		else if(token == "_cgi_script" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
-		else if(token[1] == 'h' && ss >> buf)
+		}
+		else if(token == "_cgi_addr" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
-		else
-			return 1;
+		}
 	}
+	else if(token == "add" && ss >> buf)
+		this->x_error_names[servname] = buf;
+	else
+		throw("Error : wrong token in configuration file");
 	return 0;
 }
 
 int	ConfigParser::addServ(std::string name) {
 
 	t_serv	a;
+	t_route	b;
 
 	if(this->servec.find(name) == this->servec.end()) {
 		a.d_max_body_size = "";
+		a.e_back_log = "40";
+		if(this->default_server.empty())
+			this->default_server = name;
 		this->servec[name] = a;
 	}
 	return 0;
@@ -149,13 +182,56 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 
 int	ConfigParser::check_port(std::string str) {
 
+	if ((str.size() > 5) || (atoi(str.c_str()) <= 1) || (atoi(str.c_str()) >= 49151) || (str.find_first_not_of("0123456789") != std::string::npos)) {
+		std::cout << "Invalid port in configuration file. Using default 8080." << std::endl;
+		return 0;
+	}
+	return 1;
+}
 
+int	ConfigParser::check_back_log(std::string servname, std::string str) {
+
+	if (str.find_first_not_of("0123456789") != std::string::npos) {
+		std::cout << "Cannot read backlog value, value set to default (40)." << std::endl;
+		return 0;
+	}
+	if (str.size() > 5 || (atoi(str.c_str()) > 32767)) {
+		std::cout << "Backlog higher than 32767, value set to 32767." << std::endl;
+		this->servec[servname].e_back_log = "32767";
+		return 0;
+	}
+	return 1;
+}
+
+int	ConfigParser::check_servers(void) {
+	
+	t_route	a;
+
+	a.a_route = "/";
+	a.b_methods.push_back("GET");
+	a.b_methods.push_back("POST");
+	a.d_root = "/Network/HtmlFiles";
+	a.f_def_rep = "/pb.html";
+	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
+		std::cout << "checking [" << it->first << "] ..." << std::endl;
+		if(it->second.c_routes.find("/") == it->second.c_routes.end()) {
+			it->second.c_routes["/"] = a;
+			std::cout << "default route added to " << it->first << std::endl;
+		}
+		if(it->second.c_routes["/"].d_root.empty())
+			throw("Error in configuration file : every route needs a root route!");
+		for(std::map<std::string, t_route>::iterator itt = it->second.c_routes.begin(); itt != it->second.c_routes.end(); itt++) {
+			if((itt->second.e_rep_listing == 0) && itt->second.f_def_rep.empty())
+				throw("Error no def_rep set up with listing set to 0 in configuration file.");
+		}
+	}
 	return 1;
 }
 
 int ConfigParser::dispConfig(void) {
 
 	std::cout << "-----" << std::endl << "Current config file contains : " << std::endl;
+	std::cout << "default server = " << this->default_server << std::endl;
 	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
 		std::cout << "[" << it->first << "]" << std::endl;
 		std::cout << "| server_names : ";
@@ -166,6 +242,8 @@ int ConfigParser::dispConfig(void) {
 			std::cout << "| port : " << it->second.b_port[i] << std::endl;
 		if(!it->second.d_max_body_size.empty())
 			std::cout << "| maxbdysize : " << it->second.d_max_body_size << std::endl;
+		if(!it->second.e_back_log.empty())
+			std::cout << "| back_log : " << it->second.e_back_log << std::endl;
 		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
 			std::cout << "| route [" << itr->first << "]" << std::endl;
 			std::cout << "|   methods = ";
@@ -191,7 +269,7 @@ int	ConfigParser::BuildDefault(void) {
 int	ConfigParser::dispErrorNames(void) {
 	
 	std::cout << "---list of all error names in memory : ---" << std::endl;
-	for(std::map<std::string, std::string>::iterator it = this->e_error_names.begin(); it != this->e_error_names.end(); it++)
+	for(std::map<std::string, std::string>::iterator it = this->x_error_names.begin(); it != this->x_error_names.end(); it++)
 		std::cout << it->first << "=" << it->second << std::endl;
 	return 0;
 }
@@ -217,7 +295,8 @@ ConfigParser::ConfigParser(ConfigParser const & src) {
 ConfigParser & ConfigParser::operator=(ConfigParser const & rhs) {
 
 	this->servec = rhs.servec;
-	this->e_error_names = rhs.e_error_names;
+	this->x_error_names = rhs.x_error_names;
+	this->default_server = rhs.default_server;
 	return (*this);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OpenFile.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 18:24:13 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:24:56 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
 {
     std::cout << "openFile\n\n";
     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
+    std::cout << "on me voit 3\n\n";
     if (info.at("METHOD") == "GET")
     {
         std::cout << "method get\n\n";
