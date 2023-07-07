@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 13:26:59 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/06 16:52:36 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,26 @@
 # include "../Respons/HeadersRespons.hpp"
 # include "../CGI/CGI.hpp"
 
+
+
 namespace   SERVER
 {
     class TestServer : public AServer
     {
         public:
-            TestServer();
+            TestServer(int protocol, int port, int backlog, ConfigParser::t_serv servInfo);
             ~TestServer(void);
             
-            void    launch(void);
-            
+            int  			        _handler(int clientSocket);
+            int     		        _responder(int clientSocket);
+            std::string		        _buffer;
+            ConfigParser::t_serv    _servInfo;
 
         private:
+            TestServer();
 
-            std::string		_buffer;
             int				_newSocket;
-            int  			_handler(int clientSocket);
-            int     		_responder(int clientSocket);
+            
 			MAP_STRING		_requestInfo;
             MAP_STRING      _responsContent;
             std::vector<int> _clientSockets;

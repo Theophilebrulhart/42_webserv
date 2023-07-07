@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HeadersParsing.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:05:05 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/06/28 17:57:44 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/05 21:57:01 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define HEADERSPARSING_HPP
 
 # include "RequestInfo/HeadersRequestInfo.hpp"
+# include "config/HeadersConfig.hpp"
 
 #endif

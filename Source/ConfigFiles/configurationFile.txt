@@ -1,0 +1,38 @@
+Bonjour!
+
+//the scheme of a valid line is as follow :
+//[server unique ID/name] [token] [route] [element]
+//
+//->[server unique ID/name] can be whatever you want.
+//	It just need to be unique for each server you set up.
+//
+//->[token] is a set of two letters. The first one is used to
+//	identify the element of the server you want to set up :
+//	a -> std::vector<std::string> to store all server_names
+//	b -> std::string for the port
+//	c -> std::map<std::string, t_route> to store all the routes and their options
+//	d -> std::string for the max size of the body
+//	e -> std::map<std::string, std::string> to store all error names
+//
+//	Choosing 'c' will make the second letter an identifier to the route
+//	element you want to setup :
+//	ca -> std::string for the route itself
+//	cb -> std::vector<std::string> for the different methods allowed for this route
+//	cc -> std::string for a redirection route
+//	cd -> std::string for a root route
+//	ce -> bool to allow (or not) the directory listing
+//	cf -> std::string for a default file
+//This configuration file must always begin with "Bonjour!"
+
+myserver aa myserver myserver.com
+myserver ba 8080
+myserver da 4096
+myserver ca / /
+myserver cb / GET
+myserver cd / /Network/HtmlFiles/
+myserver ce / 0
+myserver cf / Pelops/
+myserver cg / Pelops/besoin/dun/cgi/stp
+myserver ch / Pelops/ceci/est/un/cgi/askip
+
+//------error_names

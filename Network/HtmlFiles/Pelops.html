@@ -29,7 +29,7 @@
 
         function sendGetRequest() {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://127.0.0.1/Pelops.html/bonjour.php', true);
+            xhr.open('GET', '/Pelops.html/bonjour.php', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText);
@@ -54,7 +54,7 @@
         // Fonction pour supprimer une image
         function deleteImage(imageName) {
             var xhr = new XMLHttpRequest();
-            xhr.open('DELETE', 'http://127.0.0.1/' + imageName, true);
+            xhr.open('DELETE', '/' + imageName, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 204 )) {
                     alert('L\'image a ete supprimee avec succes.');
@@ -125,7 +125,7 @@
             event.preventDefault();
             var formData = new FormData(this);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://127.0.0.1/upload', true);
+            xhr.open('POST', '/upload', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
                     alert('L\'image a ete telechargee avec succes.');
