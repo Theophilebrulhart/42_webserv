@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/07 13:38:26 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:06:28 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ CGI::CGI() {
 
 }
 
-CGI::CGI(const MAP_STRING &_requestInfo,  MAP_STRING &_responsContent) {
+CGI::CGI(MAP_STRING &_requestInfo,  MAP_STRING &_responsContent) {
 	setUpEnv(_requestInfo, _responsContent);
 }
 
@@ -25,12 +25,10 @@ CGI::~CGI(void) {
 
 }
 
-void	CGI::setUpEnv(const MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
+void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 {
 	std::map<std::string, std::string>::iterator	it;
 
-	// try {
-	
 	_env["REQUEST_METHOD"] = _requestInfo.at("METHOD");
 	_env["AUTH_TYPE"] = "";
 	if (_env["REQUEST_METHOD"] == "GET")
@@ -81,10 +79,37 @@ void	CGI::setUpEnv(const MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
        	_env["QUERY_STRING"] = ""; 
     }
 	Exec(_responsContent);
+	if (_ewor == 5 || _ewor == 4)
+	{
+		std:: string Error;
+		if (_ewor == 5)
+		{
+			Error = "Error 500: Internal error";
+			isInternalError(_requestInfo, _responsContent, "text/html");
+		}
+		else if (_ewor == 4)
+		{
+			Error = "Error 404: Not found";
+			notFound(_requestInfo, _responsContent);
+		}
+	}
 }
 
 int		CGI::SetResponseContent(MAP_STRING &_responsContent, std::string output)
 {
+	// if (_ewor == 5 || _ewor == 4)
+	// {
+	// 	if (_ewor == 5)
+	// 	{
+	// 		setResponsContent(_responsContent, "HTTP/1.1", "500 Internal error", "text/html", output);
+	// 		return 0;
+	// 	}
+	// 	else if (_ewor == 4)
+	// 	{
+	// 		setResponsContent(_responsContent, "HTTP/1.1", "404 Not found", "text/html", output);
+	// 		return 0;
+	// 	}
+	// }
 	size_t	f = output.find("\n");
 	std::string	rep = output.substr(f + 1, output.size());
 	f = rep.find("\n");
@@ -108,10 +133,8 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	}
 	//printStringArray(env);
 	
-
-
 	std::string s1 = CGI_PHP;
-	std::string s2 = "./Netwrok/CGIFiles/hw.php";
+	std::string s2 = _env["SCRIPT_FILENAME"];
 	// std::cout << "s1 : " << s1 << std::endl;
 	// std::cout << "s2 : " << s2 << std::endl;
 	char* charS1 = new char[s1.length() + 1];
@@ -120,55 +143,89 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	std::strcpy(charS2, s2.c_str());
 	char* argv[] = {charS1, charS2, NULL};	
 
-	int pipefd[2];
-    if (pipe(pipefd) == -1) {
-        std::cerr << "Error creating pipe" << std::endl;
-        return 1;
-    }
-
-    int pid = fork();
+	pid_t	pid;
+	int		pipe1[2];
+	int		pipe2[2];
+	
+	//send data from parent to child
+	if (pipe(pipe1) < 0)
+	{
+		std::cerr << "Error creating pipe" << std::endl;
+		_ewor = 5;
+		return 0;
+	}
+	//send data from child to parent
+	if (pipe(pipe2) < 0)
+	{
+		std::cerr << "Error creating pipe" << std::endl;
+		_ewor = 5;
+		return 0;
+	}
+	pid = fork();
+  
     if (pid == 0) {
         // Child process
-        close(pipefd[0]); // Close the read end of the pipe
-
         // Redirect standard output to the write end of the pipe
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
+		dup2(pipe1[0], STDIN_FILENO);
+		dup2(pipe2[1], STDOUT_FILENO);
 
+		close(pipe1[0]);
+		close(pipe1[1]);
+		close(pipe2[0]);
+		close(pipe2[1]);
         execve(argv[0], argv, env);
         std::cerr << "Error executing PHP script" << std::endl;
-        return 1;
+		_ewor = 4;
+        exit(1);
     } 
 	else if (pid > 0) {
         // Parent process
-        close(pipefd[1]); // Close the write end of the pipe
-
-        // Read the output from the read end of the pipe
-        char buffer[10000];
+        close(pipe1[0]);
+		close(pipe2[1]);
+		
+		int status;
+		int ret = 0;
+		int i = 0;
+		//wait for child process
+		ret = waitpid(pid, &status, WNOHANG);
+		//verify if the process is taking too much time
+		while (ret != pid && i < 200)
+		{
+    		ret = waitpid(pid, &status, WNOHANG);
+    		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    		i++;
+		}
+		//kill child process if timelimit is reached
+		if (i == 200)
+		{
+			_ewor = 5;
+			kill(pid, SIGTERM);
+		}
+		// Read the output from the read end of the pipe
+		char buffer[10000];
         ssize_t bytesRead;
-        while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer))) > 0) {
+        while ((bytesRead = read(pipe2[0], buffer, sizeof(buffer))) > 0) {
             output.append(buffer, bytesRead);
         }
-        close(pipefd[0]);
+        close(pipe2[0]);
 
-        int status;
-        waitpid(pid, &status, 0);
-
-        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
-            std::cout << "Output of PHP script:" << std::endl;
-            std::cout << output << std::endl;
+         if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+            // std::cout << "Output of PHP script:" << std::endl;
+            // std::cout << output << std::endl;
         } else {
             std::cerr << "PHP script execution failed" << std::endl;
-			//notfound
-        }
-    } else {
+			_ewor = 4;
+			return 0;
+        }       
+    } 
+	else {
         // Fork failed
         std::cerr << "Error forking process" << std::endl;
+		_ewor = 5;
         return 1;
     }
 	SetResponseContent(_responsContent, output);
 	return (0);
-
 }
 
 char		**CGI::getEnvAsCstrArray(void) const {
@@ -230,3 +287,5 @@ std::string	CGI::extractQueryString(const std::string &url) {
 		return (url.substr(start));
 	return  ("");
 }
+
+
