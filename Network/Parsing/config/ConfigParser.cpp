@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/07 14:41:28 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/07 14:41:28by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ int	ConfigParser::videur(std::string str) {
 	if(str.empty() || (str[0] == '/' && str[1] == '/'))
 		return 0;
 	if(ss >> serv_n && ss >> token) {
-		if(!this->isToken(token))
-			throw("Error : wrong token in configuration file");
-		else if(token[0] != 'x') {
+		if(token != "add") {
 			if(this->servec.find(serv_n) == this->servec.end())
 				this->addServ(serv_n);
 			this->addTruc(serv_n, token, ss);
@@ -93,44 +91,62 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 	bool		boolbuf;
 	std::string route;
 
-	if(token[0] == 'a') {
+	if(token == "server_names") {
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
-	else if(token[0] == 'b' && ss >> buf) {
+	else if(token == "ports" && ss >> buf) {
 		if(this->check_port(buf))
 			this->servec[servname].b_port = buf;
 	}
-	else if(token[0] == 'd' && ss >> buf)
+	else if(token == "max_body_size" && ss >> buf)
 		this->servec[servname].d_max_body_size = buf;
-	else if(token[0] == 'e' && ss >> buf) {
+	else if(token == "back_log" && ss >> buf) {
 		if(this->check_back_log(servname, buf))
 			this->servec[servname].e_back_log = buf;
 	}
-	else if(token[0] == 'c' && ss >> route) {
+	else if(token[0] == '_' && ss >> route) {
 		this->addRoute(servname, route);
-		if(token[1] == 'a' && ss >> buf)
+		if(token == "_route" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].a_route = route;
-		else if(token[1] == 'b')
+		}
+		else if(token == "_methods")
 			while(ss >> buf)
 				this->servec[servname].c_routes[route].b_methods.push_back(buf);
-		else if(token[1] == 'c' && ss >> buf)
+		else if(token == "_redirection" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].c_redirec = buf;
-		else if(token[1] == 'd' && ss >> buf)
+		}
+		else if(token == "root" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].d_root = buf;
-		else if(token[1] == 'e' && ss >> boolbuf)
+		}
+		else if(token == "rep_listing" && ss >> boolbuf)
 			this->servec[servname].c_routes[route].e_rep_listing = boolbuf;
-		else if(token[1] == 'f' && ss >> buf)
+		else if(token == "def_rep" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].f_def_rep = buf;
-		else if(token[1] == 'g' && ss >> buf)
+		}
+		else if(token == "_cgi_script" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
-		else if(token[1] == 'h' && ss >> buf)
+		}
+		else if(token == "_cgi_addr" && ss >> buf) {
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
-		else
-			return 1;
+		}
 	}
-	else if(token[0] == 'x' && ss >> buf)
+	else if(token == "add" && ss >> buf)
 		this->x_error_names[servname] = buf;
+	else
+		throw("Error : wrong token in configuration file");
 	return 0;
 }
 
@@ -195,8 +211,8 @@ int	ConfigParser::check_servers(void) {
 	a.a_route = "/";
 	a.b_methods.push_back("GET");
 	a.b_methods.push_back("POST");
-	a.d_root = "Network/HtmlFiles";
-	a.f_def_rep = "Network/HtmlFiles/Pelops.html";
+	a.d_root = "/Network/HtmlFiles";
+	a.f_def_rep = "/Network/HtmlFiles/Pelops.html";
 	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
 		std::cout << "checking [" << it->first << "] ..." << std::endl;
 		if(it->second.c_routes.find("/") == it->second.c_routes.end()) {
@@ -205,7 +221,7 @@ int	ConfigParser::check_servers(void) {
 		}
 		for(std::map<std::string, t_route>::iterator itt = it->second.c_routes.begin(); itt != it->second.c_routes.end(); itt++) {
 			if((itt->second.e_rep_listing == 0) && itt->second.f_def_rep.empty())
-				itt->second.f_def_rep = "Network/HtmlFiles/Pelops.html";
+				itt->second.f_def_rep = "/Network/HtmlFiles/Pelops.html";
 		}
 	}
 	return 1;
