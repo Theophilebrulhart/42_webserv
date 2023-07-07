@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/07 19:06:28 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:08:40 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 		else if (_ewor == 4)
 		{
 			Error = "Error 404: Not found";
-			notFound(_requestInfo, _responsContent);
+			notFound(_responsContent);
 		}
 	}
 }
