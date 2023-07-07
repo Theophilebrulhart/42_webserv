@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/06 15:21:27 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/06 15:42:36 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 
          if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
             // std::cout << "Output of PHP script:" << std::endl;
-            std::cout << output << std::endl;
+            // std::cout << output << std::endl;
         } else {
             std::cerr << "PHP script execution failed" << std::endl;
 			_ewor = 4;
@@ -226,7 +226,6 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
     }
 	SetResponseContent(_responsContent, output);
 	return (0);
-
 }
 
 char		**CGI::getEnvAsCstrArray(void) const {
