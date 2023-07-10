@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/10 14:29:03 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 22:32:38 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,17 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
-	else if(token == "ports" && ss >> buf) {
-		if(this->check_port(buf))
-			this->servec[servname].b_port.push_back(buf);
+	else if(token == "ports") {
+		while(ss >> buf)
+			if(this->check_port(buf))
+				this->servec[servname].b_port.push_back(buf);
 	}
-	else if(token == "max_body_size" && ss >> buf)
-		this->servec[servname].d_max_body_size = buf;
+	else if((token == "max_body_size") && (ss >> buf)) {
+		if((buf.size() <= 10) && (atol(buf.c_str()) <= INT_MAX) && (atoi(buf.c_str()) > 0))
+			this->servec[servname].d_max_body_size = buf;
+		else
+			throw("Error : max_body_size must be a positive int.");
+	}
 	else if(token == "back_log" && ss >> buf) {
 		if(this->check_back_log(servname, buf))
 			this->servec[servname].e_back_log = buf;
@@ -170,6 +175,8 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 		a.d_root = "";
 		a.e_rep_listing = 0;
 		a.f_def_rep = "";
+		a.g_cgi_script = "";
+		a.h_cgi_addr = "";
 		this->servec[servname].c_routes[route] = a;
 	}
 	return 0;

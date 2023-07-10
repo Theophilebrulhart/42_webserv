@@ -31,7 +31,7 @@ Bonjour!
 //	_cgi_addr    -> std::string
 
 myserver server_names	myserver myserver.com
-myserver ports			4242
+myserver ports			4242 8.5 9696
 myserver max_body_size	4096
 myserver back_log 		32767
 myserver _route			/ /
@@ -44,7 +44,7 @@ myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 myserver2 server_names	myserver myserver.com
 myserver2 ports			4141
-myserver2 max_body_size	4096
+myserver2 max_body_size	2147483647
 myserver2 back_log 		32767
 myserver2 _route		/ /
 myserver2 _methods		/ GET
@@ -54,6 +54,7 @@ myserver2 _def_rep		/ pb.html
 myserver2 _cgi_script	/ Pelops/besoin/dun/cgi/stp/
 myserver2 _cgi_addr		/ /Pelops/ceci/est/un/cgi/askip/
 
+prout server_names oui
 
 //------error_names
 
