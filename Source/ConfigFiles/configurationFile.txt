@@ -39,6 +39,14 @@ myserver _def_rep		/ pb.html
 myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
+myserver _route			/ /CGIFiles
+myserver _methods		/ GET
+myserver _root			/ /Network/
+myserver _rep_listing	/ 1
+myserver _def_rep		/ bonjour.php
+myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
+myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
+
 myserver2 server_names	myserver myserver.com
 myserver2 ports			4141
 myserver2 max_body_size	4096

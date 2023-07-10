@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SetErrorFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 17:35:33 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 23:11:56 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,12 @@ void forbidden(MAP_STRING &responsContent)
 {
 	std::string forbidden = loadContentFile("/403Forbidden.html");
 	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
+	return ;
+}
+
+void redirection(MAP_STRING &responsContent, std::string newUrl)
+{
+	std::string body;
+	setResponsContent(responsContent, "HTTP/1.1", "302 Found", newUrl, body);
 	return ;
 }
