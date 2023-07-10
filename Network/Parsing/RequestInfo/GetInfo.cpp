@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 20:13:34 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:51:48 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	getInfo(std::string &buffer, MAP_STRING &info)
 	getSection(buffer, info, "Host:", "HOST");
 	getSection(buffer, info, "Connection:", "CONNECTION");
 	getSection(buffer, info, "Accept", "TYPE");
+	getSection(buffer, info, "Expect", "EXPECT");
 	getSection(buffer, info, "Content-Type", "CONTENT-TYPE");
 	try {
 	if (info["CONTENT-TYPE"] == "application/x-www-form-urlencoded\r")

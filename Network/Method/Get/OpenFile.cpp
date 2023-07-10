@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 16:10:17 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 21:42:20 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
         try
         {
             if (info.at("EXTENSION") == ".php")
+            {
                 CGI(info, responsContent);
+                std::cout << "return of cgi in get\n\n";
+                return ;
+            }
         }
         catch(const std::out_of_range& oor)
         {

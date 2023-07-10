@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 20:50:51 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:14:18 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ SERVER::TestServer::~TestServer(void)
 
 int	SERVER::TestServer::_handler(int clientSocket)
 {
-    // std::cout << "\n\nmethod : " << _servInfo.c_routes.at("/").b_methods.front() << "\n\n";
-    // std::cout << "\n\nroot : " << _servInfo.c_routes.at("/").a_route << "\n\n";
-    // std::cout << "\n\nroot 2: " << _servInfo.c_routes.at("/Pelops.html").a_route << "\n\n";
-
     int parsingRes = requestParsing(_buffer, _requestInfo);
 	if ( parsingRes <= 0)
     {
@@ -65,7 +61,8 @@ int	SERVER::TestServer::_handler(int clientSocket)
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
-			formParsing (_buffer, _requestInfo, clientSocket, _responsContent, _servInfo);
+			if (formParsing (_buffer, _requestInfo, clientSocket, _responsContent, _servInfo) < 0)
+                return (-1);
 		}
 		catch(const std::out_of_range& oor)
 		{

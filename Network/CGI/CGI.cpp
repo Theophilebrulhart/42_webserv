@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/10 20:14:52 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/10 21:38:57 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 		close(pipe2[1]);
         execve(argv[0], argv, env);
         std::cerr << "Error executing PHP script" << std::endl;
-		_ewor = 4;
+		_ewor = 5;
         exit(1);
     } 
 	else if (pid > 0) {

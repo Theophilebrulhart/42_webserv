@@ -1,0 +1,117 @@
+body {
+    background-image: url("https://m.media-amazon.com/images/M/MV5BNzMxNzU0MTYzNV5BMl5BanBnXkFtZTcwNzU0Njg3Mw@@._V1_FMjpg_UX1000_.jpg");
+ 	 background-repeat: repeat; 
+	 background-size: 100px;
+}
+
+.back-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+  }
+  
+	.back-container back {
+	padding: 10px 20px;
+	background-color: #f37506;
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	font-size: 16px;
+	cursor: pointer;
+  }
+
+.bande {
+	background-color: #f37506;
+	padding: 20px;
+	text-align: center;
+	color: #fff;
+	border: 2px solid #ac3722; /* Ajout d'une bordure de 2 pixels avec une couleur spécifique */
+	box-sizing: border-box; /* Inclut la bordure dans la taille totale de la bande */
+	width: 100%; /* Définit la largeur de la bande à 100% de la largeur de la page */
+	margin: 0;
+  }
+  
+.bande h1 {
+	font-size: 36px; /* Taille de police du titre */
+	margin-bottom: 0px;/* Supprime les marges autour du titre */
+}
+
+h1 {
+    text-align: center;
+    width: 100%;
+    color: #f5f4f3;
+}
+
+h2 {
+	text-align: center;
+    width: 100%;
+    color: #ffffff;	
+	font-size: 50px;
+	margin-top: 100px;
+}
+
+h3 {
+    color: #ffa31a;
+}
+
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="file"] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.button-container {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	max-width: 400px;
+	margin: 0 auto;
+	margin-top: 50px;
+  }
+  
+  .button-container button {
+	padding: 10px 20px;
+	background-color: #f37506;
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	font-size: 16px;
+	cursor: pointer;
+  }
+
+  
+.image-wrapper {
+    display: flex;
+	border-radius: 50%;
+    justify-content: space-between;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.image-wrapper img {
+    width: 48%;
+    max-height: 150px;
+    object-fit: cover;
+}
+
+.side-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin: 10px;
+    filter: grayscale(100%);
+}
+
+.uploaded-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    margin-top: 20px;
+}

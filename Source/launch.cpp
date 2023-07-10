@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 20:49:39 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:00:36 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,12 @@ void launch(ConfigParser &configInfo)
     //creer les serveurs et ajouter leur socket a la liste
 
     for(std::map<std::string, ConfigParser::t_serv>::iterator it = configInfo.servec.begin(); it != configInfo.servec.end(); it++) {
-        std::cout << "server name : " << it->second.c_routes["/"].f_def_rep << "\n\n";
         std::cout << "\e[0;42m\n**********" << it->first <<"**********\e[0m";
-        for(size_t i = 0; i < it->second.b_port.size(); i++)   
+        for(size_t i = 0; i < it->second.b_port.size(); i++)
+        {
+            std::cout << "i i i i : " << i << "\n\n";
             servers.push_back(init_server(it->second, serverSockets, it->second.b_port[i], serverClientList));
+        }
          std::cout << "\e[0;42m\n******************************\e[0m\n\n";
     }
 
@@ -135,7 +137,7 @@ void launch(ConfigParser &configInfo)
            if (pollFds[i].revents & POLLIN)
            {
                 // Données reçues d'un client existant
-                char buffer[4096];
+                char buffer[100000];
                 memset(buffer, 0, sizeof(buffer));
                int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
                std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
@@ -167,23 +169,27 @@ void launch(ConfigParser &configInfo)
                     server._buffer = buffer;
 
                     // Envoyer une réponse au client
-                    if (server._handler(pollFds[i].fd) == 0)
+                    if (server._handler(pollFds[i].fd) <= 0)
                     {
-                        // std::cout << "handler == 0\n\n";
-                        // close(clientSockets[i].fd);
-                        // clientSockets.erase(clientSockets.begin() + i);
-                        // --i;
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
                     }
-                    if (server._responder(pollFds[i].fd) < 0)
+                    else if (server._responder(pollFds[i].fd) < 0)
                     {
-                        // close(clientSockets[i].fd);
-                        // clientSockets.erase(clientSockets.begin() + i);
-                        // --i;
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
                     }
-                    getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
-                    close(pollFds[i].fd);
-                    clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
-                    pollFds.erase(pollFds.begin() + i);
+                    else
+                    {
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
+                    }
                 }
                 break;
             }
