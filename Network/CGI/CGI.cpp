@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/10 20:08:45 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:14:52 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,10 +194,7 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 		size_t	k = _env["CGIBODY"].size();
 		
 		if (_env["REQUEST_METHOD"] == "POST")
-		{	
-			std::cout << "la : " << _env["CGIBODY"] << std::endl;
 			write(pipe1[1], _env["CGIBODY"].c_str(), k);
-		}
 
 		close(pipe1[1]);
 		
