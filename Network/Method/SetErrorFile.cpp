@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SetErrorFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 23:11:56 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/10 16:48:40 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 std::string loadContentFile(std::string contentFile)
 {	
 	std::cout << "\nContentFile : " << contentFile << "\n\n";
-	std::string file = "Network/HtmlFiles/ErrorFiles" + contentFile;
+	std::string file = "Network/Website/HtmlFiles/ErrorFiles" + contentFile;
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);
 	if(ifs.fail())

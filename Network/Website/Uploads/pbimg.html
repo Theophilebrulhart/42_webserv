@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="pb.css">
+    <link rel="stylesheet" href="pbimg.css">
     <!-- <script src="Pelops.js"></script> -->
     <title>Moustache Gracias</title>
 </head>
@@ -23,7 +23,7 @@
     </form>
 
 	<div class = "back-container">
-		<a href="pb.html"><back>Back</back></a>
+		<a href="/pb.html"><back>Back</back></a>
 	</div>
     
     <h3>Liste des moustaches telechargees</h3>
@@ -48,7 +48,7 @@
         // Fonction pour supprimer une image
         function deleteImage(imageName) {
             var xhr = new XMLHttpRequest();
-            xhr.open('DELETE', '/' + imageName, true);
+            xhr.open('DELETE', './UploadedFiles/' + imageName, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && (xhr.status == 200 || xhr.status == 204 )) {
                     alert('L\'image a ete supprimee avec succes.');
@@ -119,7 +119,7 @@
             event.preventDefault();
             var formData = new FormData(this);
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/upload', true);
+            xhr.open('POST', './UploadedFiles', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && (xhr.status !== 200 || xhr.status !== 204 )) {
                     alert('L\'image a ete telechargee avec succes.');

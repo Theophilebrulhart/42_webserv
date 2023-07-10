@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:25:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 14:30:53 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 15:46:22 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void deleteFile(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
 {
-     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
+    ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
     if (route.a_route.empty())
     {
         std::cout << "empty \n\n";
@@ -22,13 +22,7 @@ void deleteFile(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_se
     }
     std::string body;
     std::string fileToDelete;
-    if (info.at("EXTENSION") == ".php" ||  info.at("EXTENSION") == ".html" || info.at("EXTENSION") == ".js")
-    {
-        std::cout << "files to delete\n";
-        fileToDelete = "Network/HtmlFiles/Upload/Files" + info.at("PATH");
-    }
-    else
-        fileToDelete = "Network/HtmlFiles/Upload/Images/" + info.at("PATH");
+    fileToDelete = route.d_root.substr(1) + info.at("PATH");
     std::string contentType = contentExtension(info.at("PATH"));
     if (isInternalError(info, responsContent, contentType) < 0)
         return ;
