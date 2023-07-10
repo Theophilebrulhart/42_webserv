@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/07 19:08:40 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:08:45 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 		_env["CONTENT_TYPE"] = ""; 
 		_env["CONTENT_LENGTH"] = "";
 	}
+	else
+	{
+		_env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
+		std::size_t		len = _requestInfo.at("CGIBODY").size();
+		_env["CONTENT_LENGTH"] =  std::to_string(len);
+		_env["CGIBODY"] = _requestInfo.at("CGIBODY");
+	}
 	// _env["CONTENT_TYPE"] = _requestInfo.at("TYPE");
 	// std::string	len =  _responsContent.at("DcontentLength"); 
 	// _env["CONTENT_LENGTH"] = len.erase(0, 16);
@@ -59,7 +66,6 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 	// catch (const std::exception& ex) {
     //      std::cerr << "Exception caught owow: " << ex.what() << std::endl;
     // }
-	// PrintMap(_env);	
 	_env["GATEWAY_INTERFACE"]="CGI/1.1";
 	_env["SERVER_PROTOCOL"]="HTTP/1.1";
 	//name of the script being executed	
@@ -78,7 +84,9 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 	catch (const std::exception& ex) {
        	_env["QUERY_STRING"] = ""; 
     }
+	//BIG execution with the env variable 
 	Exec(_responsContent);
+	//Error handling in case smthing happend in the pipe 
 	if (_ewor == 5 || _ewor == 4)
 	{
 		std:: string Error;
@@ -124,7 +132,7 @@ int		CGI::SetResponseContent(MAP_STRING &_responsContent, std::string output)
 int			CGI::Exec(MAP_STRING &_responsContent) {	
 	char		**env;
 	std::string	output;
-
+	
 	try {
 		env = getEnvAsCstrArray();
 	}
@@ -182,6 +190,16 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
         // Parent process
         close(pipe1[0]);
 		close(pipe2[1]);
+			
+		size_t	k = _env["CGIBODY"].size();
+		
+		if (_env["REQUEST_METHOD"] == "POST")
+		{	
+			std::cout << "la : " << _env["CGIBODY"] << std::endl;
+			write(pipe1[1], _env["CGIBODY"].c_str(), k);
+		}
+
+		close(pipe1[1]);
 		
 		int status;
 		int ret = 0;

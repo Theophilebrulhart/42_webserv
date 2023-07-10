@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/05 16:44:10 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 19:42:03 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "HeadersRequestInfo.hpp"
+# include <cstring>
 
 void getMethod(std::string& buffer, std::map<std::string, std::string>& info)
 {
@@ -121,6 +122,19 @@ void	getSection(std::string &buffer, MAP_STRING &info, std::string toFind, std::
 	
 }
 
+std::string getLastLine(std::string& buffer) {
+    std::string::size_type pos = buffer.find_last_of('\n');
+    if (pos != std::string::npos) {
+        // Skip the newline character if it is the last character
+        if (pos > 0 && buffer[pos - 1] == '\r') {
+            --pos;
+        }
+		pos++;
+        return buffer.substr(pos + 1);
+    }
+    return buffer;
+}
+
 void	getInfo(std::string &buffer, MAP_STRING &info)
 {
 	getMethod(buffer, info);
@@ -130,4 +144,15 @@ void	getInfo(std::string &buffer, MAP_STRING &info)
 	getSection(buffer, info, "Connection:", "CONNECTION");
 	getSection(buffer, info, "Accept", "TYPE");
 	getSection(buffer, info, "Content-Type", "CONTENT-TYPE");
+	try {
+	if (info["CONTENT-TYPE"] == "application/x-www-form-urlencoded\r")
+	{
+		std::cout << "Enfin" << std::endl;
+		info["CGIBODY"] = getLastLine(buffer);	
+	}
+	}
+	catch (const std::out_of_range& oor) 
+	{
+		info["CONTENT_TYPE"] = "";
+	}
 }

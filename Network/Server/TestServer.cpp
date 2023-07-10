@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 18:21:49 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 19:44:27 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	SERVER::TestServer::_handler(int clientSocket)
 	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
+        if (_requestInfo.at("CONTENT-TYPE") == "application/x-www-form-urlencoded\r")
+            CGI(_requestInfo, _responsContent);
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");

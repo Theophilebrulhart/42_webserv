@@ -15,14 +15,16 @@
 	<h2>CGI Files</h2>
   
 	<div class="button-container">
-		<button onclick="sendGetRequest('/pb.html/bonjour.php')">Dire bonjour</button>
-		<button onclick="sendGetRequest('/pb.html/hw.php')">Dire Hello World</button>
-		<button onclick="sendGetRequest('/pb.html/mm.php')">Manger</button>
-		<button onclick="sendGetRequest('/pb.html/infloop.php')">Faire une loop infinie</button>
-		<button onclick="sendGetRequestwithArg('/pb.html/upper.php?string=')">Crier fort</button>
-		<button onclick="sendGetRequestwith2Arg('/pb.html/conca.php?value1=')">Concatenate</button>
-		<button onclick="sendGetRequestwith3Arg('/pb.html/calcul.php?num1=')">Calculer</button>
-		<button onclick="openCalcul('/pb.html/bigCalcul.php')">Big Calculator</button>
+		<button onclick="sendGetRequest('/CGIFiles/bonjour.php')">Dire bonjour</button>
+		<button onclick="sendGetRequest('CGIFiles/hw.php')">Dire Hello World</button>
+		<button onclick="sendGetRequest('CGIFiles/mm.php')">Manger</button>
+		<button onclick="sendGetRequest('CGIFiles/infloop.php')">Faire une loop infinie</button>
+		<button onclick="sendGetRequestwithArg('CGIFiles/upper.php?string=')">Crier fort</button>
+		<button onclick="sendGetRequestwith2Arg('CGIFiles/conca.php?value1=')">Concatenate</button>
+		<button onclick="sendGetRequestwith3Arg('CGIFiles/calcul.php?num1=')">Calculer</button>
+		<button onclick="openCalcul('CGIFiles/bigCalcul.php')">Big Calculator</button>
+        <button onclick="sendPostRequestWithBody('CGIFiles/upperPost.php')">Crier en post</button>
+        <button onclick="sendPostRequestWithBody('CGIFiles/concaPost.php')">Concatenate en post</button>
 	</div>
 
 	<div class = "back-container">
@@ -74,7 +76,7 @@
         }
 
 		function openCalcul() {
-			window.location.href = "bigCalcul.php";
+			window.location.href = "/CGIFiles/bigCalcul.php";
 		}
 
 		function sendGetRequestwith3Arg(scriptName) {
@@ -96,6 +98,19 @@
                 }
             };
             xhr.send();
+        }
+
+        function sendPostRequestWithBody(scriptName) {
+        var requestBody = prompt("Enter the request body: ");
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', scriptName, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        };
+        xhr.send(requestBody);
         }
 
 

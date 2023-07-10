@@ -31,13 +31,20 @@ myserver server_names	myserver myserver.com
 myserver ports			4242
 myserver max_body_size	4096
 myserver back_log 		32767
-myserver _route			/ /
+myserver _route			/ / 
 myserver _methods		/ GET POST DELETE
 myserver _root			/ /Network/HtmlFiles/
 myserver _rep_listing	/ 0
 myserver _def_rep		/ pb.html
 myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
+myserver _route			/CGIFiles /CGIFiles
+myserver _methods		/CGIFiles GET POST 
+myserver _root			/CGIFiles /Network/
+myserver _rep_listing	/CGIFiles 0
+myserver _def_rep		/CGIFiles pbcgi.html
+myserver _cgi_script	/CGIFiles Pelops/besoin/dun/cgi/stp
+myserver _cgi_addr		/CGIFiles /Netwr
 
 myserver2 server_names	myserver myserver.com
 myserver2 ports			4141
