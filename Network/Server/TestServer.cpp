@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 18:21:49 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:50:51 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,16 @@ int	SERVER::TestServer::_handler(int clientSocket)
 	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
+        if (_requestInfo.at("CONTENT-TYPE") == "application/x-www-form-urlencoded\r")
+        {
+            if (isRoute(_requestInfo, _responsContent, _servInfo).d_root.empty())
+            {
+                std::cout << "empty route" << std::endl;
+                return 1;
+            }
+            CGI(_requestInfo, _responsContent);
+            return 1;
+        }
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");

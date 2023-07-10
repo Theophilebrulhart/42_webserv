@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestParsing.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:02:35 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 15:15:15 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 18:47:09 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int infoCheck(MAP_STRING info)
 
 int    requestParsing(std::string buffer, MAP_STRING &info)
 {
-    std::cout << "\n\n*****\e[0;35mMAINPARSING BUFFER\e[0m****\n" << buffer << "\n";
+    std::cout << "\n\n*****\e[0;35mMAINPARSING BUFFER\e[0m****\n" << buffer << std::endl;
     if (!buffer.empty())
     {
         getInfo(buffer, info);
