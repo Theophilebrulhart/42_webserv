@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/07 20:05:13 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 14:14:43 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,21 +108,18 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 	else if(token[0] == '_' && ss >> route) {
 		this->addRoute(servname, route);
 		if(token == "_route" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].a_route = route;
 		}
 		else if(token == "_methods")
 			while(ss >> buf)
 				this->servec[servname].c_routes[route].b_methods.push_back(buf);
 		else if(token == "_redirection" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].c_redirec = buf;
 		}
 		else if(token == "_root" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].d_root = buf;
 		}
 		else if(token == "_rep_listing" && ss >> boolbuf)
@@ -133,13 +130,11 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].f_def_rep = buf;
 		}
 		else if(token == "_cgi_script" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		}
 	}
@@ -178,6 +173,17 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 		this->servec[servname].c_routes[route] = a;
 	}
 	return 0;
+}
+
+std::string	ConfigParser::addslash(std::string str) {
+
+	if (str.empty())
+		return (str);
+	if (str.front() != '/')
+		str = '/' + str;
+	if (str.back() != '/')
+		str = str + '/';
+	return (str) ;
 }
 
 int	ConfigParser::check_port(std::string str) {

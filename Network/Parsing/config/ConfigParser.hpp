@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:09:55 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/07 16:50:53 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 13:46:52 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ public:
 
 private:
 
-	int	isToken(std::string);
-	int	BuildDefault(void);
-	int	videur(std::string buff);
+	int			isToken(std::string);
+	int			BuildDefault(void);
+	int			videur(std::string buff);
+	std::string	addslash(std::string str);
 
 	int	addServ(std::string name);
 	int	addRoute(std::string servname, std::string route);
