@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/10 14:14:43 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 14:29:03 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,11 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].f_def_rep = buf;
 		}
 		else if(token == "_cgi_script" && ss >> buf) {
-			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
-			buf = this->addslash(buf);
+			if(buf[0] != '/')
+				buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		}
 	}
