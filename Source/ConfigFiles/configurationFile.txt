@@ -1,13 +1,14 @@
 Bonjour!
+//This configuration file must always begin with "Bonjour!"
 
 //the scheme of a valid line is as follow :
-//[server unique ID/name] [token] [route] [element]
+//[server unique ID/name] [token] [opt/unique route id] [opt/route] [element]
 //
 //->[server unique ID/name] can be whatever you want.
-//	It just need to be unique for each server you set up.
+//	It just needs to be unique for each server you set up.
 //
-//->[token] is a set of two letters. The first one is used to
-//	identify the element of the server you want to set up :
+//->[token] is a word corresponding to 
+//	the element of the server you want to set up :
 //	server_names  -> std::vector<std::string>
 //	ports         -> std::vector<std::string>
 //	routes        -> std::map<std::string, t_route>
@@ -15,8 +16,11 @@ Bonjour!
 //	backlog       -> std::string
 //	error_names   -> std::map<std::string, std::string> -> [error number] xx [error name]
 //
-//	Choosing 'c' will make the second letter an identifier to the route
-//	element you want to setup :
+//->[route id] can be whatever you want.
+//	it just needs to be unique for each route you set up
+//	(usually the route itself)
+//	tokens beginning with an underscore '_' corresponds to route
+//	elements and options.
 //	_route       -> std::string
 //	_methods     -> std::vector<std::string>
 //	_redirec     -> std::string
@@ -25,10 +29,8 @@ Bonjour!
 //	_def_rep     -> std::string
 //	_cgi_script  -> std::string
 //	_cgi_addr    -> std::string
-//This configuration file must always begin with "Bonjour!"
 
 //Server 1
-
 myserver server_names	moustache moustache.com
 myserver ports			8082 8080 4242 3131
 myserver max_body_size	4096
@@ -76,10 +78,9 @@ myserver _rep_listing   /ideeMoustache 1
 myserver _redirec       /ideeMoustache https://www.youtube.com/watch?v=OF32KzHEtrg
 
 //Server 2
-
 myserver2 server_names	pelops pelops.com
 myserver2 ports			4141
-myserver2 max_body_size	4096
+myserver2 max_body_size	2147483647
 myserver2 back_log 		32767
 myserver2 _route		/ /
 myserver2 _methods		/ GET
@@ -88,7 +89,6 @@ myserver2 _rep_listing	/ 0
 myserver2 _def_rep		/ Pelops.html
 myserver2 _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
-
 
 //------error_names
 

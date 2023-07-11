@@ -64,9 +64,10 @@ public:
 
 private:
 
-	int	isToken(std::string);
-	int	BuildDefault(void);
-	int	videur(std::string buff);
+	int			isToken(std::string);
+	int			BuildDefault(void);
+	int			videur(std::string buff);
+	std::string	addslash(std::string str);
 
 	int	addServ(std::string name);
 	int	addRoute(std::string servname, std::string route);

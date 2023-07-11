@@ -95,12 +95,17 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
-	else if(token == "ports" && ss >> buf) {
-		if(this->check_port(buf))
-			this->servec[servname].b_port.push_back(buf);
+	else if(token == "ports") {
+		while(ss >> buf)
+			if(this->check_port(buf))
+				this->servec[servname].b_port.push_back(buf);
 	}
-	else if(token == "max_body_size" && ss >> buf)
-		this->servec[servname].d_max_body_size = buf;
+	else if((token == "max_body_size") && (ss >> buf)) {
+		if((buf.size() <= 10) && (atol(buf.c_str()) <= INT_MAX) && (atoi(buf.c_str()) > 0))
+			this->servec[servname].d_max_body_size = buf;
+		else
+			throw("Error : max_body_size must be a positive int.");
+	}
 	else if(token == "back_log" && ss >> buf) {
 		if(this->check_back_log(servname, buf))
 			this->servec[servname].e_back_log = buf;
@@ -108,8 +113,7 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 	else if(token[0] == '_' && ss >> route) {
 		this->addRoute(servname, route);
 		if(token == "_route" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].a_route = route;
 		}
 		else if(token == "_methods")
@@ -121,8 +125,7 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].c_redirec = buf;
 		}
 		else if(token == "_root" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].d_root = buf;
 		}
 		else if(token == "_rep_listing" && ss >> boolbuf)
@@ -133,8 +136,6 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].f_def_rep = buf;
 		}
 		else if(token == "_cgi_script" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
@@ -175,9 +176,22 @@ int	ConfigParser::addRoute(std::string servname, std::string route) {
 		a.d_root = "";
 		a.e_rep_listing = 0;
 		a.f_def_rep = "";
+		a.g_cgi_script = "";
+		a.h_cgi_addr = "";
 		this->servec[servname].c_routes[route] = a;
 	}
 	return 0;
+}
+
+std::string	ConfigParser::addslash(std::string str) {
+
+	if (str.empty())
+		return (str);
+	if (str.front() != '/')
+		str = '/' + str;
+	if (str.back() != '/')
+		str = str + '/';
+	return (str) ;
 }
 
 int	ConfigParser::check_port(std::string str) {
