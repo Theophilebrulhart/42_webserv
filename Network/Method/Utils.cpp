@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:51:14 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 16:24:27 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ bool isFile(const std::string& path)
 {
 	std::cout << "isfile file :" <<  path << "\n\n";
     struct stat fileStat;
-	std::cout << "on me voit 4 " << "\n\n";
     if (stat(path.c_str(), &fileStat) != 0)
     {
         // Erreur lors de la récupération des informations du fichier
@@ -130,25 +129,29 @@ bool isDir(const std::string& path)
         // Erreur lors de la récupération des informations du fichier
         return false;
     }
-	std::cout << "on me voit 2 " << "\n\n";
     return S_ISDIR(fileStat.st_mode);
+}
+
+int	exist (MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info)
+{
+	if (info.at("METHOD") != "DELETE")
+	{
+		if (!isFile(route.d_root.substr(1) + info.at("PATH").substr(1)) && !isDir(route.d_root.substr(1) + info.at("PATH").substr(1)))
+		{
+			std::cout << "Not a existing file or directory : " << route.d_root.substr(1) + info.at("PATH").substr(1) << " \n\n";
+			notFound(responsContent);
+			return (0);
+		}
+	}
+	return (1);
 }
 
 int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info)
 {
 	std::string file;
-	std::cout << "on me voit 0 " << info.at("PATH") << "\n\n";
-	if (!isFile(route.d_root.substr(1) + info.at("PATH").substr(1)) && !isDir(route.d_root.substr(1) + info.at("PATH").substr(1)))
-	{
-		std::cout << "Not a existing file or directory \n\n";
-		notFound(responsContent);
-		return (0);
-	}
-	std::cout << "on me voit 1\n\n";
 	 std::vector<std::string>::iterator it = std::find(route.b_methods.begin(), route.b_methods.end(), method);
 	if (it != route.b_methods.end()) {
 		return (1);
-	std::cout << "on me voit 2\n\n";
     } else {
 		forbiddenMethod(responsContent);
 		return (0);
@@ -175,7 +178,7 @@ std::string    findSlash(const std::string &url)
 
 ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
-	std::cout << "is route ?\n\n";
+	//td::cout << "is route ? the serv route is : " << servInfo.a_route << "\n\n";
 	ConfigParser::t_route empty;
 	std::string path = info.at("PATH");
 	if (path.size() == 1)
@@ -195,24 +198,21 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 	}
 	std::string route = findSlash(path);
 	std::cout << "route eee: " << route << "\n\n";
-	// if (route.find(".php") != std::string::npos)
-	// {
-	// 	if (servInfo.c_routes.find("/CGIFiles") == servInfo.c_routes.end())
-	// 	{
-	// 		std::cerr << "Please add /CGIFiles route in configFile\n\n";
-	// 		return (empty);
-	// 	}
-	// 	std::cout << "PHP File Detected\n\n";
-	// 	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/CGIFiles"], info))
-	// 		return (empty);
-	// 	return (servInfo.c_routes["/CGIFiles"]);
-	// }
 	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
 	{
 		std::cout << "\nNO ROUTE TA MERE LA PUUUTE\n\n";
+		if (!exist(responsContent, servInfo.c_routes["/"], info))
+			return (empty);
 		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info))
 			return (empty);
 		return (servInfo.c_routes["/"]);
+	}
+	std::cout << "ROUTE TROUVE : " << servInfo.c_routes[route].a_route << "\n\n";
+	if (!servInfo.c_routes[route].c_redirec.empty())
+	{
+		 std::cout << "no / at the end of this directory\n\n";
+		redirection(responsContent, "Location: " + servInfo.c_routes[route].c_redirec.substr(1));
+		return (empty);
 	}
 	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route], info))
 		return (empty);

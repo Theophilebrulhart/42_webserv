@@ -3,19 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   launch.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:17:41 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 23:00:36 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AllHeaders.hpp"
+#include <fcntl.h>
 
-SERVER::TestServer  init_server(ConfigParser::t_serv servInfo,  std::vector<int>& serverSockets, std::string port) {
+int getMapKey(std::map<int, std::vector<int> > &serverClientList, int value, int value_delete)
+{
+    int i = 0;
+    std::cout << "value : " << value << "\n\n";
+    for (std::map<int, std::vector<int> >::iterator it = serverClientList.begin(); it != serverClientList.end(); it++)
+    {
+        std::cout << "it de serveerClientList : " << it->first << "\n\n";
+        for (std::vector<int>::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
+        {
+             std::cout << "it de serveerClientList vector : " << *itt << "\n\n";
+            if (*itt == value)
+            {
+                if (value_delete)
+                    it->second.erase(itt);
+                std::cout << "return de l'index de server : " << i << "\n\n";
+                return (i);
+            }
+        }
+        i++;
+    }
+    std::cout << "socket pas trouve dans serverClientList\n\n";
+    return (-1);
+}
 
+SERVER::TestServer  init_server(ConfigParser::t_serv servInfo,  std::vector<int>& serverSockets, std::string port, std::map<int, std::vector<int> > &serverClientList)
+{
     SERVER::TestServer serv(0, atoi(port.c_str()), 40, servInfo);
+    fcntl(serv.getServerSocket()->getSocketFd(), F_SETFL, O_NONBLOCK);
+    serverClientList[serv.getServerSocket()->getSocketFd()];
     serverSockets.push_back(serv.getServerSocket()->getSocketFd());
+    
     return serv;
 }
 
@@ -24,19 +52,25 @@ void launch(ConfigParser &configInfo)
     std::vector<int> serverSockets; // Liste des sockets serveur
     std::vector<int> clientSockets; // Liste des sockets client
     std::vector<SERVER::TestServer> servers;
+    std::map<int, std::vector<int> > serverClientList;
 
     //creer les serveurs et ajouter leur socket a la liste
 
     for(std::map<std::string, ConfigParser::t_serv>::iterator it = configInfo.servec.begin(); it != configInfo.servec.end(); it++) {
         std::cout << "\e[0;42m\n**********" << it->first <<"**********\e[0m";
-        for(size_t i = 0; i < it->second.b_port.size(); i++)   
-            servers.push_back(init_server(it->second, serverSockets, it->second.b_port[i]));
+        for(size_t i = 0; i < it->second.b_port.size(); i++)
+        {
+            std::cout << "i i i i : " << i << "\n\n";
+            servers.push_back(init_server(it->second, serverSockets, it->second.b_port[i], serverClientList));
+        }
          std::cout << "\e[0;42m\n******************************\e[0m\n\n";
     }
 
     //creation de la structure pollFds pour chaque server
     std::vector<struct pollfd> pollFds;
-    for (int i = 0; i < serverSockets.size(); ++i)
+            std::cout << "serverSocket size FIRST " << serverSockets.size() << "\n\n";
+
+    for (int i = 0; i < serverSockets.size(); i++)
     {
         struct pollfd pfd;
         pfd.fd = serverSockets[i];
@@ -60,13 +94,14 @@ void launch(ConfigParser &configInfo)
         //parcourir tous les serveurs pour les nouvelles connexions
         for (int i = 0; i < serverSockets.size(); ++i)
         {
-            if (pollFds[i].revents & POLLIN) \
+            if (pollFds[i].revents & POLLIN) 
             {
                 // Nouvelle connexion entrante
                  struct sockaddr_in clientAddress;
                 //memset(&clientAddress, 0, sizeof(clientAddress));
                  socklen_t clientAddressLength = sizeof(clientAddress);
                 int clientSocket = accept(serverSockets[i], (struct sockaddr *)&clientAddress, &clientAddressLength);
+                std::cout << "serversocket[i] : " << serverSockets[i] << "\n\n";
                  if (clientSocket < 0)
                 {
                     std::cerr << "Erreur lors de l'acceptation de la connexion client" << std::endl;
@@ -87,7 +122,8 @@ void launch(ConfigParser &configInfo)
                     pfd.revents = 0;
                     pollFds.push_back(pfd);
 
-                    std::cout << "Nouvelle connexion client" << std::endl;
+                    std::cout << "Nouvelle connexion client sut la socket : " << clientSocket << "\n\n";
+                    serverClientList[serverSockets[i]].push_back(clientSocket);
                 }
             }
         }
@@ -95,13 +131,19 @@ void launch(ConfigParser &configInfo)
         // Parcourir toutes les sockets clients existants pour les donnees recu
         for (int i = serverSockets.size(); i < pollFds.size(); ++i)
         {
+            std::cout << "serverSocket size " << serverSockets.size() << "\n\n";
+            std::cout << "pollfd size " << pollFds.size() << "\n\n";
+
            if (pollFds[i].revents & POLLIN)
            {
                 // Données reçues d'un client existant
-                char buffer[4096];
+                char buffer[100000];
                 memset(buffer, 0, sizeof(buffer));
                int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
-                if (bytesRead <= 0) {
+               std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
+               std::cout << "buffer \n" << buffer << "\n\n";
+                if (bytesRead <= 0)
+                {
                     // Erreur de réception ou connexion fermée
                     if (bytesRead == 0) {
                         std::cout << "Connexion fermée par le client" << std::endl;
@@ -109,6 +151,7 @@ void launch(ConfigParser &configInfo)
                         std::cerr << "Erreur de réception des données" << std::endl;
                     }
                     //Fermer le socket client et le supprimer du tableau pollfd
+                    getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
                     close(pollFds[i].fd);
                     clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
                     pollFds.erase(pollFds.begin() + i);
@@ -117,28 +160,36 @@ void launch(ConfigParser &configInfo)
                 }
                 else {
                     // Récupérer l'instance appropriée de TestServer
-                    int serverIndex = i - serverSockets.size();
+
+                    std::cout << "valeur de i : " << i << "\n\n";
+                    int serverIndex = getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 0);
+                    std::cout << "serverIndex : " << serverIndex << "\n\n";
                     SERVER::TestServer& server = servers[serverIndex]; // Référence à l'instance de TestServer
                     // Traiter les données reçues du client
                     server._buffer = buffer;
 
                     // Envoyer une réponse au client
-                    if (server._handler(pollFds[i].fd) == 0)
+                    if (server._handler(pollFds[i].fd) <= 0)
                     {
-                        // std::cout << "handler == 0\n\n";
-                        // close(clientSockets[i].fd);
-                        // clientSockets.erase(clientSockets.begin() + i);
-                        // --i;
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
                     }
-                    if (server._responder(pollFds[i].fd) < 0)
+                    else if (server._responder(pollFds[i].fd) < 0)
                     {
-                        // close(clientSockets[i].fd);
-                        // clientSockets.erase(clientSockets.begin() + i);
-                        // --i;
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
                     }
-                    close(pollFds[i].fd);
-                    clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
-                    pollFds.erase(pollFds.begin() + i);
+                    else
+                    {
+                        getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
+                        close(pollFds[i].fd);
+                        clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
+                        pollFds.erase(pollFds.begin() + i);
+                    }
                 }
                 break;
             }
@@ -147,6 +198,7 @@ void launch(ConfigParser &configInfo)
                 if (pollFds[i].revents & POLLOUT)
                 {
                     std::cout << "\n\nPOULLOUt\n\n";
+                    getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
                     close(pollFds[i].fd);
                     clientSockets.erase(clientSockets.begin() + i - serverSockets.size());
                     pollFds.erase(pollFds.begin() + i);
@@ -156,71 +208,3 @@ void launch(ConfigParser &configInfo)
          std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
     }
 }
-
-
-
-
-
-
-
-
-
-// while (true) {
-//         // ...
-//         // Reste du code
-//         // ...
-
-//         // Parcourir toutes les sockets clients existantes pour les données reçues
-//         for (int i = serverSockets.size(); i < pollFds.size(); ++i)
-//         {
-//             if (pollFds[i].revents & POLLIN)
-//             {
-//                 // Données reçues d'un client existant
-//                 char buffer[4096];
-//                 memset(buffer, 0, sizeof(buffer));
-//                 int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
-//                 if (bytesRead <= 0) {
-//                     // ...
-//                     // Reste du code
-//                     // ...
-
-//                     continue;
-//                 } else {
-//                     // Traiter les données reçues du client
-
-//                     // Récupérer l'instance appropriée de TestServer
-//                     int serverIndex = i - serverSockets.size();
-//                     SERVER::TestServer& server = t[serverIndex]; // Référence à l'instance de TestServer
-//                     // ou
-//                     SERVER::TestServer* serverPtr = &t[serverIndex]; // Pointeur vers l'instance de TestServer
-
-//                     // Utiliser les membres de l'instance de TestServer
-//                     server._buffer = buffer;
-//                     // ou
-//                     serverPtr->_buffer = buffer;
-
-//                     if (server._handler(pollFds[i].fd) == 0)
-//                     {
-//                         // ...
-//                         // Reste du code
-//                         // ...
-//                     }
-//                     if (server._responder(pollFds[i].fd) < 0)
-//                     {
-//                         // ...
-//                         // Reste du code
-//                         // ...
-//                     }
-//                     // ...
-//                     // Reste du code
-//                     // ...
-//                 }
-//                 break;
-//             }
-//             // ...
-//             // Reste du code
-//             // ...
-//         }
-//         std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
-//     }
-// }

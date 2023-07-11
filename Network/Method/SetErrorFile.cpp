@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 17:35:33 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:48:40 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 std::string loadContentFile(std::string contentFile)
 {	
 	std::cout << "\nContentFile : " << contentFile << "\n\n";
-	std::string file = "Network/HtmlFiles/ErrorFiles" + contentFile;
+	std::string file = "Network/Website/HtmlFiles/ErrorFiles" + contentFile;
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);
 	if(ifs.fail())
@@ -76,5 +76,12 @@ void forbidden(MAP_STRING &responsContent)
 {
 	std::string forbidden = loadContentFile("/403Forbidden.html");
 	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
+	return ;
+}
+
+void redirection(MAP_STRING &responsContent, std::string newUrl)
+{
+	std::string body;
+	setResponsContent(responsContent, "HTTP/1.1", "302 Found", newUrl, body);
 	return ;
 }

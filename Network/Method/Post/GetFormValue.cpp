@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 22:11:39 by theophilebr       #+#    #+#             */
-/*   Updated: 2023/07/07 14:30:46 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 15:20:16 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	createFile(std::string const &fileBody, std::string const &fileName, std::s
 	std::string body;
 	if (type == "file")
 	{
-		std::cout << "file on est laaa\n\n";
-		std::string file = "Network/HtmlFiles/Upload/Files/" + fileName;
+		std::string file = route.d_root.substr(1) + info.at("PATH").substr(1) + "/" + fileName;
+		std::cout << "uplaoding file located at : " << route.d_root.substr(1) + info.at("PATH").substr(1) + "/" + fileName << "\n\n";
 			std::ofstream ofs (file);
 		if (ofs.fail())
 		{
@@ -41,7 +41,8 @@ void	createFile(std::string const &fileBody, std::string const &fileName, std::s
 	}
 	if (type == "image")
 	{
-		std::string file = "Network/HtmlFiles/Upload/Images/" + fileName;
+		std::cout << "uplaoding file located at : " << route.d_root.substr(1) + info.at("PATH").substr(1) + "/" + fileName << "\n\n";
+		std::string file = route.d_root.substr(1) + info.at("PATH").substr(1) + "/" + fileName;
 		std::ofstream ofs (file, std::ios_base::out | std::ios_base::binary);
 		if (ofs.fail())
 		{

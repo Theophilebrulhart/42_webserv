@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OpenFile.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:24:56 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/10 21:42:20 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,40 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
 {
     std::cout << "openFile\n\n";
     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
-    std::cout << "on me voit 3\n\n";
+    if (route.a_route.empty())
+    {
+        std::cout << "empty \n\n";
+            return ;
+    }
+    std::string path = info.at("PATH");
+    int isDirectoryTmp = isDir(route.d_root.substr(1) + info.at("PATH").substr(1));
+   if (isDirectoryTmp)
+    {
+        std::cout << "Is directory with / at the end ? \n\n";
+            char lastChar = path[path.length() - 1];
+            if (lastChar != '/')
+            {
+                std::cout << "no / at the end of this directory\n\n";
+                redirection(responsContent, "Location: " + path + "/");
+                return ;
+            }
+    }
     if (info.at("METHOD") == "GET")
     {
         std::cout << "method get\n\n";
         try
         {
             if (info.at("EXTENSION") == ".php")
+            {
                 CGI(info, responsContent);
+                std::cout << "return of cgi in get\n\n";
+                return ;
+            }
         }
         catch(const std::out_of_range& oor)
         {
             std::cout << "\nNo php extension\n";
         }
-    }
-    if (route.a_route.empty())
-    {
-        std::cout << "empty \n\n";
-            return ;
     }
     std::string contentType;
     try

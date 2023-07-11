@@ -6,7 +6,7 @@
 #    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/07/07 12:11:46 by tbrulhar         ###   ########.fr        #
+#    Updated: 2023/07/10 20:09:31 by tbrulhar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRC +=	${addprefix Network/Utils/, Utils.cpp}
 OBJ = $(SRC:.cpp=.o) 
 GPP = c++
 RM = rm -f 
-GFLAGS = -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
+GFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 NAME = webserv
 
