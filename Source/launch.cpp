@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 23:00:36 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:44:09 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,17 @@ int getMapKey(std::map<int, std::vector<int> > &serverClientList, int value, int
     std::cout << "value : " << value << "\n\n";
     for (std::map<int, std::vector<int> >::iterator it = serverClientList.begin(); it != serverClientList.end(); it++)
     {
-        std::cout << "it de serveerClientList : " << it->first << "\n\n";
         for (std::vector<int>::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
         {
-             std::cout << "it de serveerClientList vector : " << *itt << "\n\n";
             if (*itt == value)
             {
                 if (value_delete)
                     it->second.erase(itt);
-                std::cout << "return de l'index de server : " << i << "\n\n";
                 return (i);
             }
         }
         i++;
     }
-    std::cout << "socket pas trouve dans serverClientList\n\n";
     return (-1);
 }
 
@@ -60,7 +56,6 @@ void launch(ConfigParser &configInfo)
         std::cout << "\e[0;42m\n**********" << it->first <<"**********\e[0m";
         for(size_t i = 0; i < it->second.b_port.size(); i++)
         {
-            std::cout << "i i i i : " << i << "\n\n";
             servers.push_back(init_server(it->second, serverSockets, it->second.b_port[i], serverClientList));
         }
          std::cout << "\e[0;42m\n******************************\e[0m\n\n";
@@ -101,14 +96,12 @@ void launch(ConfigParser &configInfo)
                 //memset(&clientAddress, 0, sizeof(clientAddress));
                  socklen_t clientAddressLength = sizeof(clientAddress);
                 int clientSocket = accept(serverSockets[i], (struct sockaddr *)&clientAddress, &clientAddressLength);
-                std::cout << "serversocket[i] : " << serverSockets[i] << "\n\n";
                  if (clientSocket < 0)
                 {
                     std::cerr << "Erreur lors de l'acceptation de la connexion client" << std::endl;
                     return;
                 }
 
-                std::cout << "Nouvelle connexion acceptée : " << clientSocket << std::endl;
 
                 // Ajout du nouveau client à la liste => changer pour le backlog configFile
                 if (clientSockets.size() >= 35) {
@@ -137,11 +130,11 @@ void launch(ConfigParser &configInfo)
            if (pollFds[i].revents & POLLIN)
            {
                 // Données reçues d'un client existant
-                char buffer[100000];
+                char buffer[10000];
                 memset(buffer, 0, sizeof(buffer));
-               int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
-               std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
-               std::cout << "buffer \n" << buffer << "\n\n";
+                int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
+                std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
+                std::cout << "buffer \n" << buffer << "\n\n";
                 if (bytesRead <= 0)
                 {
                     // Erreur de réception ou connexion fermée
