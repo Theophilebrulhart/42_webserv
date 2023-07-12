@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 16:24:27 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:33:20 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void setResponsContent(MAP_STRING& responsContent, std::string protocol, std::st
 std::string loadContentFile(std::string contentFile, std::string root)
 {	
 	std::string file = root + contentFile;
-	std::cout << "\nContentFile in loadcontent: " << file << "\n\n";
+	// std::cout << "\nContentFile in loadcontent: " << file << "\n\n";
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);
 	if(ifs.fail())
@@ -106,21 +106,20 @@ int isValidMethod(const MAP_STRING& info)
 
 bool isFile(const std::string& path)
 {
-	std::cout << "isfile file :" <<  path << "\n\n";
+	// std::cout << "isfile file :" <<  path << "\n\n";
     struct stat fileStat;
     if (stat(path.c_str(), &fileStat) != 0)
     {
         // Erreur lors de la récupération des informations du fichier
         return false;
     }
-	std::cout << "on me voit 3 " << "\n\n";
     return S_ISREG(fileStat.st_mode);
 }
 
 bool isDir(const std::string& path)
 {
 
-	std::cout << "isDir path :" <<  path << "\n\n";
+	// std::cout << "isDir path :" <<  path << "\n\n";
 
     struct stat fileStat;
 	
@@ -178,36 +177,37 @@ std::string    findSlash(const std::string &url)
 
 ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
-	//td::cout << "is route ? the serv route is : " << servInfo.a_route << "\n\n";
+	// std::cout << "is route ? the serv route is : " << servInfo.a_route << "\n\n";
 	ConfigParser::t_route empty;
 	std::string path = info.at("PATH");
+	std::cout << "The path :" << path << std::endl;
 	if (path.size() == 1)
 	{
-		std::cout << "route sze 1\n\n";
+		// std::cout << "route sze 1\n\n";
 		if (servInfo.c_routes.find(path) != servInfo.c_routes.end() && path != "/")
 		{
-			std::cout << "route : " << info.at("PATH") << "\n\n";
+			// std::cout << "route : " << info.at("PATH") << "\n\n";
 			forbidden(responsContent);
 			return (empty);
 		}
-		std::cout << "path = " << path << std::endl;
+		// std::cout << "path = " << path << std::endl;
 		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path], info))
 			return (empty);
-		std::cout << "return size 1 route : " << servInfo.c_routes[path].a_route << "\n\n";
+		// std::cout << "return size 1 route : " << servInfo.c_routes[path].a_route << "\n\n";
 		return (servInfo.c_routes[path]);
 	}
 	std::string route = findSlash(path);
-	std::cout << "route eee: " << route << "\n\n";
+	// std::cout << "route eee: " << route << "\n\n";
 	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
 	{
-		std::cout << "\nNO ROUTE TA MERE LA PUUUTE\n\n";
+		std::cout << "\nRoute non trouvee\n\n";
 		if (!exist(responsContent, servInfo.c_routes["/"], info))
 			return (empty);
 		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info))
 			return (empty);
 		return (servInfo.c_routes["/"]);
 	}
-	std::cout << "ROUTE TROUVE : " << servInfo.c_routes[route].a_route << "\n\n";
+	// std::cout << "Route trouvee : " << servInfo.c_routes[route].a_route << "\n\n";
 	if (!servInfo.c_routes[route].c_redirec.empty())
 	{
 		 std::cout << "no / at the end of this directory\n\n";

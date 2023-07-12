@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/10 16:07:24 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:43:08 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	ConfigParser::ConfigBuilder(char *filename) {
 	}
 	newFilename = "Source/ConfigFiles/" + newFilename;
 	
-	std::cout << "Opening file   [" << newFilename << "]" << std::endl;
+	// std::cout << "Opening file   [" << newFilename << "]" << std::endl;
 	myfile.open(newFilename, std::ios::in);
 	if (!myfile.is_open()) {
 		std::cerr << "Error in function ConfigBuilder : " << strerror(errno) << std::endl;
 		throw("Could not open requested file.");
 		return 1;
 	}
-	std::cout << "Parsing        [" << filename << "] as configuration file" << std::endl;
+	// std::cout << "Parsing        [" << filename << "] as configuration file" << std::endl;
 	std::getline(myfile, buff);
 	if (buff != "Bonjour!") {
 		throw("Configuration file must say 'Bonjour!' to preserve it's mother integrity.");
@@ -227,10 +227,10 @@ int	ConfigParser::check_servers(void) {
 	a.d_root = "/Network/Website/HtmlFiles";
 	a.f_def_rep = "/pb.html";
 	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
-		std::cout << "checking [" << it->first << "] ..." << std::endl;
+		// std::cout << "checking [" << it->first << "] ..." << std::endl;
 		if(it->second.c_routes.find("/") == it->second.c_routes.end()) {
 			it->second.c_routes["/"] = a;
-			std::cout << "default route added to " << it->first << std::endl;
+			// std::cout << "default route added to " << it->first << std::endl;
 		}
 		if(it->second.c_routes["/"].d_root.empty())
 			throw("Error in configuration file : every route needs a root route!");

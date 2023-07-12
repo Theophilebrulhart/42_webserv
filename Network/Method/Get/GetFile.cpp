@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetFile.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:08:37 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 14:27:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:48:38 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 std::string listingFile(std::string path)
 {
     std::string fileListHTML;
-    std::cout << "path in listing file : " << path << "\n\n";
+    // std::cout << "path in listing file : " << path << "\n\n";
     std::ifstream file(path.c_str());
     if (file.good())
     {
-        std::cout << "listing Files : " <<  path << "\n\n";
+        // std::cout << "listing Files : " <<  path << "\n\n";
         fileListHTML += "<html>\n";
         fileListHTML += "<body>\n";
         fileListHTML += "<ul>\n";
@@ -51,7 +51,7 @@ std::string listingFile(std::string path)
 }
 std::string listingDirectories(std::string path)
 {
-    std::cout << "listing with path : " << path << "\n\n";
+    // std::cout << "listing with path : " << path << "\n\n";
    std::string fileListHTML;
 
     DIR* directory = opendir(path.c_str());
@@ -86,14 +86,14 @@ std::string listingDirectories(std::string path)
 std::string getFileToLoad(MAP_STRING &info, ConfigParser::t_route &route)
 {
     std::string file;
-    std::cout << "getFileToLoad\n\n";
+    // std::cout << "getFileToLoad\n\n";
     std::string path = info.at("PATH");
-    std::cout << "route dans getFileToLoad : " << route.d_root << "\n\n";
-    std::cout << "path dans getFileToLoad : " << path << "\n\n";
+    // std::cout << "route dans getFileToLoad : " << route.d_root << "\n\n";
+    // std::cout << "path dans getFileToLoad : " << path << "\n\n";
 	int isDirectoryTmp = isDir(route.d_root.substr(1) + path.substr(1));
     if (route.e_rep_listing)
     {
-        std::cout << "listing true\n\n";
+        // std::cout << "listing true\n\n";
         if (isDirectoryTmp)
             file = listingDirectories(route.d_root.substr(1) + path.substr(1));
         else

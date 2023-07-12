@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:44:09 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:51:13 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int getMapKey(std::map<int, std::vector<int> > &serverClientList, int value, int value_delete)
 {
     int i = 0;
-    std::cout << "value : " << value << "\n\n";
+    // std::cout << "value : " << value << "\n\n";
     for (std::map<int, std::vector<int> >::iterator it = serverClientList.begin(); it != serverClientList.end(); it++)
     {
         for (std::vector<int>::iterator itt = it->second.begin(); itt != it->second.end(); itt++)
@@ -63,7 +63,7 @@ void launch(ConfigParser &configInfo)
 
     //creation de la structure pollFds pour chaque server
     std::vector<struct pollfd> pollFds;
-            std::cout << "serverSocket size FIRST " << serverSockets.size() << "\n\n";
+            // std::cout << "serverSocket size FIRST " << serverSockets.size() << "\n\n";
 
     for (int i = 0; i < serverSockets.size(); i++)
     {
@@ -78,7 +78,7 @@ void launch(ConfigParser &configInfo)
     std::cout << "Serveur en attente de connexions..." << std::endl;
 
     while (true) {
-        std::cout << "\n\e[0;32m===== WAITING =====\e[0m\n";
+        // std::cout << "\n\e[0;32m===== WAITING =====\e[0m\n";
         int pollResult = poll(&pollFds[0], pollFds.size(), -1);
         if (pollResult < 0)
         {
@@ -115,7 +115,7 @@ void launch(ConfigParser &configInfo)
                     pfd.revents = 0;
                     pollFds.push_back(pfd);
 
-                    std::cout << "Nouvelle connexion client sut la socket : " << clientSocket << "\n\n";
+                    // std::cout << "Nouvelle connexion client sut la socket : " << clientSocket << "\n\n";
                     serverClientList[serverSockets[i]].push_back(clientSocket);
                 }
             }
@@ -124,8 +124,8 @@ void launch(ConfigParser &configInfo)
         // Parcourir toutes les sockets clients existants pour les donnees recu
         for (int i = serverSockets.size(); i < pollFds.size(); ++i)
         {
-            std::cout << "serverSocket size " << serverSockets.size() << "\n\n";
-            std::cout << "pollfd size " << pollFds.size() << "\n\n";
+            // std::cout << "serverSocket size " << serverSockets.size() << "\n\n";
+            // std::cout << "pollfd size " << pollFds.size() << "\n\n";
 
            if (pollFds[i].revents & POLLIN)
            {
@@ -133,8 +133,8 @@ void launch(ConfigParser &configInfo)
                 char buffer[10000];
                 memset(buffer, 0, sizeof(buffer));
                 int bytesRead = recv(clientSockets[i - serverSockets.size()], buffer, sizeof(buffer), 0);
-                std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
-                std::cout << "buffer \n" << buffer << "\n\n";
+                // std::cout << "clientSocket [i - serversize()] : " << clientSockets[i - serverSockets.size()] << "\n\n";
+                // std::cout << "buffer \n" << buffer << "\n\n";
                 if (bytesRead <= 0)
                 {
                     // Erreur de réception ou connexion fermée
@@ -154,9 +154,9 @@ void launch(ConfigParser &configInfo)
                 else {
                     // Récupérer l'instance appropriée de TestServer
 
-                    std::cout << "valeur de i : " << i << "\n\n";
+                    // std::cout << "valeur de i : " << i << "\n\n";
                     int serverIndex = getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 0);
-                    std::cout << "serverIndex : " << serverIndex << "\n\n";
+                    // std::cout << "serverIndex : " << serverIndex << "\n\n";
                     SERVER::TestServer& server = servers[serverIndex]; // Référence à l'instance de TestServer
                     // Traiter les données reçues du client
                     server._buffer = buffer;
@@ -198,6 +198,6 @@ void launch(ConfigParser &configInfo)
                 }
             }
         }
-         std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
+        //  std::cout << "\e[0;36m\n===== DONE =====\e[0m\n";
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   RequestParsing.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:02:35 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 10:01:44 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 16:11:44 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,15 @@ int infoCheck(MAP_STRING info)
 
 int    requestParsing(std::string buffer, MAP_STRING &info)
 {
-    std::cout << "\n\n*****\e[0;35mMAINPARSING BUFFER\e[0m****\n" << buffer << std::endl;
+    // if (!buffer.find("/favicon.ico"))
+    // {
+        std::cout << "*****\e[0;35mMAINPARSING BUFFER\e[0m****\n" << buffer;
+        std::cout << "*****\e[0;35mMAINPARSING BUFFER END\e[0m****\n" << "\n\n"; 
+    // }
     if (!buffer.empty())
     {
         getInfo(buffer, info);
-        printInfo(info);
+        // printInfo(info);
         int checkRes = infoCheck(info);
         if ( checkRes < 0)
             return (checkRes);

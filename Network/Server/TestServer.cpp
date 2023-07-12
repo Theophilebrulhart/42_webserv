@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:10:18 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 16:40:54 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ SERVER::TestServer::~TestServer(void)
 int	SERVER::TestServer::_handler(int clientSocket)
 {
     int parsingRes = requestParsing(_buffer, _requestInfo);
+    // if (_requestInfo["PATH"] == "/favicon.ico")
+    //     return -1;
 	if ( parsingRes <= 0)
     {
         std::cout << "resquestParsing failed\n\n";
@@ -58,7 +60,7 @@ int	SERVER::TestServer::_handler(int clientSocket)
             CGI(_requestInfo, _responsContent);
             return 1;
         }
-        std::cout << _requestInfo.at("CONTENT-TYPE") << std::endl;
+        // std::cout << _requestInfo.at("CONTENT-TYPE") << std::endl;
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
@@ -81,8 +83,8 @@ int	SERVER::TestServer::_responder(int clientSocket)
 {
 	RESPONS::CreateRespons	createRespons(_responsContent);
 	std::string respons = createRespons.getRespons();
-    std::cout << "CLientOcket : "<< clientSocket << "\n\n";
-	std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
+    // std::cout << "CLientOcket : "<< clientSocket << "\n\n";
+	// std::cout << "\n\e[0;93m*****RESPONDER****\n" << respons;
     int sendRes = send(clientSocket, respons.c_str(), respons.size(), 0);
 	if (sendRes <= 0)
     {
@@ -94,7 +96,7 @@ int	SERVER::TestServer::_responder(int clientSocket)
         _requestInfo.clear();
         return (-1);
     }
-	std::cout << "send done\n";
+	// std::cout << "send done\n";
 
 	_responsContent.clear();
     _requestInfo.clear();

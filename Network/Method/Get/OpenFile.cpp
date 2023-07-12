@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OpenFile.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 21:42:20 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:55:49 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
-    std::cout << "openFile\n\n";
+    // std::cout << "openFile\n\n";
     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
     if (route.a_route.empty())
     {
@@ -25,7 +25,7 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     int isDirectoryTmp = isDir(route.d_root.substr(1) + info.at("PATH").substr(1));
    if (isDirectoryTmp)
     {
-        std::cout << "Is directory with / at the end ? \n\n";
+        // std::cout << "Is directory with / at the end ? \n\n";
             char lastChar = path[path.length() - 1];
             if (lastChar != '/')
             {
@@ -36,13 +36,12 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     }
     if (info.at("METHOD") == "GET")
     {
-        std::cout << "method get\n\n";
+        // std::cout << "method get\n\n";
         try
         {
             if (info.at("EXTENSION") == ".php")
             {
                 CGI(info, responsContent);
-                std::cout << "return of cgi in get\n\n";
                 return ;
             }
         }
