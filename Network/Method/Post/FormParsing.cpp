@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FormParsing.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 23:15:33 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/11 14:54:17 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING
     }
     
     std::cout << "###### content ########\n\n" << content.substr(0, 1000) << "\n";
-    std::cout << "len :" << content.length() << "\n\n";
-    std::cout << "max :" << std::atoi(servInfo.d_max_body_size.c_str()) << "\n\n";
+    // std::cout << "len :" << content.length() << "\n\n";
+    // std::cout << "max :" << std::atoi(servInfo.d_max_body_size.c_str()) << "\n\n";
     if (content.length() > std::atoi(servInfo.d_max_body_size.c_str()))
     {
-        std::cout << "body too long my friends (like my dick ;) )\n\n";
+        std::cout << "body's bigger than max body: check config file\n\n";
         return (-1);
     }
     getFormValue(content, info, responsContent, servInfo);
