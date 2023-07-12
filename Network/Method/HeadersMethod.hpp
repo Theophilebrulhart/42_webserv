@@ -6,7 +6,7 @@
 /*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:05:05 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/07 23:11:03 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 11:04:43 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ void 			notFound(MAP_STRING &responsContent);
 void			forbidden(MAP_STRING &responsContent);
 void            forbiddenMethod(MAP_STRING &responsContent);
 void 			redirection (MAP_STRING &responsContent, std::string newUrl);
+void 			unprocessable(MAP_STRING &responsContent);
 
 #endif

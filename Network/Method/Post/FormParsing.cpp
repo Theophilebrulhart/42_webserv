@@ -3,43 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   FormParsing.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 23:15:33 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:22:55 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersPost.hpp"
+
+std::string getLastLinePost(std::string& buffer) {
+    std::string::size_type pos = buffer.find_last_of('\n');
+    if (pos != std::string::npos) {
+        // Skip the newline character if it is the last character
+        if (pos > 0 && buffer[pos - 1] == '\r') {
+            --pos;
+        }
+		pos++;
+        return buffer.substr(pos + 1);
+    }
+    return buffer;
+}
 
 int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
     std::string content;
     int         readTest = 1000;
     std::vector<unsigned char>	buf(1000);
+
+    std::cout << "max size buffer : " << std::stoi(info["CONTENT-LENGTH"]) + buffer.length() << "\n\n";
     
-    if (info.at("CONTENT-TYPE").find("boundary=") != std::string::npos)
+   if ((info.find("CONTENT-TYPE") != info.end()) && (info["CONTENT-TYPE"].find("boundary=") != std::string::npos))
     {
         while (readTest == 1000)
         {
             bzero(buf.data(), 1000);
             readTest = recv(socket, buf.data(), buf.size(), 0);
-            // if (readTest <= 0)
-            // {
-            //     if (readTest < 0)
-            //     {
-            //         std::cout << "recv a foireeee putain\n\n";
-            //         return (-1);
-            //     }
-            // }
+            if (readTest <= 0)
+            {
+                if (readTest < 0)
+                {
+                    std::cout << "recv a foireeee putain\n\n";
+                    return (-1);
+                }
+            }
             std::string tmp(buf.begin(), buf.end());
             content += tmp;
             if (readTest != 1000)
                 break ;
         }
     }
-    
-    std::cout << "###### content ########\n\n" << content.substr(0, 1000) << "\n";
     std::cout << "len :" << content.length() << "\n\n";
     std::cout << "max :" << std::atoi(servInfo.d_max_body_size.c_str()) << "\n\n";
     if (content.length() > std::atoi(servInfo.d_max_body_size.c_str()))
@@ -47,6 +60,17 @@ int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING
         std::cout << "body too long my friends (like my dick ;) )\n\n";
         return (-1);
     }
+    std::cout << "body size ok \n\n";
+    if (content.length() == 0)
+        content = getLastLinePost(buffer);
+    std::cout << "content type : " << info.at("CONTENT-TYPE") << "\n\n";
+    if (info.at("CONTENT-TYPE") == "plain/text\r")
+    {
+        std::cout << "unprocessable\n\n";
+        unprocessable(responsContent);
+        return (0);
+    }
+    std::cout << "sending to getFormCalue\n\n";
     getFormValue(content, info, responsContent, servInfo);
     buffer += content;
     return (0);

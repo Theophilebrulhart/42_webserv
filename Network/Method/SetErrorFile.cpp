@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SetErrorFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 16:48:40 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:19:09 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,12 @@ void redirection(MAP_STRING &responsContent, std::string newUrl)
 {
 	std::string body;
 	setResponsContent(responsContent, "HTTP/1.1", "302 Found", newUrl, body);
+	return ;
+}
+
+void unprocessable(MAP_STRING &responsContent)
+{
+	std::string unprocessable = loadContentFile("/422Unprocessable.html");
+	setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);
 	return ;
 }

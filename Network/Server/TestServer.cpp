@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 23:14:18 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:10:18 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	SERVER::TestServer::_handler(int clientSocket)
             CGI(_requestInfo, _responsContent);
             return 1;
         }
+        std::cout << _requestInfo.at("CONTENT-TYPE") << std::endl;
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
@@ -66,7 +67,7 @@ int	SERVER::TestServer::_handler(int clientSocket)
 		}
 		catch(const std::out_of_range& oor)
 		{
-			std::cout << "\nNo multipart/form-data\n";
+			std::cout << "\nNo Content\n";
 		}
 	}
 	else if (_requestInfo.at("METHOD") == "DELETE")

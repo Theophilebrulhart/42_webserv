@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 22:51:48 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:16:11 by theophilebr      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void	getInfo(std::string &buffer, MAP_STRING &info)
 	getSection(buffer, info, "Accept", "TYPE");
 	getSection(buffer, info, "Expect", "EXPECT");
 	getSection(buffer, info, "Content-Type", "CONTENT-TYPE");
+	getSection(buffer, info, "Content-Length", "CONTENT-LENGTH");
 	try {
 	if (info["CONTENT-TYPE"] == "application/x-www-form-urlencoded\r")
 		info["CGIBODY"] = getLastLine(buffer);	
