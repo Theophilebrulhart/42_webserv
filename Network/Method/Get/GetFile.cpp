@@ -6,11 +6,24 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:08:37 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 14:27:14 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:21:59 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "HeadersGet.hpp"
+
+int isDirectory(MAP_STRING &info)
+{
+    try {
+        info.at("EXTENSION");
+    }
+    catch (const std::out_of_range& oor)
+    {
+        std::cout << "No extension" << "\n\n";
+        return (1);
+    }
+    return (0);
+}
 
 std::string listingFile(std::string path)
 {
@@ -87,27 +100,20 @@ std::string getFileToLoad(MAP_STRING &info, ConfigParser::t_route &route)
 {
     std::string file;
     std::cout << "getFileToLoad\n\n";
-    std::string path = info.at("PATH");
-    std::cout << "route dans getFileToLoad : " << route.d_root << "\n\n";
-    std::cout << "path dans getFileToLoad : " << path << "\n\n";
-	int isDirectoryTmp = isDir(route.d_root.substr(1) + path.substr(1));
+	int isDirectoryTmp = isDirectory(info);
     if (route.e_rep_listing)
     {
         std::cout << "listing true\n\n";
         if (isDirectoryTmp)
-            file = listingDirectories(route.d_root.substr(1) + path.substr(1));
+            file = listingDirectories(route.d_root.substr(1) + info.at("PATH").substr(1));
         else
-            file = loadContentFile(info.at("PATH").substr(1), route.d_root.substr(1));
-        //     file = listingFile(route.d_root.substr(1) + path.substr(1));
-        // std::cout << "listing file : " << file << "\n\n";
+            file = listingFile(route.d_root.substr(1) + info.at("PATH").substr(1));
+        std::cout << "listing file : " << file << "\n\n";
     }
     else
     {
         if (isDirectoryTmp)
-        {
-            std::cout << "load directory in getFileToLoad\n\n";
            file = loadContentFile(route.f_def_rep.substr(1), route.d_root.substr(1));
-        }
         else
         {
             std::cout << "laod file : path" << info.at("PATH").substr(1) << "\n\n";

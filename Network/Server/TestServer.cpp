@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:10:18 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 13:28:06 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ SERVER::TestServer::~TestServer(void)
 
 int	SERVER::TestServer::_handler(int clientSocket)
 {
+    // std::cout << "\n\nmethod : " << _servInfo.c_routes.at("/").b_methods.front() << "\n\n";
+    // std::cout << "\n\nroot : " << _servInfo.c_routes.at("/").a_route << "\n\n";
+    // std::cout << "\n\nroot 2: " << _servInfo.c_routes.at("/Pelops.html").a_route << "\n\n";
+
     int parsingRes = requestParsing(_buffer, _requestInfo);
 	if ( parsingRes <= 0)
     {
@@ -48,22 +52,10 @@ int	SERVER::TestServer::_handler(int clientSocket)
 	
 	if (_requestInfo.at("METHOD") == "POST")
 	{
-        if (_requestInfo.at("CONTENT-TYPE") == "application/x-www-form-urlencoded\r")
-        {
-            if (isRoute(_requestInfo, _responsContent, _servInfo).d_root.empty())
-            {
-                std::cout << "empty route" << std::endl;
-                return 1;
-            }
-            CGI(_requestInfo, _responsContent);
-            return 1;
-        }
-        std::cout << _requestInfo.at("CONTENT-TYPE") << std::endl;
 		try
 		{
 			_requestInfo.at("CONTENT-TYPE");
-			if (formParsing (_buffer, _requestInfo, clientSocket, _responsContent, _servInfo) < 0)
-                return (-1);
+			formParsing (_buffer, _requestInfo, clientSocket, _responsContent, _servInfo);
 		}
 		catch(const std::out_of_range& oor)
 		{

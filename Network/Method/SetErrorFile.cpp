@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SetErrorFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:19:09 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 13:27:37 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 std::string loadContentFile(std::string contentFile)
 {	
 	std::cout << "\nContentFile : " << contentFile << "\n\n";
-	std::string file = "Network/Website/HtmlFiles/ErrorFiles" + contentFile;
+	std::string file = "Network/HtmlFiles/ErrorFiles" + contentFile;
 	std::string	tmp;
 	std::ifstream ifs (file.c_str(), std::ifstream::in);
 	if(ifs.fail())
@@ -76,19 +76,5 @@ void forbidden(MAP_STRING &responsContent)
 {
 	std::string forbidden = loadContentFile("/403Forbidden.html");
 	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
-	return ;
-}
-
-void redirection(MAP_STRING &responsContent, std::string newUrl)
-{
-	std::string body;
-	setResponsContent(responsContent, "HTTP/1.1", "302 Found", newUrl, body);
-	return ;
-}
-
-void unprocessable(MAP_STRING &responsContent)
-{
-	std::string unprocessable = loadContentFile("/422Unprocessable.html");
-	setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);
 	return ;
 }

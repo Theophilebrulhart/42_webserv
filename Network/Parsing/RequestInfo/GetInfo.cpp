@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:34:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 10:16:11 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 13:27:52 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "HeadersRequestInfo.hpp"
-# include <cstring>
 
 void getMethod(std::string& buffer, std::map<std::string, std::string>& info)
 {
@@ -122,19 +121,6 @@ void	getSection(std::string &buffer, MAP_STRING &info, std::string toFind, std::
 	
 }
 
-std::string getLastLine(std::string& buffer) {
-    std::string::size_type pos = buffer.find_last_of('\n');
-    if (pos != std::string::npos) {
-        // Skip the newline character if it is the last character
-        if (pos > 0 && buffer[pos - 1] == '\r') {
-            --pos;
-        }
-		pos++;
-        return buffer.substr(pos + 1);
-    }
-    return buffer;
-}
-
 void	getInfo(std::string &buffer, MAP_STRING &info)
 {
 	getMethod(buffer, info);
@@ -143,15 +129,5 @@ void	getInfo(std::string &buffer, MAP_STRING &info)
 	getSection(buffer, info, "Host:", "HOST");
 	getSection(buffer, info, "Connection:", "CONNECTION");
 	getSection(buffer, info, "Accept", "TYPE");
-	getSection(buffer, info, "Expect", "EXPECT");
 	getSection(buffer, info, "Content-Type", "CONTENT-TYPE");
-	getSection(buffer, info, "Content-Length", "CONTENT-LENGTH");
-	try {
-	if (info["CONTENT-TYPE"] == "application/x-www-form-urlencoded\r")
-		info["CGIBODY"] = getLastLine(buffer);	
-	}
-	catch (const std::out_of_range& oor) 
-	{
-		info["CONTENT_TYPE"] = "";
-	}
 }

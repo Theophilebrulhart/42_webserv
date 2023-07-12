@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HeadersMethod.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:05:05 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:04:43 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/12 13:29:55 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void 					setResponsContent(MAP_STRING &responsContent, std::string protocol, st
 std::string 			ft_itoa(int n);
 std::string 			loadContentFile(std::string contentFile, std::string root);
 ConfigParser::t_route	isRoute(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo);
-bool 					isDir(const std::string& path);
 
 //********SetErrorFile*******//
 

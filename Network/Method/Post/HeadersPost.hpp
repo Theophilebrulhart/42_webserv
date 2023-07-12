@@ -6,7 +6,7 @@
 /*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 20:24:03 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/10 21:55:42 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:51:41 by tbrulhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void    getFormValue(std::string const &content, MAP_STRING &info, MAP_STRING &r
 
 //********FormParsing*******//
 
-int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo);
+void    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo);
 
 #endif

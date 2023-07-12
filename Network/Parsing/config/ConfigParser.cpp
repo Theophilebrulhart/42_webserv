@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/10 16:07:24 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:32:38 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,8 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 		else if(token == "_methods")
 			while(ss >> buf)
 				this->servec[servname].c_routes[route].b_methods.push_back(buf);
-		else if(token == "_redirec" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+		else if(token == "_redirection" && ss >> buf) {
+			buf = this->addslash(buf);
 			this->servec[servname].c_routes[route].c_redirec = buf;
 		}
 		else if(token == "_root" && ss >> buf) {
@@ -224,7 +223,7 @@ int	ConfigParser::check_servers(void) {
 	a.a_route = "/";
 	a.b_methods.push_back("GET");
 	a.b_methods.push_back("POST");
-	a.d_root = "/Network/Website/HtmlFiles";
+	a.d_root = "/Network/HtmlFiles";
 	a.f_def_rep = "/pb.html";
 	for(std::map<std::string, t_serv>::iterator it = this->servec.begin(); it != this->servec.end(); it++) {
 		std::cout << "checking [" << it->first << "] ..." << std::endl;

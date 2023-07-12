@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CGI.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/10 11:16:39 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:06:33 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include "../Method/HeadersMethod.hpp"
 
 # define CGI_BUFSIZE 65536
-# define CGI_FILEPATH "./Network/Website/CGIFiles/"
-# define CGI_PHP "./Network/Website/CGIFiles/php-cgi" 
+# define CGI_FILEPATH "./Network/CGIFiles/"
+# define CGI_PHP "./Network/CGIFiles/php-cgi" 
 # define MAP_STRING std::map<std::string, std::string> 
 
 class	CGI {
