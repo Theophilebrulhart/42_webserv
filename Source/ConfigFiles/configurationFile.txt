@@ -32,9 +32,10 @@ Bonjour!
 
 //Server 1
 myserver server_names	moustache moustache.com
-myserver ports			8082 8080 4242 3333
-myserver max_body_size	5000000
+myserver ports			8082 8080 4241 3131
+myserver max_body_size	4096
 myserver back_log 		32767
+myserver max_body_size  4096
 myserver _route			/ / 
 myserver _methods		/ GET POST DELETE
 myserver _root			/ /Network/Website/HtmlFiles/
