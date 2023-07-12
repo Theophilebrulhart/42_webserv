@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:02:35 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 16:11:44 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:02:54 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int    requestParsing(std::string buffer, MAP_STRING &info)
     if (!buffer.empty())
     {
         getInfo(buffer, info);
-        // printInfo(info);
+        printInfo(info);
         int checkRes = infoCheck(info);
         if ( checkRes < 0)
             return (checkRes);
