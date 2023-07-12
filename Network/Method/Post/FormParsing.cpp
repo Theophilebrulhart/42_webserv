@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:29:15 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/12 11:47:20 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING
             {
                 if (readTest < 0)
                 {
-                    std::cout << "recv a foireeee putain\n\n";
+                    std::cout << "Recv problem\n\n";
                     return (-1);
                 }
             }
