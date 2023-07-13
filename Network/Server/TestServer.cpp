@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 16:40:54 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:19:03 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	SERVER::TestServer::_handler(int clientSocket)
                 std::cout << "empty route" << std::endl;
                 return 1;
             }
-            CGI(_requestInfo, _responsContent);
+            CGI(_requestInfo, _responsContent, _servInfo);
             return 1;
         }
         // std::cout << _requestInfo.at("CONTENT-TYPE") << std::endl;

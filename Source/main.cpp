@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:10:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:41:21 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:37:06 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     if(argc == 2) {
         try {
             ConfigParser a(argv[1]);
-            // a.dispConfig();
+            a.dispConfig();
             //a.dispErrorNames();
             launch(a);
         }

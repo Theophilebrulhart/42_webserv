@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/12 13:43:08 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:44:42 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			// if(buf[0] != '/')
+				// buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		}
 	}

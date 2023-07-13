@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/13 13:59:22 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:38:34 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ CGI::CGI() {
 
 }
 
-CGI::CGI(MAP_STRING &_requestInfo,  MAP_STRING &_responsContent) {
-	setUpEnv(_requestInfo, _responsContent);
+CGI::CGI(MAP_STRING &_requestInfo,  MAP_STRING &_responsContent, ConfigParser::t_serv servInfo) {
+	setUpEnv(_requestInfo, _responsContent, servInfo);
 }
 
 CGI::~CGI(void) {
 
 }
 
-void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
+void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent, ConfigParser::t_serv servInfo)
 {
 	std::map<std::string, std::string>::iterator	it;
 
@@ -80,7 +80,7 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
        	_env["QUERY_STRING"] = ""; 
     }
 	//BIG execution with the env variable 
-	Exec(_responsContent);
+	Exec(_responsContent, servInfo);
 	//Error handling in case smthing happend in the pipe 
 	if (_ewor == 5 || _ewor == 4)
 	{
@@ -124,7 +124,7 @@ int		CGI::SetResponseContent(MAP_STRING &_responsContent, std::string output)
 }
 
 
-int			CGI::Exec(MAP_STRING &_responsContent) {	
+int			CGI::Exec(MAP_STRING &_responsContent, ConfigParser::t_serv servInfo) {	
 	char		**env;
 	std::string	output;
 	
@@ -136,7 +136,8 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	}
 	// printStringArray(env);
 	
-	std::string s1 = CGI_PHP;
+	std::string s1 = servInfo.c_routes["/CGIFiles"].h_cgi_addr;
+	std::cout << "la : " << s1 << std::endl;
 	std::string s2 = _env["SCRIPT_FILENAME"];
 	std::string s3 = _env["REQUEST_METHOD"];
 	std::string s4 = _env["CONTENT_TYPE"];
