@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/12 13:43:08 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:28:59 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,7 @@ int	ConfigParser::check_servers(void) {
 			if((itt->second.e_rep_listing == 0) && itt->second.f_def_rep.empty())
 				throw("Error no def_rep set up with listing set to 0 in configuration file.");
 		}
+		it->second.f_error_names = this->x_error_names;
 	}
 	return 1;
 }
@@ -258,6 +259,9 @@ int ConfigParser::dispConfig(void) {
 			std::cout << "| maxbdysize : " << it->second.d_max_body_size << std::endl;
 		if(!it->second.e_back_log.empty())
 			std::cout << "| back_log : " << it->second.e_back_log << std::endl;
+		std::cout << "| error_names : " << std::endl;
+		for(std::map<std::string, std::string>::iterator iterr = it->second.f_error_names.begin(); iterr != it->second.f_error_names.end(); iterr++)
+			std::cout << "| -> " << iterr->first << " : " << iterr->second <<  std::endl;
 		for(std::map<std::string, t_route>::iterator itr = it->second.c_routes.begin(); itr != it->second.c_routes.end(); itr++) {
 			std::cout << "| route [" << itr->first << "]" << std::endl;
 			std::cout << "|   methods = ";

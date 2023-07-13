@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:10:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:41:21 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:56:31 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int main(int argc, char **argv)
     if(argc == 2) {
         try {
             ConfigParser a(argv[1]);
-            // a.dispConfig();
-            //a.dispErrorNames();
+            a.dispConfig();
+            a.dispErrorNames();
             launch(a);
         }
         catch(const char* exc) {

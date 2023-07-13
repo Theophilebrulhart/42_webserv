@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:09:55 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/10 10:52:38 by tbrulhar         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:50:53 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ public:
 		std::map<std::string, t_route>		c_routes;
 		std::string							d_max_body_size;
 		std::string							e_back_log;
+		std::map<std::string, std::string>	f_error_names;
 
 	} t_serv;
 

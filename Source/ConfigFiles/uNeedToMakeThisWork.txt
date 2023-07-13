@@ -31,8 +31,8 @@ Bonjour!
 //	_cgi_addr    -> std::string
 
 //Server 1
-myserver server_names	moustache moustache.com
-myserver ports			8100 8070 4241 3131
+myserver server_names	localhost
+myserver ports			8080
 myserver max_body_size	33000
 myserver back_log 		32767
 myserver _route			/ / 
@@ -70,8 +70,8 @@ myserver _rep_listing   /ideeMoustache 1
 myserver _redirec       /ideeMoustache https://www.youtube.com/watch?v=OF32KzHEtrg
 
 //Server 2
-myserver2 server_names	pelops pelops.com
-myserver2 ports			4141 8101
+myserver2 server_names	127.0.0.1
+myserver2 ports			8081
 myserver2 max_body_size	2147483647
 myserver2 back_log 		32767
 myserver2 _route		/ /
@@ -86,4 +86,3 @@ myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 404 add Found  
 407	add watur
-666 add PizEnReverse
