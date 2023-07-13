@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/12 16:26:57 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 11:14:09 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,8 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 
 	_env["REQUEST_METHOD"] = _requestInfo.at("METHOD");
 	_env["AUTH_TYPE"] = "";
-	if (_env["REQUEST_METHOD"] == "GET")
-	{
-		_env["CONTENT_TYPE"] = ""; 
-		_env["CONTENT_LENGTH"] = "";
-	}
-	else
-	{
+	if (_env["REQUEST_METHOD"] == "POST")
+	{	
 		_env["CONTENT_TYPE"] = "application/x-www-form-urlencoded";
 		std::size_t		len = _requestInfo.at("CGIBODY").size();
 		_env["CONTENT_LENGTH"] =  std::to_string(len);
@@ -71,7 +66,7 @@ void	CGI::setUpEnv(MAP_STRING &_requestInfo, MAP_STRING &_responsContent)
 	//name of the script being executed	
 	_env["SCRIPT_NAME"]= extractScriptName(_requestInfo.at("PATH"));
 	//The real path of the script being executed.
-	_env["SCRIPT_FILENAME"]= CGI_FILEPATH + _env["SCRIPT_NAME"];
+	_env["SCRIPT_FILENAME"]= CGI_FILEPATH + _env.at("SCRIPT_NAME");
 	_env["REDIRECT_STATUS"]="200";	
 	_env["PATH_INFO"] = extractPathInfo(_requestInfo.at("PATH")); 
 	if (_env["PATH_INFO"] != "")
@@ -139,16 +134,16 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 	catch (std::bad_alloc &e) {
 		std::cerr << e.what() << std::endl;
 	}
-	//printStringArray(env);
+	// printStringArray(env);
 	
 	std::string s1 = CGI_PHP;
 	std::string s2 = _env["SCRIPT_FILENAME"];
 	std::string s3 = _env["REQUEST_METHOD"];
 	std::string s4 = _env["CONTENT_TYPE"];
-	std::cout << "s1 : " << s1 << std::endl;
-	std::cout << "s2 : " << s2 << std::endl;
-	std::cout << "s3 : " << s3 << std::endl;
-	std::cout << "s4 : " << s4 << std::endl;
+	// std::cout << "s1 : " << s1 << std::endl;
+	// std::cout << "s2 : " << s2 << std::endl;
+	// std::cout << "s3 : " << s3 << std::endl;
+	// std::cout << "s4 : " << s4 << std::endl;
 	char* charS1 = new char[s1.length() + 1];
 	std::strcpy(charS1, s1.c_str());
 	char* charS2 = new char[s2.length() + 1];
@@ -248,18 +243,21 @@ int			CGI::Exec(MAP_STRING &_responsContent) {
 }
 
 char		**CGI::getEnvAsCstrArray(void) const {
-	int	s = _env.size();
-	char	**env = new char*[s];
-	int	j = 0;
-	for (std::map<std::string, std::string>::const_iterator i = this->_env.begin(); i != this->_env.end(); i++) {
-		std::string	element = i->first + "=" + i->second;
-		env[j] = new char[element.size() + 1];
-		env[j] = strcpy(env[j], (const char*)element.c_str());
-		j++;
+	{
+	char	**env;
+	int	i = 0;
+
+	env = new char*[_env.size() + 1];
+	for (std::map<std::string, std::string>::const_iterator it = _env.begin() ; it != _env.end() ; it++)
+	{
+		std::string	str = it->first + "=" + it->second;
+		env[i] = new char[str.size() + 1];
+		env[i] = ::strcpy(env[i], str.c_str());
+		i++;
 	}
-	env[j] = NULL;
-	// printStringArray(env);
-	return env;
+	env[i] = NULL;
+	return (env);
+}
 }
 
 std::string	CGI::extractScriptName(const std::string &url)

@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:58:28 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/03 16:29:53 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:32:17 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,15 @@ void printStringArray(char** strings) {
         printf("%s\n", strings[i]);
     }
 }
+
+// void findEmpty(char** strings) {
+//     if (strings == NULL) {
+//         printf("NULL\n");
+//         return;
+//     }
+
+//     for (int i = 0; strings[i] != NULL; i++) {
+//        if (strings[i] == NULL || strings[i] == "")
+       
+//     }
+// }
