@@ -32,7 +32,7 @@ Bonjour!
 
 //Server 1
 myserver server_names	moustache moustache.com
-myserver ports			8100 8070 4241 3131
+myserver ports			8100 8090 4241 3131
 myserver max_body_size	33000
 myserver back_log 		32767
 myserver _route			/ / 
@@ -44,7 +44,7 @@ myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 myserver _route		    /CGIFiles /CGIFiles/
-myserver _methods	    /CGIFiles GET
+myserver _methods	    /CGIFiles GET POST 
 myserver _root		    /CGIFiles /Network/Website/
 myserver _rep_listing	/CGIFiles 1
 myserver _def_rep		/CGIFiles /bonjour.php
@@ -84,5 +84,5 @@ myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 //------error_names
 
-404 add duku
+404 Not Found  
 407	add watur

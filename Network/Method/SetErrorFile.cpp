@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:32:47 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:41:35 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void forbiddenMethod(MAP_STRING &responsContent)
 	setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
 	return ;
 }
+
 
 void forbidden(MAP_STRING &responsContent)
 {

@@ -73,6 +73,8 @@
         <button type="submit" name="calculate">Calculate</button>
     </form>
 
+    <a href="/pb.html"><button>Back</button></a> 
+
     <?php
     if (isset($_GET['calculate'])) {
         $num1 = $_GET['num1'];
