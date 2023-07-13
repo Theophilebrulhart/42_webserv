@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:10:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/13 15:56:31 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/13 18:31:01 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         try {
             ConfigParser a(argv[1]);
             a.dispConfig();
-            a.dispErrorNames();
+            //a.dispErrorNames();
             launch(a);
         }
         catch(const char* exc) {

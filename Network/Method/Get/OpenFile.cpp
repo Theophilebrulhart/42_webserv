@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:55:49 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:24:08 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
         {
             if (info.at("EXTENSION") == ".php")
             {
-                CGI(info, responsContent);
+                CGI(info, responsContent, servInfo);
                 return ;
             }
         }

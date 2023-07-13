@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/13 16:28:59 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/13 18:30:45 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,8 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
-			if(buf[0] != '/')
-				buf = '/' + buf;
+			// if(buf[0] != '/')
+				// buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		}
 	}
