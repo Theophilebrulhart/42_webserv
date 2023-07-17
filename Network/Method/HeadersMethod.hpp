@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   HeadersMethod.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: theophilebrulhart <theophilebrulhart@st    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 13:05:05 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 11:04:43 by theophilebr      ###   ########.fr       */
+/*   Updated: 2023/07/17 13:47:19 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ bool 					isDir(const std::string& path);
 
 int 			isValidMethod(const MAP_STRING& info);
 int 			isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string contentType);
-void 			notFound(MAP_STRING &responsContent);
-void			forbidden(MAP_STRING &responsContent);
-void            forbiddenMethod(MAP_STRING &responsContent);
+void 			notFound(MAP_STRING &responsContent, ConfigParser::t_serv servInfo);
+void			forbidden(MAP_STRING &responsContent, ConfigParser::t_serv servInfo);
+void            forbiddenMethod(MAP_STRING &responsContent, ConfigParser::t_serv servInfo);
 void 			redirection (MAP_STRING &responsContent, std::string newUrl);
-void 			unprocessable(MAP_STRING &responsContent);
+void 			unprocessable(MAP_STRING &responsContent, ConfigParser::t_serv servInfo);
 
 #endif

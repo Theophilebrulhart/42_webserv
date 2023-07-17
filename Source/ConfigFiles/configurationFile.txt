@@ -32,7 +32,7 @@ Bonjour!
 
 //Server 1
 myserver server_names	moustache moustache.com
-myserver ports			8200 8030 4241 3131
+myserver ports			8100 8030 4241 3131
 myserver max_body_size	33000
 myserver back_log 		32767
 myserver _route			/ / 
@@ -52,7 +52,7 @@ myserver _cgi_script	/CGIFiles ./Network/Website/
 myserver _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 
 myserver _route		    /Uploads /Uploads/
-myserver _methods	    /Uploads GET POST DELETE
+myserver _methods	    /Uploads GET POST 
 myserver _root		    /Uploads /Network/Website/
 myserver _rep_listing	/Uploads 1
 myserver _def_rep		/Uploads 
@@ -84,6 +84,4 @@ myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 //------error_names
 
-404 add dafuk
-407	add watur
-666 add PizEnReverse
+404 add /replace.html 

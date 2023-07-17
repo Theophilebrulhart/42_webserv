@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 16:33:20 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 14:06:34 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,28 +131,28 @@ bool isDir(const std::string& path)
     return S_ISDIR(fileStat.st_mode);
 }
 
-int	exist (MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info)
+int	exist (MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info, ConfigParser::t_serv &servInfo)
 {
 	if (info.at("METHOD") != "DELETE")
 	{
 		if (!isFile(route.d_root.substr(1) + info.at("PATH").substr(1)) && !isDir(route.d_root.substr(1) + info.at("PATH").substr(1)))
 		{
 			std::cout << "Not a existing file or directory : " << route.d_root.substr(1) + info.at("PATH").substr(1) << " \n\n";
-			notFound(responsContent);
+			notFound(responsContent, servInfo);
 			return (0);
 		}
 	}
 	return (1);
 }
 
-int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info)
+int    isMethodAllowed(std::string method, MAP_STRING &responsContent, ConfigParser::t_route route, MAP_STRING &info, ConfigParser::t_serv servInfo)
 {
 	std::string file;
-	 std::vector<std::string>::iterator it = std::find(route.b_methods.begin(), route.b_methods.end(), method);
+	std::vector<std::string>::iterator it = std::find(route.b_methods.begin(), route.b_methods.end(), method);
 	if (it != route.b_methods.end()) {
 		return (1);
     } else {
-		forbiddenMethod(responsContent);
+		forbiddenMethod(responsContent, servInfo);
 		return (0);
     }
 	return (1);
@@ -187,11 +187,11 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 		if (servInfo.c_routes.find(path) != servInfo.c_routes.end() && path != "/")
 		{
 			// std::cout << "route : " << info.at("PATH") << "\n\n";
-			forbidden(responsContent);
+			forbidden(responsContent, servInfo);
 			return (empty);
 		}
 		// std::cout << "path = " << path << std::endl;
-		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path], info))
+		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[path], info, servInfo))
 			return (empty);
 		// std::cout << "return size 1 route : " << servInfo.c_routes[path].a_route << "\n\n";
 		return (servInfo.c_routes[path]);
@@ -201,9 +201,9 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
 	{
 		std::cout << "\nRoute non trouvee\n\n";
-		if (!exist(responsContent, servInfo.c_routes["/"], info))
+		if (!exist(responsContent, servInfo.c_routes["/"], info, servInfo))
 			return (empty);
-		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info))
+		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info, servInfo))
 			return (empty);
 		return (servInfo.c_routes["/"]);
 	}
@@ -214,7 +214,7 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 		redirection(responsContent, "Location: " + servInfo.c_routes[route].c_redirec.substr(1));
 		return (empty);
 	}
-	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route], info))
+	if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes[route], info, servInfo))
 		return (empty);
 	return (servInfo.c_routes[route]);
 }
