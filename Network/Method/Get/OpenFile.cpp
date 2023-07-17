@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 16:04:41 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 17:18:51 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,17 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     {
         // std::cout << "method get\n\n";
         try
-        {
+        {   
+            if (!route.e_rep_listing)
+            {
+                if (route.f_def_rep.find(".php") != std::string::npos)
+                {
+                    info.at("PATH") += route.f_def_rep;
+                    std::cout << "path cgi :" << info.at("PATH") << "\n\n";
+                    CGI(info, responsContent, servInfo);
+                    return ;
+                }
+            }
             if (info.at("EXTENSION") == ".php")
             {
                 CGI(info, responsContent, servInfo);

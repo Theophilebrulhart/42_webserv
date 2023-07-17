@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 15:17:49 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 16:58:43 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,8 +209,7 @@ void launch(ConfigParser &configInfo)
             for (int i = serverSockets.size(); i < pollFds.size(); ++i)
             {
                 if (pollFds[i].revents & POLLOUT)
-                {
-                    std::cout << "\n\nPOULLOUt\n\n";
+                { 
                     getMapKey(serverClientList, clientSockets[i - serverSockets.size()], 1);
                     close(pollFds[i].fd);
                     clientSockets.erase(clientSockets.begin() + i - serverSockets.size());

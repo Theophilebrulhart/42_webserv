@@ -33,30 +33,30 @@ Bonjour!
 //Server 1
 myserver1 hostname		localhost
 myserver1 server_names	moustache moustache.com
-myserver1 ports			8181 4241
+myserver1 ports			8181 4242
 myserver1 max_body_size	33000
 myserver1 back_log 		32767
 myserver1 _route			/ / 
 myserver1 _methods		/ GET POST DELETE
 myserver1 _root			/ /Network/Website/HtmlFiles/
-myserver1 _rep_listing	/ 0
+myserver1 _rep_listing	/ 1
 myserver1 _def_rep		/ /pb.html
 myserver1 _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver1 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
 myserver1 _route		    /CGIFiles /CGIFiles/
-myserver1 _methods	    /CGIFiles GET POST 
+myserver1 _methods	    /CGIFiles GET POST
 myserver1 _root		    /CGIFiles /Network/Website/
 myserver1 _rep_listing	/CGIFiles 1
-myserver1 _def_rep		/CGIFiles /bonjour.php
+myserver1 _def_rep		/CGIFiles CGIFiles/pbcgi.html
 myserver1 _cgi_script	/CGIFiles ./Network/Website/
 myserver1 _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 
 myserver1 _route		    /Uploads /Uploads/
 myserver1 _methods	    /Uploads GET POST DELETE
 myserver1 _root		    /Uploads /Network/Website/
-myserver1 _rep_listing	/Uploads 1
-myserver1 _def_rep		/Uploads 
+myserver1 _rep_listing	/Uploads 0
+myserver1 _def_rep		/Uploads Uploads/pbimg.html
 myserver1 _cgi_script	/Uploads Pelops/besoin/dun/cgi/stps
 myserver1 _cgi_addr  	/Uploads Pelops/ceci/est/un/cgi/askip
 
