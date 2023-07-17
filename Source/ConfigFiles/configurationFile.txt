@@ -33,7 +33,7 @@ Bonjour!
 //Server 1
 myserver1 hostname		localhost
 myserver1 server_names	moustache moustache.com
-myserver1 ports			8282 4241
+myserver1 ports			8181 4241
 myserver1 max_body_size	33000
 myserver1 back_log 		32767
 myserver1 _route			/ / 
@@ -73,7 +73,7 @@ myserver1 _redirec       /ideeMoustache https://www.youtube.com/watch?v=OF32KzHE
 //Server 2
 myserver2 hostname		127.0.0.1
 myserver2 server_names	pelops pelops.com
-myserver2 ports			4141 8282
+myserver2 ports			4141 8181
 myserver2 max_body_size	2147483647
 myserver2 back_log 		32767
 myserver2 _route		/ /
@@ -93,4 +93,4 @@ myserver2 _cgi_script	/CGIFiles ./Network/Website/
 myserver2 _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 //------error_names
 
-404 add /replace.html 
+404 add /replace1.html 
