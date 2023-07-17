@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:14 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/17 13:16:38 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:33:31 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,8 +239,33 @@ int			CGI::Exec(MAP_STRING &_responsContent, ConfigParser::t_serv servInfo) {
 		_ewor = 5;
         return 1;
     }
+	freeEnvMemory(env);	
+	freeString(charS1, charS2);
 	SetResponseContent(_responsContent, output);
 	return (0);
+}
+
+void CGI::freeString(char* s1, char* s2) {
+     if (s1 == NULL) {
+        return;
+    }
+    free(s1);
+	if (s2 == NULL) {
+        return;
+    }
+    free(s2);	
+}
+
+void CGI::freeEnvMemory(char** env) {
+    if (env == NULL) {
+        return; // No need to free if env is NULL
+	}
+    // Free each individual string in the env array
+    for (int i = 0; env[i] != NULL; ++i) {
+        free(env[i]);
+    }
+    // Free the array itself
+    free(env);
 }
 
 char		**CGI::getEnvAsCstrArray(void) const {

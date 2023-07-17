@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:04:55 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:51:13 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:34:39 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void launch(ConfigParser &configInfo)
 
     std::cout << "\e[0;31m****STARTING*****\e[0m\n";
     std::cout << "Serveur en attente de connexions..." << std::endl;
-
     while (true) {
         // std::cout << "\n\e[0;32m===== WAITING =====\e[0m\n";
         int pollResult = poll(&pollFds[0], pollFds.size(), -1);

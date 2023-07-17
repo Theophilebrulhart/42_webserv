@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbrulhar <tbrulhar@student.42.fr>          +#+  +:+       +#+         #
+#    By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 13:06:30 by tbrulhar          #+#    #+#              #
-#    Updated: 2023/07/10 20:09:31 by tbrulhar         ###   ########.fr        #
+#    Updated: 2023/07/17 17:25:25 by pyammoun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRC +=	${addprefix Network/Utils/, Utils.cpp}
 OBJ = $(SRC:.cpp=.o) 
 GPP = c++
 RM = rm -f 
-GFLAGS = -Wall -Wextra -Werror -std=c++98 -g
+GFLAGS = -Wall -Wextra -Werror -std=c++98 -g 
 
 NAME = webserv
 

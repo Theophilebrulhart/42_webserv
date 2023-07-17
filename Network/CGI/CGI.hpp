@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 14:44:19 by pyammoun          #+#    #+#             */
-/*   Updated: 2023/07/13 16:22:25 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:30:22 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ class	CGI {
 		char**		getEnvAsCstrArray(void) const;
 		int			Exec(MAP_STRING &_responsContent, ConfigParser::t_serv servInfo);
 		int			SetResponseContent(MAP_STRING &_responsContent, std::string output);
+		void 		freeEnvMemory(char** env);
+		void 		freeString(char* s1, char* s2);
 		
 	private:
 		
