@@ -93,6 +93,4 @@ myserver2 _cgi_script	/CGIFiles ./Network/Website/
 myserver2 _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 //------error_names
 
-404 add dafuk
-407	add watur
-666 add PizEnReverse
+404 add /replace.html 

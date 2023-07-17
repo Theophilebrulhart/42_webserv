@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/13 15:18:52 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 13:50:35 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING
     if (info.at("CONTENT-TYPE") == "plain/text\r")
     {
         std::cout << "unprocessable\n\n";
-        unprocessable(responsContent);
+        unprocessable(responsContent, servInfo);
         return (0);
     }
     // std::cout << "sending to getFormCalue\n\n";

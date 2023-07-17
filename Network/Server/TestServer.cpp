@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 15:23:59 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 16:05:17 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int	SERVER::TestServer::_handler(int clientSocket)
         if (parsingRes == -1)
         {
             std::cout << "404 notfound\n\n";
-            notFound(_responsContent);
+            notFound(_responsContent, _servInfo);
         }
         if (parsingRes == -2)
         {
             std::cout << "403 forbidden\n\n";
-            forbidden(_responsContent);
+            forbidden(_responsContent, _servInfo);
         }
         return (-1);
     }

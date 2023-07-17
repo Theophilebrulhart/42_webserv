@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 14:48:11 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 16:04:41 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     std::string contentFile = getFileToLoad(info, route);
     if (contentFile.empty())
     {
-        notFound(responsContent);
+        notFound(responsContent, servInfo);
     }
     setResponsContent(responsContent, info.at("PROTOCOL"), "200 OK", contentType, contentFile);
     return ;

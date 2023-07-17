@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 14:34:59 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 16:04:43 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,69 @@ int isInternalError( MAP_STRING &info, MAP_STRING &responsContent, std::string c
 	return (1);
 }
 
-void notFound(MAP_STRING &responsContent)
+std::string	replaceFile(std::string error, ConfigParser::t_serv servInfo)
 {
-	std::string notFound = loadContentFile("/404NotFound.html");
-	setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);
+	std::string	ewor;	
+	if (servInfo.f_error_names.empty())
+		return ewor;
+	else
+	{
+		for (std::map<std::string, std::string>::iterator it = servInfo.f_error_names.begin(); it != servInfo.f_error_names.end(); it++) 
+		{
+			if (it->first == error)
+				return (it->second);	
+		}
+	}
+	return ewor;
+}
+
+void notFound(MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
+{
+	std::string rF = replaceFile("404", servInfo);
+	if (rF.empty())
+	{
+		std::string notFound = loadContentFile("/404NotFound.html");
+		setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);
+	}
+	else
+	{
+		std::string notFound = loadContentFile(rF);
+		setResponsContent(responsContent, "HTTP/1.1", "404 Not Found", "text/html", notFound);	
+	}
 	return ;
 }
 
-void forbiddenMethod(MAP_STRING &responsContent)
+void forbiddenMethod(MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
 {
-	std::string forbidden = loadContentFile("/405Forbidden.html");
-	setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
+	std::string rF = replaceFile("405", servInfo);
+	if (rF.empty())
+	{
+		std::string forbidden = loadContentFile("/405Forbidden.html");
+		setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
+	}
+	else
+	{
+		std::string forbidden = loadContentFile(rF);
+		setResponsContent(responsContent, "HTTP/1.1", "405 Method Not Allowed", "text/html", forbidden);
+
+	}
 	return ;
 }
 
 
-void forbidden(MAP_STRING &responsContent)
+void forbidden(MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
 {
-	std::string forbidden = loadContentFile("/403Forbidden.html");
-	setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
-	return ;
+	std::string rF = replaceFile("403", servInfo);
+	if (rF.empty())
+	{
+		std::string forbidden = loadContentFile("/403Forbidden.html");
+		setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
+	}	
+	else
+	{
+		std::string forbidden = loadContentFile(rF);
+		setResponsContent(responsContent, "HTTP/1.1", "403 Forbidden", "text/html", forbidden);
+	}
 }
 
 void redirection(MAP_STRING &responsContent, std::string newUrl)
@@ -87,10 +130,19 @@ void redirection(MAP_STRING &responsContent, std::string newUrl)
 	return ;
 }
 
-void unprocessable(MAP_STRING &responsContent)
+void unprocessable(MAP_STRING &responsContent, ConfigParser::t_serv servInfo)
 {
-	std::string unprocessable = loadContentFile("/422Unprocessable.html");
-	setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);
+	std::string rF = replaceFile("403", servInfo);
+	if (rF.empty())
+	{
+		std::string unprocessable = loadContentFile("/422Unprocessable.html");
+		setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);
+	}
+	else
+	{
+		std::string unprocessable = loadContentFile(rF);
+		setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);	
+	}
 	return ;
 }
 
