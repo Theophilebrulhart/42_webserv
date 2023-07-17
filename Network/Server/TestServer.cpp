@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 16:05:17 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 17:50:56 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ int getHost(std::map<std::string, ConfigParser::t_serv> &servers, std::string ho
     for (std::map<std::string, ConfigParser::t_serv>::iterator it = servers.begin(); it != servers.end(); it++)
     {
         if (shortHost == it->second.g_hostname) {
-            std::cout << "prout" << std::endl;
             servInfo = it->second;
             return (1);
         }
     }
-    std::cout << "prout2" << std::endl;
-    std::cout << "t_serv non trouve\n\n";
+    std::cout << "non existing server\n\n";
     
     
     return(0);

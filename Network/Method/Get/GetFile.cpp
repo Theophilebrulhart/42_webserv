@@ -6,7 +6,7 @@
 /*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:08:37 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/12 13:48:38 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:51:57 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ std::string getFileToLoad(MAP_STRING &info, ConfigParser::t_route &route)
         }
         else
         {
-            std::cout << "laod file : path" << info.at("PATH").substr(1) << "\n\n";
-            std::cout << "laod file : root" << route.d_root.substr(1) << "\n\n";
+            // std::cout << "laod file : path" << info.at("PATH").substr(1) << "\n\n";
+            // std::cout << "laod file : root" << route.d_root.substr(1) << "\n\n";
 
             file = loadContentFile(info.at("PATH").substr(1), route.d_root.substr(1));
         }

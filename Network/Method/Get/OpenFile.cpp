@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OpenFile.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 17:18:51 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 18:02:59 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
     // std::cout << "openFile\n\n";
-    std::cout << "serve in fo dans openFile 0 : " << servInfo.a_server_names[0]; 
     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
     if (route.a_route.empty())
     {
-        std::cout << "empty iiuuuiuui \n\n";
             return ;
     }
     std::string path = info.at("PATH");
@@ -30,7 +28,6 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
             char lastChar = path[path.length() - 1];
             if (lastChar != '/')
             {
-                std::cout << "no / at the end of this directory\n\n";
                 redirection(responsContent, "Location: " + path + "/");
                 return ;
             }
@@ -40,12 +37,11 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
         // std::cout << "method get\n\n";
         try
         {   
-            if (!route.e_rep_listing)
+            if (!route.e_rep_listing && isDirectoryTmp)
             {
                 if (route.f_def_rep.find(".php") != std::string::npos)
                 {
                     info.at("PATH") += route.f_def_rep;
-                    std::cout << "path cgi :" << info.at("PATH") << "\n\n";
                     CGI(info, responsContent, servInfo);
                     return ;
                 }
@@ -70,7 +66,6 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     }
     catch (const std::out_of_range of)
     {
-        std::cout << "no extension\n";
     }
     std::string contentFile = getFileToLoad(info, route);
     if (contentFile.empty())

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   DeleteFile.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 13:25:27 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 16:41:11 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 17:55:46 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void deleteFile(MAP_STRING &info, MAP_STRING &responsContent, ConfigParser::t_se
     std::string body;
     std::string fileToDelete;
     fileToDelete = route.d_root.substr(1) + info.at("PATH").substr(1);
-    std::cout << "jambon\n\n";
     std::string contentType = contentExtension(info.at("PATH"));
     if (isInternalError(info, responsContent, contentType) < 0)
         return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 16:46:43 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 17:55:01 by pyammoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ std::string contentExtension(std::string const &file)
     std::string tmp;
     std::string contentType;
 
-	std::cout << "file : " << file << "\n\n";
+	// std::cout << "file : " << file << "\n\n";
     extension.insert(std::pair<std::string, std::string>(".html", "Content-Type: text/html"));
 	extension.insert(std::pair<std::string, std::string>(".css", "Content-Type: text/css"));
 	extension.insert(std::pair<std::string, std::string>(".svg", "Content-Type: image/svg+xml"));
@@ -182,7 +182,6 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 	// std::cout << "is route ? the serv route is : " << servInfo.a_route << "\n\n";
 	ConfigParser::t_route empty;
 	std::string path = info.at("PATH");
-	std::cout << "The path :" << path << std::endl;
 	if (path.size() == 1)
 	{
 		// std::cout << "route sze 1\n\n";
@@ -202,7 +201,7 @@ ConfigParser::t_route isRoute(MAP_STRING &info, MAP_STRING &responsContent, Conf
 	// std::cout << "route eee: " << route << "\n\n";
 	if (servInfo.c_routes.find(route) == servInfo.c_routes.end())
 	{
-		std::cout << "\nRoute non trouvee\n\n";
+		// std::cout << "\nRoute non trouvee\n\n";
 		if (!exist(responsContent, servInfo.c_routes["/"], info, servInfo))
 			return (empty);
 		if (!isMethodAllowed(info.at("METHOD"), responsContent, servInfo.c_routes["/"], info, servInfo))
