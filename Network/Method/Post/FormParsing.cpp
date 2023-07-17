@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   FormParsing.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 15:01:19 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 13:50:35 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:36:53 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ int    formParsing(std::string &buffer, MAP_STRING &info, int socket, MAP_STRING
     if (content.length() > std::atoi(servInfo.d_max_body_size.c_str()))
     {
         std::cout << "body's bigger than max body: check config file\n\n";
-        return (-1);
+        std::string empty;
+        setResponsContent(responsContent, "HTTP/1.1", "413 Payload Too Large", empty, empty);
+        return (0);
     }
     // std::cout << "body size ok \n\n";
     if (content.length() == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   OpenFile.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 14:55:10 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 13:16:08 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:18:51 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
 {
     // std::cout << "openFile\n\n";
+    std::cout << "serve in fo dans openFile 0 : " << servInfo.a_server_names[0]; 
     ConfigParser::t_route route = isRoute(info, responsContent, servInfo);
     if (route.a_route.empty())
     {
-        std::cout << "empty \n\n";
+        std::cout << "empty iiuuuiuui \n\n";
             return ;
     }
     std::string path = info.at("PATH");
@@ -38,7 +39,17 @@ void    openFile(MAP_STRING info, MAP_STRING &responsContent, ConfigParser::t_se
     {
         // std::cout << "method get\n\n";
         try
-        {
+        {   
+            if (!route.e_rep_listing)
+            {
+                if (route.f_def_rep.find(".php") != std::string::npos)
+                {
+                    info.at("PATH") += route.f_def_rep;
+                    std::cout << "path cgi :" << info.at("PATH") << "\n\n";
+                    CGI(info, responsContent, servInfo);
+                    return ;
+                }
+            }
             if (info.at("EXTENSION") == ".php")
             {
                 CGI(info, responsContent, servInfo);

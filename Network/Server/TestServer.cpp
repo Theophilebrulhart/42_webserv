@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   TestServer.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:57:16 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 13:52:46 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:05:17 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "TestServer.hpp"
 #include "../Method/HeadersMethod.hpp"
 
-SERVER::TestServer::TestServer(int protocol, int port, int backlog, ConfigParser::t_serv servInfo) : AServer(AF_INET, SOCK_STREAM, protocol, port,
+SERVER::TestServer::TestServer(int protocol, int port, int backlog) : AServer(AF_INET, SOCK_STREAM, protocol, port,
 INADDR_ANY, backlog)
 {
-    _servInfo = servInfo;
+    _port = port;
     return ;
 }
 
@@ -25,9 +25,30 @@ SERVER::TestServer::~TestServer(void)
     return ;
 }
 
+int getHost(std::map<std::string, ConfigParser::t_serv> &servers, std::string host, MAP_STRING &responsContent, ConfigParser::t_serv &servInfo)
+{
+    std::string shortHost = host.substr(0, host.find(":"));
+
+    for (std::map<std::string, ConfigParser::t_serv>::iterator it = servers.begin(); it != servers.end(); it++)
+    {
+        if (shortHost == it->second.g_hostname) {
+            std::cout << "prout" << std::endl;
+            servInfo = it->second;
+            return (1);
+        }
+    }
+    std::cout << "prout2" << std::endl;
+    std::cout << "t_serv non trouve\n\n";
+    
+    
+    return(0);
+}
+
 int	SERVER::TestServer::_handler(int clientSocket)
 {
     int parsingRes = requestParsing(_buffer, _requestInfo);
+    if (getHost(_servInfos, _requestInfo["HOST"], _responsContent, _servInfo) == 0)
+        return (-1);
     // if (_requestInfo["PATH"] == "/favicon.ico")
     //     return -1;
 	if ( parsingRes <= 0)

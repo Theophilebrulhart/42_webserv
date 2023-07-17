@@ -31,47 +31,49 @@ Bonjour!
 //	_cgi_addr    -> std::string
 
 //Server 1
-myserver server_names	moustache moustache.com
-myserver ports			8400 8030 4241 3131
-myserver max_body_size	33000
-myserver back_log 		32767
-myserver _route			/ / 
-myserver _methods		/ GET POST DELETE
-myserver _root			/ /Network/Website/HtmlFiles/
-myserver _rep_listing	/ 0
-myserver _def_rep		/ /pb.html
-myserver _cgi_script	/ Pelops/besoin/dun/cgi/stp
-myserver _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
+myserver1 hostname		localhost
+myserver1 server_names	moustache moustache.com
+myserver1 ports			8181 4242
+myserver1 max_body_size	33000
+myserver1 back_log 		32767
+myserver1 _route			/ / 
+myserver1 _methods		/ GET POST DELETE
+myserver1 _root			/ /Network/Website/HtmlFiles/
+myserver1 _rep_listing	/ 1
+myserver1 _def_rep		/ /pb.html
+myserver1 _cgi_script	/ Pelops/besoin/dun/cgi/stp
+myserver1 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
-myserver _route		    /CGIFiles /CGIFiles/
-myserver _methods	    /CGIFiles GET POST 
-myserver _root		    /CGIFiles /Network/Website/
-myserver _rep_listing	/CGIFiles 1
-myserver _def_rep		/CGIFiles /bonjour.php
-myserver _cgi_script	/CGIFiles ./Network/Website/
-myserver _cgi_addr  	/CGIFiles ./Network/Website/CGIFiles/php-cgi
+myserver1 _route		    /CGIFiles /CGIFiles/
+myserver1 _methods	    /CGIFiles GET POST
+myserver1 _root		    /CGIFiles /Network/Website/
+myserver1 _rep_listing	/CGIFiles 1
+myserver1 _def_rep		/CGIFiles CGIFiles/pbcgi.html
+myserver1 _cgi_script	/CGIFiles ./Network/Website/
+myserver1 _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 
-myserver _route		    /Uploads /Uploads/
-myserver _methods	    /Uploads GET POST 
-myserver _root		    /Uploads /Network/Website/
-myserver _rep_listing	/Uploads 1
-myserver _def_rep		/Uploads 
-myserver _cgi_script	/Uploads Pelops/besoin/dun/cgi/stp
-myserver _cgi_addr  	/Uploads Pelops/ceci/est/un/cgi/askip
+myserver1 _route		    /Uploads /Uploads/
+myserver1 _methods	    /Uploads GET POST DELETE
+myserver1 _root		    /Uploads /Network/Website/
+myserver1 _rep_listing	/Uploads 0
+myserver1 _def_rep		/Uploads Uploads/pbimg.html
+myserver1 _cgi_script	/Uploads Pelops/besoin/dun/cgi/stps
+myserver1 _cgi_addr  	/Uploads Pelops/ceci/est/un/cgi/askip
 
-myserver _route		    /maVieilleMoustache /maVieilleMoustache/
-myserver _methods	    /maVieilleMoustache GET
-myserver _rep_listing   /maVieilleMoustache 1
-myserver _redirec       /maVieilleMoustache https://www.pogabarberhouse.ch/
+myserver1 _route		    /maVieilleMoustache /maVieilleMoustache/
+myserver1 _methods	    /maVieilleMoustache GET
+myserver1 _rep_listing   /maVieilleMoustache 1
+myserver1 _redirec       /maVieilleMoustache https://www.pogabarberhouse.ch/
 
-myserver _route		    /ideeMoustache /ideeMoustache/
-myserver _methods	    /ideeMoustache GET
-myserver _rep_listing   /ideeMoustache 1
-myserver _redirec       /ideeMoustache https://www.youtube.com/watch?v=OF32KzHEtrg
+myserver1 _route		    /ideeMoustache /ideeMoustache/
+myserver1 _methods	    /ideeMoustache GET
+myserver1 _rep_listing   /ideeMoustache 1
+myserver1 _redirec       /ideeMoustache https://www.youtube.com/watch?v=OF32KzHEtrg
 
 //Server 2
+myserver2 hostname		127.0.0.1
 myserver2 server_names	pelops pelops.com
-myserver2 ports			4141 8101
+myserver2 ports			4141 8181
 myserver2 max_body_size	2147483647
 myserver2 back_log 		32767
 myserver2 _route		/ /
@@ -82,6 +84,13 @@ myserver2 _def_rep		/ Pelops.html
 myserver2 _cgi_script	/ Pelops/besoin/dun/cgi/stp
 myserver2 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 
+myserver2 _route		    /CGIFiles /CGIFiles/
+myserver2 _methods	    /CGIFiles GET POST 
+myserver2 _root		    /CGIFiles /Network/Website/
+myserver2 _rep_listing	/CGIFiles 1
+myserver2 _def_rep		/CGIFiles /bonjour.php
+myserver2 _cgi_script	/CGIFiles ./Network/Website/
+myserver2 _cgi_addr  	/CGIFiles ./Network/Socket/php-cgi
 //------error_names
 
-404 add /replace.html 
+404 add /replace1.html 

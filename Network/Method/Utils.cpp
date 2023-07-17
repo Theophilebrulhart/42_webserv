@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 13:48:40 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/17 14:06:34 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:46:43 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,26 @@ std::string contentExtension(std::string const &file)
     std::string tmp;
     std::string contentType;
 
+	std::cout << "file : " << file << "\n\n";
     extension.insert(std::pair<std::string, std::string>(".html", "Content-Type: text/html"));
 	extension.insert(std::pair<std::string, std::string>(".css", "Content-Type: text/css"));
 	extension.insert(std::pair<std::string, std::string>(".svg", "Content-Type: image/svg+xml"));
 	extension.insert(std::pair<std::string, std::string>(".png", "Content-Type: image/png"));
 	extension.insert(std::pair<std::string, std::string>(".jpeg", "Content-Type: image/jpeg"));
+	extension.insert(std::pair<std::string, std::string>(".jpg", "Content-Type: image/jpg"));
 	extension.insert(std::pair<std::string, std::string>(".js", "Content-Type: application/javascript"));
 	extension.insert(std::pair<std::string, std::string>(".php", "Content-Type: text/php"));
 
 	
-	for (int i = file.find("."); file[i]; i++)
+	for (int i = file.find_last_of("."); file[i]; i++)
 		tmp += file[i];
-	//std::cout << "extension : " << extension << "\n";
 	try 
 	{
 		contentType = extension.at(tmp);
 	}
 	catch (const std::out_of_range &e)
 	{
+		std::cout << "extension not supported\n\n";
         contentType = "Not supported";
 	}
 	return (contentType);
