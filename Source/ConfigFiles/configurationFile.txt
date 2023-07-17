@@ -33,7 +33,7 @@ Bonjour!
 //Server 1
 myserver1 hostname		localhost
 myserver1 server_names	moustache moustache.com
-myserver1 ports			8000 2223
+myserver1 ports			8002 2223
 myserver1 max_body_size	33000
 myserver1 back_log 		32767
 myserver1 _route			/ / 
@@ -47,7 +47,7 @@ myserver1 _cgi_addr		/ Pelops/ceci/est/un/cgi/askip
 myserver1 _route		    /CGIFiles /CGIFiles/
 myserver1 _methods	    /CGIFiles GET POST
 myserver1 _root		    /CGIFiles /Network/Website/
-myserver1 _rep_listing	/CGIFiles 0
+myserver1 _rep_listing	/CGIFiles 1
 myserver1 _def_rep		/CGIFiles /bonjour.php
 myserver1 _cgi_script	/CGIFiles ./Network/Website/
 myserver1 _cgi_addr  	/CGIFiles ./Network/Website/CGIFiles/php-cgi
@@ -91,5 +91,7 @@ myserver2 _rep_listing	/CGIFiles 1
 myserver2 _def_rep		/CGIFiles /bonjour.php
 myserver2 _cgi_script	/CGIFiles ./Network/Website/
 myserver2 _cgi_addr  	/CGIFiles ./Network/Website/CGIFiles/php-cgi
+
 //------error_names
 
+404 add /replace1.html
