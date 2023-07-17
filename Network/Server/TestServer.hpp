@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:54:43 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/06 16:52:36 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 12:00:04 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@ namespace   SERVER
     class TestServer : public AServer
     {
         public:
-            TestServer(int protocol, int port, int backlog, ConfigParser::t_serv servInfo);
+            TestServer(int protocol, int port, int backlog);
             ~TestServer(void);
             
             int  			        _handler(int clientSocket);
             int     		        _responder(int clientSocket);
             std::string		        _buffer;
             ConfigParser::t_serv    _servInfo;
-
+            std::map<std::string, ConfigParser::t_serv> _servInfos; //moustache >> t_serv
+            int                     _port;
+                                                                     //pelops     >> t_serv
         private:
             TestServer();
 

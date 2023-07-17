@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   SetErrorFile.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:24:01 by tbrulhar          #+#    #+#             */
-/*   Updated: 2023/07/13 15:41:35 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 14:34:59 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,11 @@ void unprocessable(MAP_STRING &responsContent)
 	std::string unprocessable = loadContentFile("/422Unprocessable.html");
 	setResponsContent(responsContent, "HTTP/1.1", "422 Unprocessable Entity", "Content-Type: plain/text", unprocessable);
 	return ;
+}
+
+void badRequest(MAP_STRING &responsContent)
+{
+	std::string badRequest = loadContentFile("/400BadRequest.html");
+	setResponsContent(responsContent, "HTTP/1.1", "400 Bad Request", "text/html", badRequest);
+	return ;	
 }

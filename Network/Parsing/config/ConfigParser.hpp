@@ -6,7 +6,7 @@
 /*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 18:09:55 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/13 15:50:53 by mravera          ###   ########.fr       */
+/*   Updated: 2023/07/17 14:52:11 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ public:
 		std::string							d_max_body_size;
 		std::string							e_back_log;
 		std::map<std::string, std::string>	f_error_names;
+		std::string							g_hostname;
 
 	} t_serv;
 

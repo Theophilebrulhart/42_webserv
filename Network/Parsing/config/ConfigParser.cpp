@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ConfigParser.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pyammoun <paolo.yammouni@42lausanne.ch>    +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 15:28:08 by mravera           #+#    #+#             */
-/*   Updated: 2023/07/13 18:30:45 by pyammoun         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:20:23 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 	bool		boolbuf;
 	std::string route;
 
-	if(token == "server_names") {
+	if ((token == "hostname") && (ss >> buf)) {
+		this->servec[servname].g_hostname = buf;
+	}
+	else if(token == "server_names") {
 		while(ss >> buf)
 			this->servec[servname].a_server_names.push_back(buf);
 	}
@@ -139,8 +142,6 @@ int	ConfigParser::addTruc(std::string servname, std::string token, std::istrings
 			this->servec[servname].c_routes[route].g_cgi_script = buf;
 		}
 		else if(token == "_cgi_addr" && ss >> buf) {
-			// if(buf[0] != '/')
-				// buf = '/' + buf;
 			this->servec[servname].c_routes[route].h_cgi_addr = buf;
 		}
 	}
@@ -157,6 +158,7 @@ int	ConfigParser::addServ(std::string name) {
 	t_route	b;
 
 	if(this->servec.find(name) == this->servec.end()) {
+		a.g_hostname = "localhost";
 		a.d_max_body_size = "";
 		a.e_back_log = "40";
 		if(this->default_server.empty())
